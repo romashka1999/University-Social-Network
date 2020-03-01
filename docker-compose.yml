@@ -1,0 +1,42 @@
+version: '3.5' # specify docker-compose version
+
+# Define the services/containers to be run
+services:
+  client:
+    build: ./Front/Client
+    ports:
+      - "80:4200"
+    volumes: 
+        - ./Front/Client:/usr/src/app
+        - /usr/src/app/node_modules
+  cms:
+    build: ./Front/CMS
+    ports:
+      - "2000:2000"
+    volumes: 
+        - ./Front/CMS:/usr/src/app
+        - /usr/src/app/node_modules
+  gatewayapi: # name of the first service
+    build: ./Back/gate-way-api # specify the directory of the Dockerfile
+    ports:
+      - "3000:3000"
+    volumes: 
+        - ./Back/gate-way-api:/usr/src/app
+        - /usr/src/app/node_modules
+    command: npm run start:dev
+  backoffice:
+    build: ./Back/back-office
+    ports:
+      - "4000:4000"
+    volumes: 
+        - ./Back/back-office:/usr/src/app
+        - /usr/src/app/node_modules
+    command: npm run start:dev
+  accountservice:
+    build: ./Back/account-service
+    ports:
+      - "5000:5000"
+    volumes: 
+        - ./Back/account-service:/usr/src/app
+        - /usr/src/app/node_modules
+    command: npm run start:dev
