@@ -1,10 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { tpeOrmConfig } from './config/typeorm.config';
+import { MongooseModule } from '@nestjs/mongoose';
+
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+    isGlobal: true
+  }), 
+  TypeOrmModule.forRoot(tpeOrmConfig),
+  MongooseModule.forRoot(process.env.MONGO_URI),
+  UsersModule
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
