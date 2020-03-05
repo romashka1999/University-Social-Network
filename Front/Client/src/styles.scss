@@ -12,3 +12,25 @@
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.d-flex {
+    display: flex!important
+}
+
+.align-center {
+    align-items: center;
+}
+
+.d-row {
+    flex-direction: row;
+}
+
+.d-col {
+    flex-direction: column;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+
