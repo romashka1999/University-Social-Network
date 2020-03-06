@@ -11,6 +11,7 @@ export class LoginComponent {
 
     public hide = true;
     public loading: boolean = false;
+    public notifyAfterSubmit: boolean = false;
 
     constructor() {}
 
@@ -20,6 +21,7 @@ export class LoginComponent {
     });
 
     onSubmit() {
+        this.notifyAfterSubmit = true;
         console.log(this.userInfo)
         console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
         this.loading = true;

@@ -9,6 +9,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RegisterComponent {
 
+    public inputs: {}[] = [
+        {},
+    ]
+
     public hide = true;
     public loading: boolean = false;
 
@@ -24,7 +28,7 @@ export class RegisterComponent {
 
     onSubmit() {
         console.log(this.userInfo)
-        console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
+        // console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
         this.loading = true;
         setTimeout(() => {
             this.loading = false;

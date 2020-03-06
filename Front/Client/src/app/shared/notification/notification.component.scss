@@ -1,0 +1,86 @@
+
+::ng-deep.mat-simple-snackbar-action {
+    color: #ff0000;
+}
+
+.notify-container-active {
+    position: fixed;
+    bottom: -2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    min-width: 300px;
+    max-width: 90%;
+    background-color: black;
+    color: white;
+    padding: 4px 4px 20px 20px;
+    border-radius: 6px;
+    justify-content: space-between;
+    animation: notifyAnimation;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+}
+
+.notify-container-hide {
+    position: fixed;
+    bottom: -2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    min-width: 300px;
+    max-width: 90%;
+    background-color: black;
+    color: white;
+    padding: 4px 4px 20px 20px;
+    border-radius: 6px;
+    justify-content: space-between;
+    animation: notifyAnimationClose;
+    animation-duration: 0.5s;
+}
+
+.notify-container-close {
+    display: none;
+}
+
+.notify-body {
+    font-size: 20px;
+    padding-right: 20px;
+    text-align: center;
+    .icon {
+        margin-right: 5px;
+    }
+}
+
+.notify-action {
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    i {
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+@keyframes notifyAnimation {
+    0% {
+        opacity: 0;
+        bottom: -10%;
+    }
+    100% {
+        opacity: 1;
+        bottom: -2%;
+    }
+}
+
+@keyframes notifyAnimationClose {
+    0% {
+        opacity: 1;
+        bottom: -2%;
+    }
+    100% {
+        opacity: 0;
+        bottom: -10%;
+    }
+}

@@ -1,0 +1,13 @@
+<div class="notify-container-{{display}} d-flex d-col">
+    <div class="notify-action">
+        <i class="material-icons" (click)="onClose()"> close </i>
+    </div>
+    <div class="notify-body d-flex d-row">
+        <div class="icon">
+            <i class="material-icons"> notification_important </i>
+        </div>
+        <p class="body">
+            {{notifyBody}}
+        </p>
+    </div>
+</div>

@@ -27,22 +27,22 @@
                 <div class="first-last-name-wrapper d-flex d-row">
                     <mat-form-field class="wrapper-input">
                         <span matPrefix>
-                            <i class="material-icons"> sentiment_satisfied_alt </i>
+                            <i class="material-icons"> person </i>
                         </span>
                         <mat-label>სახელი</mat-label>
                         <input matInput formControlName="name">
                         <mat-error *ngIf="userInfo.controls.username.errors">
-                           {{FormGroupErrorHandler('username')}}
+                           {{FormGroupErrorHandler('name')}}
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field class="wrapper-input">
                         <span matPrefix>
-                            <i class="material-icons"> sentiment_satisfied_alt </i>
+                            <i class="material-icons"> person </i>
                         </span>
                         <mat-label>გვარი</mat-label>
                         <input matInput formControlName="lastname">
                         <mat-error *ngIf="userInfo.controls.username.errors">
-                           {{FormGroupErrorHandler('username')}}
+                           {{FormGroupErrorHandler('lastname')}}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -53,7 +53,7 @@
                     <mat-label>მობილურის ნომერი</mat-label>
                     <input matInput formControlName="phone">
                     <mat-error *ngIf="userInfo.controls.username.errors">
-                       {{FormGroupErrorHandler('username')}}
+                       {{FormGroupErrorHandler('phone')}}
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field style="width: 100%">
