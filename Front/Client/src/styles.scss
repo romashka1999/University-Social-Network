@@ -33,4 +33,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width: 100%;
 }
 
+::ng-deep {
+    .mat-simple-snackbar-action {
+        color: #536dfe!important;
+    }
+    .mat-button-wrapper {
+        color: #536dfe!important;
+    }
+}
+
 

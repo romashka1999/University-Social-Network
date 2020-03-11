@@ -16,14 +16,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { NotificationComponent } from './shared/notification/notification.component'
+import { ProfileComponent } from './profile/profile.component'
+
+//Redux devtool
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NotificationComponent
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,10 @@ import { NotificationComponent } from './shared/notification/notification.compon
     MatIconModule,
     ReactiveFormsModule,
     MatProgressBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
