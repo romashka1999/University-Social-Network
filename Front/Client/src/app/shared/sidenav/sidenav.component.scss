@@ -1,4 +1,10 @@
+@import "../../../assets/styles/variables";
+
 .sidenav-container {
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    left: 0;
     min-width: 200px;
     max-width: 200px;
     height: 100vh;
@@ -7,6 +13,9 @@
     color: #5b667e;
     background-color: #fff;
     border-radius: 10px;
+    -moz-box-shadow:    5px 1px 15px 0px $primary-light-color;
+    -webkit-box-shadow: 5px 1px 15px 0px $primary-light-color;
+    box-shadow:         5px 1px 15px 0px $primary-light-color;
 }
 
 .wrapper {
@@ -15,7 +24,7 @@
     .logo-container {
         width: 100%;
         padding: 0px 10px;
-        color: #536dfe
+        color: $primary-color
     }
     .content {
         width: 100%;

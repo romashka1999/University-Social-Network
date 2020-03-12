@@ -1,3 +1,45 @@
+@import "../../../assets/styles/variables";
+
 .header {
+    margin-bottom: 20px;;
     width: 100%;
+    // border: 1px solid black;
+    height: 70px;
+    justify-content: center;
+    .header-content {
+        color: $grey;
+        i {
+            margin-right: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            color: $grey;
+        }
+        .search-container {
+            box-sizing: content-box;
+            padding-left: 15px;
+            padding-right: 15px;
+            justify-content: center;
+            height: 40px;
+            border: 1px solid $grey;
+            border-radius: 30px;
+            .search-content {
+                i {
+                    cursor: pointer;
+                    margin-right: 10px!important;
+                    font-size: 20px;
+                }
+                input {
+                    border: 0px;
+                    background-color: transparent;
+                    color: $grey;
+                }
+
+                input:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
 }

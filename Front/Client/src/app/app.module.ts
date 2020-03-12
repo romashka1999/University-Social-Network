@@ -11,7 +11,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
-import { LayoutsModule } from './layouts/layouts.module'
 
 //Components
 import { AppComponent } from './app.component';
@@ -20,6 +19,11 @@ import { RegisterComponent } from './register/register.component';
 
 //Redux devtool
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SidenavComponent } from './shared/sidenav/sidenav.component';
+import { LayoutsComponent } from './layouts/layouts.component';
+import { ProfileComponent } from './layouts/profile/profile.component';
+import { ProfileInfoComponent } from './layouts/profile/profile-info/profile-info.component';
+import { HeaderComponent } from './shared/header/header.component';
 // import { ProfileModule } from './layouts/profile/profile.module';
 
 @NgModule({
@@ -27,8 +31,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    //ProfileComponent,
-    //SidenavComponent
+    LayoutsComponent,
+    SidenavComponent,
+    ProfileComponent,
+    ProfileInfoComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +50,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       maxAge: 25
     }),
     //ProfileModule,
-    LayoutsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,8 @@
+@import "../assets/styles/variables";
+
 ::ng-deep {
     .mat-simple-snackbar-action {
-        color: #536dfe!important;
+        color: $primary-color!important;
     }
     .mat-simple-snackbar > span {
         font-size: 17px;

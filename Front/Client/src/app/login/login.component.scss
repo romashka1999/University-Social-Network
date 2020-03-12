@@ -1,5 +1,4 @@
-$primary: #536DFE;
-$primary-dark: #4b62e5;
+@import "../../assets/styles/variables";
 
 .wave {
     position: fixed;
@@ -68,7 +67,7 @@ $primary-dark: #4b62e5;
         width: 70%;
         border: 0;
         border-radius: 100px;
-        background-color: $primary;
+        background-color: $primary-color;
         color: white;
         padding: 20px 1px;
         font-size: 22px;
@@ -83,7 +82,7 @@ $primary-dark: #4b62e5;
     }
     
     .btn-disabled:hover {
-        background-color: $primary!important;
+        background-color: $primary-color!important;
     }
     
     .submit-btn:hover {
@@ -121,7 +120,7 @@ $primary-dark: #4b62e5;
     }
 
     i:hover {
-        color: $primary;
+        color: $primary-color;
     }
 }
 
@@ -130,7 +129,7 @@ $primary-dark: #4b62e5;
 }
 
 ::ng-deep.mat-progress-bar-fill::after {
-    background-color: $primary;
+    background-color: $primary-color;
 }
 
 ::ng-deep.mat-progress-bar-background {

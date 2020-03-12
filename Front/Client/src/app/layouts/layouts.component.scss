@@ -1,0 +1,12 @@
+@import "../../assets/styles/variables";
+
+* {
+    background-color: $background-color;
+}
+
+.main-content {
+    width: 100%;
+    height: 100%;
+    padding-left: 240px;
+    padding-right: 40px;
+}
