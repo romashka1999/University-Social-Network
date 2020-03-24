@@ -7,6 +7,7 @@ import {
   MatProgressSpinnerModule, MatToolbarModule, MatDividerModule, 
   MatExpansionModule, MatCardModule, MatTabsModule, MatStepperModule, 
   MatDialogModule,
+  MatIconModule,
  } from '@angular/material';
 
 const materials = [
@@ -30,7 +31,7 @@ const materials = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatDialogModule,
-
+  MatIconModule
 ];
 
 @NgModule({
