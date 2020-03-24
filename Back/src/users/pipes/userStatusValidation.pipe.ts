@@ -8,7 +8,7 @@ export class UserStatusValidaionPipe implements PipeTransform{
     private readonly allowedUserStatuses = [
         Status.VERIFIED,
         Status.VERIFICATION_PENDING,
-        Status.VERIFIED
+        Status.UNVERIFIED
     ]
 
     transform(value: any, metadata: ArgumentMetadata) {

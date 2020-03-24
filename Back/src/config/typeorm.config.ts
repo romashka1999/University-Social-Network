@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export const tpeOrmConfig: TypeOrmModuleOptions = {
+export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
     host: process.env.DATABASE_HOST,
     port: Number.parseInt(process.env.DATABASE_PORT),
