@@ -3,7 +3,7 @@ import { ConflictException, InternalServerErrorException } from "@nestjs/common"
 
 import { User } from "./user.entity";
 import { SignUpUserDto } from "./dto/signUpUser.dto";
-import { hashPassword } from "./helpers/password";
+import { hashPassword } from "../../shared/password";
 import { SignInUserDto } from "./dto/signInUser.dto";
 import { GetUsersFilterDto } from "./dto/getUsersFilter.dto";
 import { Ipagination, pagination } from "src/shared/pagination";

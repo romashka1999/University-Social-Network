@@ -1,0 +1,9 @@
+db:
+  host: '13.23.12.32'
+  username: 'roma'
+  password: 'Hbahdb%717921^'
+  synchronize: false
+  logging: false
+jwt:
+  expiresIn: 1800
+  secret: '13^1(*HAS*Dn2ue9^'

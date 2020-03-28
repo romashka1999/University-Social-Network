@@ -1,7 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
 
-import { User } from '../user.entity';
-
 export const hashPassword = async (password: string): Promise<{salt: string, hashedPassword: string}> => {
     const salt = await bcryptjs.genSalt();
     const hashedPassword = await bcryptjs.hash(password, salt);
@@ -11,7 +9,7 @@ export const hashPassword = async (password: string): Promise<{salt: string, has
     }
 }
 
-export const validatePassword = async (password: string, self: User): Promise<boolean> => {
+export const validatePassword = async (password: string, self: any): Promise<boolean> => {
     const hash = await bcryptjs.hash(password, self.salt);
     return hash === self.password;
 }
