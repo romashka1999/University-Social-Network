@@ -12,6 +12,7 @@ export class GetUsersFilterDto {
     search: string;
 
     @IsString()
+    @IsIn(['ASC', 'DESC'])
     order: string;
 
     @IsOptional()

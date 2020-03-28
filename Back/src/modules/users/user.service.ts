@@ -1,22 +1,28 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+
+
 import { UserRepository } from './user.repository';
-import { Status, User } from './user.entity';
+import { UserStatus, User } from './user.entity';
 import { GetUsersFilterDto } from './dto/getUsersFilter.dto';
-import { SignUpUserDto } from './dto/signUpUser.dto';
-import { SignInUserDto } from './dto/signInUser.dto';
+import { UserSignInDto } from './dto/userSignIn.dto';
+import { UserSignUpDto } from './dto/userSignUp.dto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
     
-    constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
+    constructor(
+        @InjectRepository(UserRepository) private userRepository: UserRepository,
+        private readonly jwtService: JwtService
+    ) {}
 
     public async getUserById(id: number) {
         try {
             const user = await this.userRepository.findOne(id); 
 
             if(!user) {
-                throw new NotFoundException(`user with id - ${id} does not exist`);
+                throw new NotFoundException("NOT_FOUND_USER");
             } 
 
             return user;
@@ -33,15 +39,24 @@ export class UsersService {
     }
     
 
-    public signUpUser(signUpUserDto: SignUpUserDto) {
-        return this.userRepository.signUp(signUpUserDto);
+    public signUpUser(userSignUpDto: UserSignUpDto) {
+        return this.userRepository.signUp(userSignUpDto);
     }
 
-    public signInUser(signInUserDto: SignInUserDto) {
-        return this.userRepository.signIn(signInUserDto);
+    public async signInUser(userSignInDto: UserSignInDto) {
+        const user = this.userRepository.signIn(userSignInDto);
+
+        if(!user) {
+            throw new UnauthorizedException("INVALID_CREDENTIALS");
+        }
+
+        const payload = { user };
+        const accessToken = await this.jwtService.signAsync(payload);
+
+        return { accessToken }
     }
 
-    public async updateUserStatus(id: number, status: Status): Promise<User> {
+    public async updateUserStatus(id: number, status: UserStatus): Promise<User> {
         const user = await this.getUserById(id);
         user.status = status;
         try {
@@ -57,7 +72,7 @@ export class UsersService {
             const deletedUser = await this.userRepository.delete(id);
 
             if(!deletedUser.affected) {
-                throw new NotFoundException(`user with id - ${id} does not exist`)
+                throw new NotFoundException("NOT_FOUND_USER")
             }
 
             return true;

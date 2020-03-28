@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Param, ParseIntPipe, Query, ValidationPipe, Patch, Body, Delete } from '@nestjs/common';
 
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { User, Status } from './user.entity';
 import { GetUsersFilterDto } from './dto/getUsersFilter.dto';
 import { UserStatusValidaionPipe } from './pipes/userStatusValidation.pipe';
 
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UserService) {}
 
     @Get('/getUserById/:id')
     public getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {

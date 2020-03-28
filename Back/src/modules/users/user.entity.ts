@@ -2,7 +2,7 @@ import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 
 import { validatePassword } from "../../shared/password";
 
-export enum Status {
+export enum UserStatus {
     VERIFIED = "VERIFIED",
     VERIFICATION_PENDING = "VERIFICATION_PENDING",
     UNVERIFIED = "UNVERIFIED"
@@ -34,11 +34,12 @@ export class User extends BaseEntity {
     @Column('text')
     salt: string;
 
-    @Column({type: 'enum', 
-        enum: Status,
-        default: Status.VERIFICATION_PENDING
+    @Column({
+        type: 'enum', 
+        enum: UserStatus,
+        default: UserStatus.VERIFICATION_PENDING
     })
-    status: Status;
+    status: UserStatus;
 
     public async validatePassword(password: string): Promise<boolean> {
         return await validatePassword(password, this);

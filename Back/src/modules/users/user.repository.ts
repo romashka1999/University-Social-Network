@@ -2,9 +2,9 @@ import { Repository, EntityRepository } from "typeorm";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 import { User } from "./user.entity";
-import { SignUpUserDto } from "./dto/signUpUser.dto";
+import { UserSignInDto } from './dto/userSignIn.dto';
+import { UserSignUpDto } from './dto/userSignUp.dto';
 import { hashPassword } from "../../shared/password";
-import { SignInUserDto } from "./dto/signInUser.dto";
 import { GetUsersFilterDto } from "./dto/getUsersFilter.dto";
 import { Ipagination, pagination } from "src/shared/pagination";
 
@@ -13,16 +13,16 @@ import { Ipagination, pagination } from "src/shared/pagination";
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
 
-    async signUp(signUpDto: SignUpUserDto): Promise<boolean> {
-        const { password } = signUpDto;
+    async signUp(userSignUpDto: UserSignUpDto): Promise<boolean> {
+        const { password } = userSignUpDto;
 
         const { salt, hashedPassword } = await hashPassword(password);// hash pass
         const user =  new User();
-        user.firstname = signUpDto.firstname;
-        user.lastname = signUpDto.lastname;
-        user.email = signUpDto.email;
-        user.username = signUpDto.ursername;
-        user.age = signUpDto.age || null;
+        user.firstname = userSignUpDto.firstname;
+        user.lastname = userSignUpDto.lastname;
+        user.email = userSignUpDto.email;
+        user.username = userSignUpDto.ursername;
+        user.age = userSignUpDto.age || null;
         user.password = hashedPassword;
         user.salt = salt;
 
@@ -39,21 +39,11 @@ export class UserRepository extends Repository<User>{
         return true;
     }
 
-    async signIn(signInDto: SignInUserDto): Promise<User> {
-        const { accountIdentity, password } = signInDto;
+    async signIn(userSignInDto: UserSignInDto): Promise<User> | null {
+        const { accountIdentity, password } = userSignInDto;
 
         try {
-            let user = await this.findOne({
-                where: {
-                    username: accountIdentity 
-                }
-            });
-
-            if(!user) user = await this.findOne({
-                where: {
-                    email: accountIdentity 
-                }
-            });
+            const user = await this.getUserByAccountIdentity(accountIdentity);
             if(user && await user.validatePassword(password)) {
                 if(!user || user.password !== password) {
                     return user;
@@ -64,6 +54,30 @@ export class UserRepository extends Repository<User>{
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
+    }
+
+    public async getUserByAccountIdentity(accountIdentity: string): Promise<User> | null {
+        let user = await this.findOne({
+            where: {
+                username: accountIdentity 
+            }
+        });
+
+        if(user) {
+            return user;
+        } else {
+            user = await this.findOne({
+                where: {
+                    email: accountIdentity 
+                }
+            });
+            if(user) {
+                return user;
+            } else {
+                null;
+            }
+        }
+         
     }
 
     public async getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<Array<User>> {

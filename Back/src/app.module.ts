@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './modules/users/user.module';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './config/typeorm.config';
 import { MongooseModule } from '@nestjs/mongoose';
+
+import { typeOrmConfig } from './config/typeorm.config';
+import { UsersModule } from './modules/users/user.module';
 import { AdminsModule } from './modules/admins/admins.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 console.log(typeOrmConfig);
 @Module({
@@ -12,7 +13,8 @@ console.log(typeOrmConfig);
   TypeOrmModule.forRoot(typeOrmConfig),
   // MongooseModule.forRoot(process.env.MONGO_URI),
   UsersModule,
-  AdminsModule
+  AdminsModule,
+  AuthModule
   ],
   controllers: [],
   providers: [],
