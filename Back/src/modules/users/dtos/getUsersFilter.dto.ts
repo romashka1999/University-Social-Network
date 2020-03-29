@@ -1,12 +1,12 @@
 import { IsOptional, IsIn, IsInt, IsString, IsPositive } from "class-validator";
 
-import { Status } from "../user.entity";
+import { UserStatus } from "../entities/user.entity";
 
 
 export class GetUsersFilterDto {
     @IsOptional()
-    @IsIn([Status.VERIFIED, Status.VERIFICATION_PENDING, Status.UNVERIFIED])
-    status: Status;
+    @IsIn([UserStatus.VERIFIED, UserStatus.VERIFICATION_PENDING, UserStatus.UNVERIFIED])
+    status: UserStatus;
 
     @IsString()
     search: string;

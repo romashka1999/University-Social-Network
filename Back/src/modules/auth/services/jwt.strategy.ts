@@ -1,13 +1,12 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Strategy, ExtractJwt } from 'passport-jwt';
 
-import { UserRepository } from '../users/user.repository';
-import { User } from '../users/user.entity';
-
-import { AdminRepository } from '../admins/repositories/admin.repository';
-import { Admin } from '../admins/entities/admin.entity';
+import { UserRepository } from '../../users/repositories/user.repository';
+import { User } from '../../users/entities/user.entity';
+import { AdminRepository } from '../../admins/repositories/admin.repository';
+import { Admin } from '../../admins/entities/admin.entity';
 
 import * as config from 'config';
 const jwtCFG = config.get('jwt');
@@ -16,7 +15,7 @@ const jwtCFG = config.get('jwt');
 export class JwtStrategyUser extends PassportStrategy(Strategy) {
     constructor(@InjectRepository(UserRepository) private readonly userRepository: UserRepository) {
         super({
-            jwtFromRequest: ExtractJwt.fromHeader('token'),
+            jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
             secretOrKey: jwtCFG.secret,
         });
     }
@@ -25,9 +24,8 @@ export class JwtStrategyUser extends PassportStrategy(Strategy) {
         const { accountIdentity } = payload.user;
         const user = await this.userRepository.getUserByAccountIdentity(accountIdentity);
         if(!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("INVALID_TOKEN");
         }
-
         return user;
     }
 }
@@ -37,7 +35,7 @@ export class JwtStrategyUser extends PassportStrategy(Strategy) {
 export class JwtStrategyAdmin extends PassportStrategy(Strategy) {
     constructor(@InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository) {
         super({
-            jwtFromRequest: ExtractJwt.fromHeader('token'),
+            jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
             secretOrKey: jwtCFG.secret,
         });
     }
@@ -46,9 +44,8 @@ export class JwtStrategyAdmin extends PassportStrategy(Strategy) {
         const { email } = payload.admin;
         const admin = await this.adminRepository.findOne({ email });
         if(!admin) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("INVALID_TOKEN");
         }
-
         return admin;
     }
 }

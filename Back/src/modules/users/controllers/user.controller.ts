@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Param, ParseIntPipe, Query, ValidationPipe, Patch, Body, Delete } from '@nestjs/common';
 
-import { UserService } from './user.service';
-import { User, Status } from './user.entity';
-import { GetUsersFilterDto } from './dto/getUsersFilter.dto';
-import { UserStatusValidaionPipe } from './pipes/userStatusValidation.pipe';
+import { UserService } from '../services/user.service';
+import { User, UserStatus } from '../entities/user.entity';
+import { GetUsersFilterDto } from '../dtos/getUsersFilter.dto';
+import { UserStatusValidaionPipe } from '../pipes/userStatusValidation.pipe';
 
 
 @Controller('user')
@@ -29,7 +29,7 @@ export class UsersController {
     @Patch('/:id/updateUserStatus') 
     public updateUserStatus(
         @Param('id', ParseIntPipe) id: number,
-        @Body('status', UserStatusValidaionPipe) status: Status
+        @Body('status', UserStatusValidaionPipe) status: UserStatus
     ): Promise<User>{
         return this.usersService.updateUserStatus(id, status);
     }

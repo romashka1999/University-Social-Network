@@ -14,7 +14,7 @@ console.log(typeOrmConfig);
   // MongooseModule.forRoot(process.env.MONGO_URI),
   UsersModule,
   AdminsModule,
-  AuthModule
+  
   ],
   controllers: [],
   providers: [],

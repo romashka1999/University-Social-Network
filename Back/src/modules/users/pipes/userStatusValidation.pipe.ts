@@ -1,14 +1,14 @@
 import { PipeTransform, ArgumentMetadata, BadRequestException } from "@nestjs/common"
-import { Status } from "../user.entity"
+import { UserStatus } from "../entities/user.entity"
 
 
 
 export class UserStatusValidaionPipe implements PipeTransform{
 
     private readonly allowedUserStatuses = [
-        Status.VERIFIED,
-        Status.VERIFICATION_PENDING,
-        Status.UNVERIFIED
+        UserStatus.VERIFIED,
+        UserStatus.VERIFICATION_PENDING,
+        UserStatus.UNVERIFIED
     ]
 
     transform(value: any, metadata: ArgumentMetadata) {

@@ -2,8 +2,8 @@ import { Repository, EntityRepository } from "typeorm";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 import { Admin } from "../entities/admin.entity";
-import { AdminSignInDto } from "src/modules/admins/dtos/adminSignIn.dto";
-import { hashPassword } from "src/shared/password";
+import { AdminSignInDto } from "src/modules/auth/dtos/adminSignIn.dto";
+import { hashPassword } from "src/modules/auth/helpers/password";
 import { Ipagination, pagination } from "src/shared/pagination";
 
 
@@ -51,7 +51,7 @@ export class AdminRepository extends Repository<Admin> {
         }
     }
 
-    async getUsers(getAdminsFilterDto: any): Promise<Array<Admin>> {
+    async getAdmins(getAdminsFilterDto: any): Promise<Array<Admin>> {
         const { status, email ,order, page, pageSize } = getAdminsFilterDto;
         const query = this.createQueryBuilder('user');
 
@@ -81,6 +81,5 @@ export class AdminRepository extends Repository<Admin> {
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
-    }
     }
 }

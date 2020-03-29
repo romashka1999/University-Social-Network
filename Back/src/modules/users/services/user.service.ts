@@ -5,9 +5,9 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UserRepository } from './user.repository';
 import { UserStatus, User } from './user.entity';
-import { GetUsersFilterDto } from './dto/getUsersFilter.dto';
-import { UserSignInDto } from './dto/userSignIn.dto';
-import { UserSignUpDto } from './dto/userSignUp.dto';
+import { GetUsersFilterDto } from '../dtos/getUsersFilter.dto';
+import { UserSignInDto } from '../../auth/dtos/userSignIn.dto';
+import { UserSignUpDto } from '../../auth/dtos/userSignUp.dto';
 
 @Injectable()
 export class UserService {

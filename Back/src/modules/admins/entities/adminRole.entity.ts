@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Entity, Column, OneToMany, PrimaryGeneratedColumn, ManyToMany } from "typeorm";
 
 import { AdminPermission } from "./adminPermission.entity";
 import { Admin } from "./admin.entity";
@@ -13,7 +13,7 @@ export class AdminRole extends BaseEntity {
     @Column({type: 'text', unique: true})
     role: string;
 
-    @Column('array')
+    @ManyToMany(type => AdminPermission, adminPermission => adminPermission.id, {eager: true})
     permissions: AdminPermission[];
 
     @OneToMany(type => Admin, admin => admin.adminRole, {eager: true})

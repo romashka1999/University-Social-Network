@@ -1,6 +1,6 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 
-import { validatePassword } from "../../shared/password";
+import { validatePassword } from "../../auth/helpers/password";
 
 export enum UserStatus {
     VERIFIED = "VERIFIED",

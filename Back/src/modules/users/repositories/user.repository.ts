@@ -2,10 +2,10 @@ import { Repository, EntityRepository } from "typeorm";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 import { User } from "./user.entity";
-import { UserSignInDto } from './dto/userSignIn.dto';
-import { UserSignUpDto } from './dto/userSignUp.dto';
-import { hashPassword } from "../../shared/password";
-import { GetUsersFilterDto } from "./dto/getUsersFilter.dto";
+import { UserSignInDto } from '../../auth/dtos/userSignIn.dto';
+import { UserSignUpDto } from '../../auth/dtos/userSignUp.dto';
+import { hashPassword } from "../../auth/helpers/password";
+import { GetUsersFilterDto } from "../dtos/getUsersFilter.dto";
 import { Ipagination, pagination } from "src/shared/pagination";
 
 

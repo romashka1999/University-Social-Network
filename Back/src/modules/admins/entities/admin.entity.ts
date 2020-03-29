@@ -1,7 +1,7 @@
 import { BaseEntity, Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { AdminRole } from "./adminRole.entity";
-import { validatePassword } from "src/shared/password";
+import { validatePassword } from "src/modules/auth/helpers/password";
 
 export enum AdminStatus {
     BLOCKED = "BLOCKED",
