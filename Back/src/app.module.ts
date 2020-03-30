@@ -7,6 +7,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AdminsModule } from './modules/admins/admins.module';
 import { AdminPermissionsModule } from './modules/admin-permissions/admin-permissions.module';
 import { AdminRolesModule } from './modules/admin-roles/admin-roles.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { CommentsModule } from './modules/comments/comments.module';
 
 
  
@@ -18,7 +20,9 @@ import { AdminRolesModule } from './modules/admin-roles/admin-roles.module';
     UsersModule,
     AdminsModule,
     AdminPermissionsModule,
-    AdminRolesModule
+    AdminRolesModule,
+    PostsModule,
+    CommentsModule
   ]
 })
 export class AppModule {}

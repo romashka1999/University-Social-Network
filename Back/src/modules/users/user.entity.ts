@@ -1,6 +1,9 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique, OneToMany } from "typeorm";
 
 import { validatePassword } from '../auth/helpers/password';
+import { Post } from "../posts/post.entity";
+import { Comment } from '../comments/comment.entity';
+
 
 export enum UserStatus {
     VERIFIED = "VERIFIED",
@@ -102,6 +105,13 @@ export class User extends BaseEntity {
         nullable: false
     })
     salt: string;
+
+
+    @OneToMany(type => Post, post => post.user)
+    posts: Post[];
+
+    @OneToMany(type => Comment, comment => comment.user)
+    comments: Comment[];
 
     public getAge(): string {
         const today = new Date();
