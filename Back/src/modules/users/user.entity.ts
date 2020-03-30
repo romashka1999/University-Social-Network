@@ -1,0 +1,120 @@
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique } from "typeorm";
+
+import { validatePassword } from '../auth/helpers/password';
+
+export enum UserStatus {
+    VERIFIED = "VERIFIED",
+    VERIFICATION_PENDING = "VERIFICATION_PENDING",
+    UNVERIFIED = "UNVERIFIED"
+}
+
+export enum UserGender {
+    MALE = "MALE",
+    FEMALE = "FEMALE",
+    OTHER = "OTHER"
+}
+
+@Entity()
+@Unique(['username', 'email', 'phoneNumber'])
+export class User extends BaseEntity {
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    firstName: string;
+
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    lastName: string;
+
+    @Column({
+        type: 'date',
+        nullable: false
+    })
+    birthDate: Date;
+
+    @Column({
+        type: 'enum',
+        enum: UserGender,
+        default: UserGender.OTHER,
+        nullable: false
+    })
+    gender: UserGender;
+
+    @Column({
+        type: 'text',
+        nullable: true
+    })
+    profileImgUrl: string;
+
+    @Column({
+        type: 'text',
+        nullable: true
+    })
+    coverImageUrl: string;
+
+    @Column({
+        type: 'text',
+        nullable: true
+    })
+    email: string;
+
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    username: string;
+
+    @Column({
+        length: 9,
+        nullable: false
+    })
+    phoneNumber: string;
+
+    @Column({
+        type: 'boolean',
+        default: true, 
+        nullable: false
+    })
+    public: boolean;
+
+    @Column({
+        type: 'enum',
+        enum: UserStatus,
+        default: UserStatus.VERIFIED,
+        nullable: false
+    })
+    status: UserStatus;
+
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    password: string;
+
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    salt: string;
+
+    public getAge(): string {
+        const today = new Date();
+        const birthDate = new Date(this.birthDate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let month = today.getMonth() - birthDate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age.toString();
+    }
+
+    public async validatePassword(password: string): Promise<boolean> {
+        return await validatePassword(password, this);
+    }
+}
