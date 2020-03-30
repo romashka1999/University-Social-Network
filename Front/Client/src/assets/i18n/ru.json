@@ -1,0 +1,11 @@
+{
+    "MAIN": "ГЛАВНЫЙ",
+    "AUTHORIZATION": "авторизация",
+    "NICKNAME": "НИК",
+    "NAME": "имя",
+    "LASTNAME": "фамилия",
+    "PHONE_NUMBER": "Номер телефона",
+    "PASSWORD": "пароль",
+    "FIELD_REQUIRED": "Это поле обезательное",
+    "REGISTRATION": "Регистрация"
+}

@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 //Material
 import { MatInputModule } from '@angular/material';
@@ -26,6 +29,13 @@ import { ProfileInfoComponent } from './layouts/profile/profile-info/profile-inf
 import { HeaderComponent } from './shared/header/header.component';
 // import { ProfileModule } from './layouts/profile/profile.module';
 
+//env
+import { environment } from 'src/environments/environment';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +58,14 @@ import { HeaderComponent } from './shared/header/header.component';
     MatSnackBarModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25
+    }),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
     }),
     //ProfileModule,
   ],

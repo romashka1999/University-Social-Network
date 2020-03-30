@@ -1,0 +1,11 @@
+{
+    "MAIN": "მთავარი",
+    "AUTHORIZATION": "ავტორიზაცია",
+    "NICKNAME": "მეტსახელი",
+    "NAME": "სახელი",
+    "LASTNAME": "გვარი",
+    "PHONE_NUMBER": "მობილურის ნომერი",
+    "PASSWORD": "პაროლი",
+    "FIELD_REQUIRED": "ეს ველი დავალდებულოა",
+    "REGISTRATION": "რეგისტრაცია"
+}

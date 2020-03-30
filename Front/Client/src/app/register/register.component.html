@@ -1,8 +1,8 @@
-<div class="auth-main-container">
+<div class="auth-main-container {{lang}}">
     <mat-progress-bar mode="indeterminate" *ngIf="loading" style="position: fixed;"></mat-progress-bar>
     <div class="left-arrow">
         <i class="material-icons">
-            keyboard_arrow_left <span class="main-text"> მთავარი </span>
+            keyboard_arrow_left <span class="main-text"> {{'MAIN' | translate}} </span>
         </i>
     </div>
     <img class="wave" src="../../assets/images/Login-wave.png">
@@ -13,15 +13,15 @@
         <div class="login-container">
             <div class="login-contnet" [formGroup]="userInfo">
                 <img class="avatar" src="../../assets/images/Login-Avatar.svg">
-                <h2>რეგისტრაცია</h2>
+                <h2>{{'REGISTRATION' | translate}}</h2>
                 <mat-form-field style="width: 100%">
                     <span matPrefix>
                         <i class="material-icons"> account_circle </i>
                     </span>
-                    <mat-label>მეტსახელი</mat-label>
+                    <mat-label>{{'NICKNAME' | translate}}</mat-label>
                     <input matInput formControlName="username">
                     <mat-error *ngIf="userInfo.controls.username.errors">
-                       {{FormGroupErrorHandler('username')}}
+                       {{FormGroupErrorHandler('username') | translate}}
                     </mat-error>
                 </mat-form-field>
                 <div class="first-last-name-wrapper d-flex d-row">
@@ -29,20 +29,20 @@
                         <span matPrefix>
                             <i class="material-icons"> person </i>
                         </span>
-                        <mat-label>სახელი</mat-label>
+                        <mat-label>{{'NAME' | translate}}</mat-label>
                         <input matInput formControlName="name">
                         <mat-error *ngIf="userInfo.controls.username.errors">
-                           {{FormGroupErrorHandler('name')}}
+                           {{FormGroupErrorHandler('name') | translate}}
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field class="wrapper-input">
                         <span matPrefix>
                             <i class="material-icons"> person </i>
                         </span>
-                        <mat-label>გვარი</mat-label>
+                        <mat-label>{{'LASTNAME' | translate}}</mat-label>
                         <input matInput formControlName="lastname">
                         <mat-error *ngIf="userInfo.controls.username.errors">
-                           {{FormGroupErrorHandler('lastname')}}
+                           {{FormGroupErrorHandler('lastname') | translate}}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -50,26 +50,26 @@
                     <span matPrefix>
                         <i class="material-icons"> phone </i>
                     </span>
-                    <mat-label>მობილურის ნომერი</mat-label>
+                    <mat-label>{{'PHONE_NUMBER' | translate}}</mat-label>
                     <input matInput formControlName="phone">
                     <mat-error *ngIf="userInfo.controls.username.errors">
-                       {{FormGroupErrorHandler('phone')}}
+                       {{FormGroupErrorHandler('phone') | translate}}
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field style="width: 100%">
                     <span matPrefix>
                         <i class="material-icons"> no_encryption </i>                            
                     </span>
-                    <mat-label>პაროლი</mat-label>
+                    <mat-label>{{'PASSWORD' | translate}}</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
                     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="userInfo.controls.password.errors">
-                        {{FormGroupErrorHandler('password')}}
+                        {{FormGroupErrorHandler('password') | translate}}
                     </mat-error>
                 </mat-form-field>
-                <button [ngClass]="userInfo.valid? 'submit-btn' : 'submit-btn btn-disabled'" (click)="userInfo.valid? onSubmit() : ''"> რეგისტრაცია </button>
+                <button [ngClass]="userInfo.valid? 'submit-btn' : 'submit-btn btn-disabled'" (click)="userInfo.valid? onSubmit() : ''"> {{'REGISTRATION' | translate}} </button>
             </div>
         </div>
     </div>
