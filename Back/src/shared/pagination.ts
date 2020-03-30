@@ -1,4 +1,3 @@
-  
 export interface Ipagination {
     offset: number;
     limit: number;

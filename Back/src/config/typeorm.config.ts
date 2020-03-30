@@ -2,16 +2,16 @@ import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as config from 'config';
 
-const dbConfig = config.get('db');
+const dbCFG = config.get('db');
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-    type: dbConfig.type,
-    host: dbConfig.host,
-    port: dbConfig.port,
-    username: dbConfig.username,
-    password: dbConfig.password,
-    database: dbConfig.database,
+    type: dbCFG.type,
+    host: dbCFG.host,
+    port: dbCFG.port,
+    username: dbCFG.username,
+    password: dbCFG.password,
+    database: dbCFG.database,
     entities: [join(__dirname, '/../**/*.entity{.ts,.js}')],
-    synchronize: dbConfig.synchronize,
-    logging: dbConfig.logging
+    synchronize: dbCFG.synchronize,
+    logging: dbCFG.logging
 }
