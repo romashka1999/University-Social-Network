@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../users/user.repository';
 import { UserSignUpDto } from './dtos/userSignUp.dto';
 import { UserSignInDto } from './dtos/userSignIn.dto';
+import { AdminSignInDto } from './dtos/adminSIgnIn.dto';
+import { AdminRepository } from '../admins/admin.repository';
 
 
 
@@ -13,14 +15,15 @@ export class AuthService {
 
     constructor(
         @InjectRepository(UserRepository) private readonly userRepository: UserRepository,
+        @InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository,
         private readonly jwtService: JwtService
     ) {}
 
-    signUp(userSignUpDto: UserSignUpDto): Promise<boolean> {
+    public userSignUp(userSignUpDto: UserSignUpDto): Promise<boolean> {
         return this.userRepository.signUp(userSignUpDto);
     }
 
-    async signIn(userSignInDto: UserSignInDto): Promise<{accesToken: string}> {
+    public async userSignIn(userSignInDto: UserSignInDto): Promise<{accesToken: string}> {
         const user = await this.userRepository.signIn(userSignInDto);
 
         if(!user) {
@@ -31,9 +34,22 @@ export class AuthService {
         const accesToken: string = await this.jwtService.signAsync(payload);
 
         // const verify: any = await this.jwtService.verifyAsync(accesToken);
-
-        
-
         return { accesToken }
     }
+
+    public async adminSignIn(adminSignInDto: AdminSignInDto): Promise<{accesToken: string}> {
+        const admin = await this.adminRepository.signIn(adminSignInDto);
+
+        if(!admin) {
+            throw new UnauthorizedException('INVALID_CREDENTIALS');
+        }
+
+        const payload = { admin };
+        const accesToken: string = await this.jwtService.signAsync(payload);
+
+        // const verify: any = await this.jwtService.verifyAsync(accesToken);
+        return { accesToken }
+    }
+
+    
 }
