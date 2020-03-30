@@ -9,6 +9,7 @@ import { AdminPermissionsModule } from './modules/admin-permissions/admin-permis
 import { AdminRolesModule } from './modules/admin-roles/admin-roles.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { TranslationsModule } from './modules/translations/translations.module';
 
 
  
@@ -22,7 +23,8 @@ import { CommentsModule } from './modules/comments/comments.module';
     AdminPermissionsModule,
     AdminRolesModule,
     PostsModule,
-    CommentsModule
+    CommentsModule,
+    TranslationsModule
   ]
 })
 export class AppModule {}
