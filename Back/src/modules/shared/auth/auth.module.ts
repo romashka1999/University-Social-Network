@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UserRepository } from '../users/user.repository';
+import { UserRepository } from '../../public/users/user.repository';
 import { JwtStrategy } from './jwt.strategy';
 
 import * as config from 'config';

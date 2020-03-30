@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseIntPipe, Patch, Body, 
     UsePipes, ValidationPipe, Query } from '@nestjs/common';
 
-import { User } from 'src/modules/users/user.entity';
+import { User } from 'src/modules/public/users/user.entity';
 import { UsersService } from './users.service';
 import { UserPasswordValidationPipe } from './pipes/userPasswordValidationPipe';
 import { GetUsersFilterDto } from './dtos/getUsersFilter.dto';

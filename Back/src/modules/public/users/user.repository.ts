@@ -2,16 +2,17 @@ import { Repository, EntityRepository } from "typeorm";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 import { User } from "./user.entity";
-import { SignInDto } from "../auth/dtos/signIn.dto";
-import { hashPassword } from "src/modules/auth/helpers/password";
+import { UserSignInDto } from "../../shared/auth/dtos/userSignIn.dto";
+import { hashPassword } from "../../shared/auth/helpers/password";
 import { GetUsersFilterDto } from "./dtos/getUsersFilter.dto";
+import { UserSignUpDto } from "../../shared/auth/dtos/UserSignUp.dto";
 
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-    async signUp(signUpDto: SignInDto): Promise<boolean> {
-        const { username, password } = signUpDto;
+    async signUp(userSignUpDto: UserSignUpDto): Promise<boolean> {
+        const { username, password } = userSignUpDto;
 
         const { salt, hashedPassword } = await hashPassword(password);// hash pass
         const user =  new User();
@@ -32,8 +33,8 @@ export class UserRepository extends Repository<User> {
         return true;
     }
 
-    async signIn(signInDto: SignInDto): Promise<User> {
-        const { username, password } = signInDto;
+    async signIn(userSignInDto: UserSignInDto): Promise<User> {
+        const { username, password } = userSignInDto;
 
         try {
             const user = await this.findOne({username: username});

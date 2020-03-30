@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, InternalServerErrorException } from '@ne
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserRepository } from './user.repository';
-import { User } from 'src/modules/users/user.entity';
+import { User } from 'src/modules/public/users/user.entity';
 import { GetUsersFilterDto } from './dtos/getUsersFilter.dto';
 
 @Injectable()

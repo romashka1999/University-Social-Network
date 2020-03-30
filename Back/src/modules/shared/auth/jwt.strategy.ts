@@ -3,8 +3,8 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserRepository } from '../users/user.repository';
-import { User } from '../users/user.entity';
+import { UserRepository } from '../../public/users/user.repository';
+import { User } from '../../public/users/user.entity';
 
 import * as config from 'config';
 
