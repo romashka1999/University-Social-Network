@@ -1,6 +1,7 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
 
 import { validatePassword } from '../auth/helpers/password';
+import { AdminRole } from "../admin-roles/admin-role.entity";
 
 export enum AdminStatus {
     ACTIVE = "ACTIVE",
@@ -44,6 +45,9 @@ export class Admin extends BaseEntity {
         nullable: false
     })
     salt: string;
+
+    @ManyToOne(type => AdminRole, adminRole => adminRole.admins)
+    adminRole: AdminRole;
 
     public async validatePassword(password: string): Promise<boolean> {
         return await validatePassword(password, this);

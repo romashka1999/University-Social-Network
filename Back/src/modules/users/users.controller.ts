@@ -3,8 +3,8 @@ import { Controller, Get, Param, ParseIntPipe, Patch, Body,
 
 import { User } from 'src/modules/users/user.entity';
 import { UsersService } from './users.service';
-import { UserPasswordValidationPipe } from './pipes/userPasswordValidationPipe';
-import { GetUsersFilterDto } from './dtos/getUsersFilter.dto';
+import { UserPasswordValidationPipe } from './pipes/user-password-validation.pipe';
+import { GetUsersFilterDto } from './dtos/get-users-filter.dto';
 
 @Controller('users')
 export class UsersController {

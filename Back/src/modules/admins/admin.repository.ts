@@ -2,7 +2,7 @@ import { Repository, EntityRepository } from "typeorm";
 import { InternalServerErrorException } from "@nestjs/common";
 
 import { Admin } from "./admin.entity";
-import { AdminSignInDto } from "../auth/dtos/adminSIgnIn.dto";
+import { AdminSignInDto } from "../auth/dtos/admin-sign-in.dto";
 
 @EntityRepository(Admin)
 export class AdminRepository extends Repository<Admin> {

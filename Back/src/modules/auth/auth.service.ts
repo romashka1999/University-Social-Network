@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserRepository } from '../users/user.repository';
-import { UserSignUpDto } from './dtos/userSignUp.dto';
-import { UserSignInDto } from './dtos/userSignIn.dto';
-import { AdminSignInDto } from './dtos/adminSIgnIn.dto';
+import { UserSignUpDto } from './dtos/user-sign-up.dto';
+import { UserSignInDto } from './dtos/user-sign-in.dto';
+import { AdminSignInDto } from './dtos/admin-sign-in.dto';
 import { AdminRepository } from '../admins/admin.repository';
 
 

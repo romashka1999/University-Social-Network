@@ -2,9 +2,9 @@ import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
 
 
 import { AuthService } from './auth.service';
-import { UserSignInDto } from './dtos/userSignIn.dto';
-import { UserSignUpDto } from './dtos/userSignUp.dto';
-import { AdminSignInDto } from './dtos/adminSIgnIn.dto';
+import { UserSignInDto } from './dtos/user-sign-in.dto';
+import { UserSignUpDto } from './dtos/user-sign-up.dto';
+import { AdminSignInDto } from './dtos/admin-sign-in.dto';
 
 
 @Controller('auth')
