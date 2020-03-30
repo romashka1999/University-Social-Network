@@ -6,9 +6,8 @@ export class UserPasswordValidationPipe implements PipeTransform {
     transform(value: any, metadata: ArgumentMetadata) {
 
         if(!this.passwordIsValid(value)) {
-            throw new HttpException('password is not valid', HttpStatus.BAD_REQUEST);
+            throw new HttpException("PASSWORD_IS_NOT_VALID", HttpStatus.BAD_REQUEST);
         }
-
         return value;
     }
 

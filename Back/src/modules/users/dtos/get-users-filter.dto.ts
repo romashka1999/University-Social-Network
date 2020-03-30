@@ -5,5 +5,4 @@ export class GetUsersFilterDto {
     @IsNumber()
     @IsOptional()
     age: number
-
 }

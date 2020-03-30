@@ -3,8 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserRepository } from '../users/user.repository';
-import { SignUpDto } from './dtos/signUp.dto';
-import { SignInDto } from './dtos/signIn.dto';
+import { UserSignUpDto } from './dtos/user-sign-up.dto';
+import { UserSignInDto } from './dtos/user-sign-in.dto';
+import { AdminSignInDto } from './dtos/admin-sign-in.dto';
+import { AdminRepository } from '../admins/admin.repository';
 
 
 
@@ -13,27 +15,41 @@ export class AuthService {
 
     constructor(
         @InjectRepository(UserRepository) private readonly userRepository: UserRepository,
+        @InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository,
         private readonly jwtService: JwtService
     ) {}
 
-    signUp(signUpDto: SignUpDto): Promise<boolean> {
-        return this.userRepository.signUp(signUpDto);
+    public userSignUp(userSignUpDto: UserSignUpDto): Promise<boolean> {
+        return this.userRepository.signUp(userSignUpDto);
     }
 
-    async signIn(signInDto: SignInDto): Promise<{accesToken: string}> {
-        const user = await this.userRepository.signIn(signInDto);
+    public async userSignIn(userSignInDto: UserSignInDto): Promise<{accesToken: string}> {
+        const user = await this.userRepository.signIn(userSignInDto);
 
         if(!user) {
-            throw new UnauthorizedException('invalid credentials');
+            throw new UnauthorizedException('INVALID_CREDENTIALS');
         }
 
         const payload = { user };
         const accesToken: string = await this.jwtService.signAsync(payload);
 
         // const verify: any = await this.jwtService.verifyAsync(accesToken);
-
-        
-
         return { accesToken }
     }
+
+    public async adminSignIn(adminSignInDto: AdminSignInDto): Promise<{accesToken: string}> {
+        const admin = await this.adminRepository.signIn(adminSignInDto);
+
+        if(!admin) {
+            throw new UnauthorizedException('INVALID_CREDENTIALS');
+        }
+
+        const payload = { admin };
+        const accesToken: string = await this.jwtService.signAsync(payload);
+
+        // const verify: any = await this.jwtService.verifyAsync(accesToken);
+        return { accesToken }
+    }
+
+    
 }

@@ -6,11 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from '../users/user.repository';
-import { JwtStrategy } from './jwt.strategy';
+import { AdminRepository } from '../admins/admin.repository';
+import { JwtUserStrategy, JwtAdmintrategy } from './jwt.strategy';
 
 import * as config from 'config';
 
-const jwtCFG = config.get('jwt');
+const jwtConfig = config.get('jwt');
 
 @Module({
   imports: [
@@ -18,20 +19,22 @@ const jwtCFG = config.get('jwt');
       defaultStrategy: 'jwt'
     }),
     JwtModule.register({
-      secret: jwtCFG.secret,
+      secret: jwtConfig.secret,
       signOptions: {
-        expiresIn: jwtCFG.expiresIn //seconds
+        expiresIn: jwtConfig.expiresIn //seconds
       }
     }),
-    TypeOrmModule.forFeature([UserRepository])
+    TypeOrmModule.forFeature([UserRepository, AdminRepository]),
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtStrategy
+    JwtUserStrategy,
+    JwtAdmintrategy
   ],
   exports: [
-    JwtStrategy,
+    JwtUserStrategy,
+    JwtAdmintrategy,
     PassportModule
   ]
 })

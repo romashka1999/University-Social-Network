@@ -1,7 +1,10 @@
 import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
 
-import { SignInDto } from './dtos/signIn.dto';
+
 import { AuthService } from './auth.service';
+import { UserSignInDto } from './dtos/user-sign-in.dto';
+import { UserSignUpDto } from './dtos/user-sign-up.dto';
+import { AdminSignInDto } from './dtos/admin-sign-in.dto';
 
 
 @Controller('auth')
@@ -9,14 +12,19 @@ export class AuthController {
 
     constructor(private readonly authService: AuthService) {}
 
-    @Post('signUp')
-    signUp(@Body(ValidationPipe) signUpDto: SignInDto): Promise<boolean> {
-        return this.authService.signUp(signUpDto);
+    @Post('user/signUp')
+    userSignUp(@Body(ValidationPipe) userSignUpDto: UserSignUpDto): Promise<boolean> {
+        return this.authService.userSignUp(userSignUpDto);
     }
 
-    @Post('signIn')
-    signIn(@Body(ValidationPipe) signInDto: SignInDto): Promise<{accesToken: string}> {
-        return this.authService.signIn(signInDto);
+    @Post('user/signIn')
+    userSignIn(@Body(ValidationPipe) userSignInDto: UserSignInDto): Promise<{accesToken: string}> {
+        return this.authService.userSignIn(userSignInDto);
+    }
+
+    @Post('admin/signIn')
+    adminSignIn(@Body(ValidationPipe) adminSignInDto: AdminSignInDto): Promise<{accesToken: string}> {
+        return this.authService.adminSignIn(adminSignInDto);
     }
 
 }
