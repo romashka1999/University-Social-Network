@@ -9,6 +9,8 @@ services:
     volumes: 
         - ./Front/Client:/usr/src/app
         - /usr/src/app/node_modules
+    networks:
+       - webnet
   cms:
     build: ./Front/CMS
     ports:
@@ -16,32 +18,14 @@ services:
     volumes: 
         - ./Front/CMS:/usr/src/app
         - /usr/src/app/node_modules
-  gatewayapi: # name of the first service
-    build: ./Back/gate-way-api # specify the directory of the Dockerfile
-    ports:
-      - "3000:3000"
-    volumes: 
-        - ./Back/gate-way-api:/usr/src/app
-        - /usr/src/app/node_modules
     networks:
         - webnet
-    command: npm run start:dev
-  backoffice:
-    build: ./Back/back-office
-    ports:
-      - "4000:4000"
-    volumes: 
-        - ./Back/back-office:/usr/src/app
-        - /usr/src/app/node_modules
-    networks:
-        - webnet
-    command: npm run start:dev
-  accountservice:
-    build: ./Back/account-service
+  backend:
+    build: ./Back
     ports:
       - "5000:5000"
     volumes: 
-        - ./Back/account-service:/usr/src/app
+        - ./Back:/usr/src/app
         - /usr/src/app/node_modules
     networks:
         - webnet

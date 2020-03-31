@@ -3,18 +3,44 @@
 @import "./assets/styles/variables";
 
 @font-face {
-    font-family: NinoMtavruli;
-    src: url('./assets/fonts/bpg-nino-mtavruli-bold-bl-edition.otf');
+    font-family: ka;
+    src: url('/assets/fonts/bpg-nino-mtavruli-bold-bl-edition.otf');
+}
+
+@font-face {
+    font-family: en;
+    src: url('/assets/fonts/english.woff2');
+}
+
+@font-face {
+    font-family: ru;
+    src: url('/assets/fonts/ru.otf');
+}
+
+.ka *{
+    font-family: ka;
+}
+
+.en * {
+    font-family: en;
+}
+
+.ru  *{
+    font-family: 'Roboto', sans-serif;
 }
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: NinoMtavruli;
+    //font-family: NinoMtavruli;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; }
+
+.material-icons {
+    font-family: 'Material Icons'!important;
+}
 
 .d-flex {
     display: flex!important

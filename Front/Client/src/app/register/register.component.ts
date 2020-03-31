@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { LanguageService } from '../services/language.service';
+import { TranslateService } from "@ngx-translate/core";
 
 
 @Component({
@@ -7,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
 
     public inputs: {}[] = [
         {},
@@ -15,8 +17,9 @@ export class RegisterComponent {
 
     public hide = true;
     public loading: boolean = false;
+    private lang: string;
 
-    constructor() {}
+    constructor(private translateService: TranslateService, private languageService: LanguageService) {}
 
     public userInfo = new FormGroup({
         username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -25,6 +28,10 @@ export class RegisterComponent {
         lastname: new FormControl('', [Validators.required, Validators.minLength(3)]),
         phone: new FormControl('', [Validators.required, Validators.minLength(9)]),
     });
+
+    ngOnInit() {
+        this.initLanguage();
+    }
 
     onSubmit() {
         console.log(this.userInfo)
@@ -42,10 +49,18 @@ export class RegisterComponent {
                 if (error['minlength']) {
                     return `სავალდებულოა მინიმუმ ${error['minlength'].requiredLength} სიმბოლო.`
                 } else {
-                    return 'ეს ველი სავალდებულოა.'
+                    return 'FIELD_REQUIRED'
                 }
             }
         }
+    }
+
+    private initLanguage() {
+        this.languageService.language$.subscribe(lang => {
+          this.translateService.use(lang);
+          console.log(lang)
+          this.lang = lang;
+        });
     }
 
 }
