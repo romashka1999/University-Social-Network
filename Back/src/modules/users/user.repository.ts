@@ -1,11 +1,12 @@
-import { Repository, EntityRepository } from "typeorm";
-import { ConflictException, InternalServerErrorException } from "@nestjs/common";
+import { Repository, EntityRepository, UpdateResult } from "typeorm";
+import { ConflictException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 
 import { User } from "./user.entity";
 import { UserSignUpDto } from "../auth/dtos/user-sign-up.dto";
 import { UserSignInDto } from "../auth/dtos/user-sign-in.dto";
 import { hashPassword } from "src/modules/auth/helpers/password";
 import { GetUsersFilterDto } from "./dtos/get-users-filter.dto";
+import { UserUpdateDto } from "./dtos/user-update.dto";
 
 
 @EntityRepository(User)
@@ -22,6 +23,7 @@ export class UserRepository extends Repository<User> {
 
         try {
             await user.save();
+            return true;
         } catch (error) {
             if(error.code === '23505') {//duplicate username 
                 try {
@@ -43,8 +45,6 @@ export class UserRepository extends Repository<User> {
                 throw new InternalServerErrorException(error);
             }
         }
-        
-        return true;
     }
 
     public async signIn(userSignInDto: UserSignInDto): Promise<User> | null {
@@ -96,6 +96,24 @@ export class UserRepository extends Repository<User> {
         try {
             const users = await query.getMany();
             return users;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
+
+
+    public async updateUserById(id: number, userUpdateDto: UserUpdateDto): Promise<boolean> {
+        try {
+            const updatedUser: UpdateResult =  await this
+                .createQueryBuilder('translation')
+                .update(User)
+                .set(userUpdateDto)
+                .where("id = :id", { id: id })
+                .execute();
+            if(!updatedUser.affected) {
+                throw new NotFoundException("USER_NOT_EXISTS");
+            }
+            return true;
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
