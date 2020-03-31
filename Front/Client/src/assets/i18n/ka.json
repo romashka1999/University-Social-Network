@@ -7,5 +7,9 @@
     "PHONE_NUMBER": "მობილურის ნომერი",
     "PASSWORD": "პაროლი",
     "FIELD_REQUIRED": "ეს ველი დავალდებულოა",
-    "REGISTRATION": "რეგისტრაცია"
+    "REGISTRATION": "რეგისტრაცია",
+    "FIRST_STEP": "შეავსეთ მოცემული ველები",
+    "EMAIL": "იმეილი",
+    "IMAGE": "სურათი",
+    "BIRTH_DATE": "დაბადების თარიღი"
 }

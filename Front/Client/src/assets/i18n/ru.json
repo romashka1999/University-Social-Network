@@ -7,5 +7,9 @@
     "PHONE_NUMBER": "Номер телефона",
     "PASSWORD": "пароль",
     "FIELD_REQUIRED": "Это поле обезательное",
-    "REGISTRATION": "Регистрация"
+    "REGISTRATION": "Регистрация",
+    "FIRST_STEP": "Заполните информацию",
+    "EMAIL": "е-мейл",
+    "IMAGE": "фотография",
+    "BIRTH_DATE": "дата рождения"
 }

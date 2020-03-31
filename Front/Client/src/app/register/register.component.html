@@ -14,6 +14,11 @@
             <div class="login-contnet" [formGroup]="userInfo">
                 <img class="avatar" src="../../assets/images/Login-Avatar.svg">
                 <h2>{{'REGISTRATION' | translate}}</h2>
+
+              <mat-horizontal-stepper linear #stepper>
+                <mat-step [stepControl]="userInfo">
+                  <ng-template matStepLabel>{{'FIRST_STEP' | translate}}</ng-template>
+
                 <mat-form-field style="width: 100%">
                     <span matPrefix>
                         <i class="material-icons"> account_circle </i>
@@ -57,8 +62,17 @@
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field style="width: 100%">
+                  <mat-label>{{'BIRTH_DATE' | translate}}</mat-label>
+                  <input formControlName="birthdate" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="myDatepicker">
+                  <mat-error *ngIf="userInfo.controls.username.errors">
+                    {{FormGroupErrorHandler('birthdate') | translate}}
+                  </mat-error>
+                  <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker #myDatepicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field style="width: 100%">
                     <span matPrefix>
-                        <i class="material-icons"> no_encryption </i>                            
+                        <i class="material-icons"> no_encryption </i>
                     </span>
                     <mat-label>{{'PASSWORD' | translate}}</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
@@ -69,6 +83,27 @@
                         {{FormGroupErrorHandler('password') | translate}}
                     </mat-error>
                 </mat-form-field>
+<!--                  <button mat-button matStepperNext>Next</button>-->
+                </mat-step>
+                <mat-step [optional]="true">
+                    <mat-form-field class="wrapper-input">
+                        <span matPrefix>
+                            <i class="material-icons"> email </i>
+                        </span>
+                      <mat-label>{{'EMAIL' | translate}}</mat-label>
+                      <input matInput formControlName="email">
+                    </mat-form-field>
+
+                    <div class="wrapper-input">
+                      <span matPrefix>
+                            <i class="material-icons"> image </i>
+                        </span>
+                      <label class="img-label" for="file">{{'IMAGE' | translate}}</label>
+                      <input id="file" class="img-input" type="file" accept="image/*" (change)="onFileChanged($event)">
+                    </div>
+                </mat-step>
+              </mat-horizontal-stepper>
+
                 <button [ngClass]="userInfo.valid? 'submit-btn' : 'submit-btn btn-disabled'" (click)="userInfo.valid? onSubmit() : ''"> {{'REGISTRATION' | translate}} </button>
             </div>
         </div>

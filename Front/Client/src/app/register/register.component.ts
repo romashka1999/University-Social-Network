@@ -10,6 +10,8 @@ import { TranslateService } from "@ngx-translate/core";
     styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit{
+    minDate: Date;
+    maxDate: Date;
 
     public inputs: {}[] = [
         {},
@@ -19,7 +21,11 @@ export class RegisterComponent implements OnInit{
     public loading: boolean = false;
     private lang: string;
 
-    constructor(private translateService: TranslateService, private languageService: LanguageService) {}
+    constructor(private translateService: TranslateService, private languageService: LanguageService) {
+      const currentYear = new Date().getFullYear();
+      this.minDate = new Date(currentYear - 100, 0, 1);
+      this.maxDate = new Date(currentYear, 2, 31);
+    }
 
     public userInfo = new FormGroup({
         username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -27,6 +33,9 @@ export class RegisterComponent implements OnInit{
         name: new FormControl('', [Validators.required, Validators.minLength(2)]),
         lastname: new FormControl('', [Validators.required, Validators.minLength(3)]),
         phone: new FormControl('', [Validators.required, Validators.minLength(9)]),
+        birthdate: new FormControl('', [Validators.required]),
+        email: new FormControl('', [Validators.email]),
+        image: new FormControl('')
     });
 
     ngOnInit() {
@@ -63,4 +72,12 @@ export class RegisterComponent implements OnInit{
         });
     }
 
+  onFileChanged(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.userInfo.patchValue({
+        image: file
+      })
+    }
+  }
 }

@@ -7,5 +7,9 @@
     "PHONE_NUMBER": "phone number",
     "PASSWORD": "password",
     "FIELD_REQUIRED": "this field is required",
-    "REGISTRATION": "registration"
+    "REGISTRATION": "registration",
+    "FIRST_STEP": "Fill out fields",
+    "EMAIL": "email",
+    "IMAGE": "image",
+    "BIRTH_DATE": "Birth date"
 }

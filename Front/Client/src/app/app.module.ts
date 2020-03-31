@@ -31,6 +31,9 @@ import { HeaderComponent } from './shared/header/header.component';
 
 //env
 import { environment } from 'src/environments/environment';
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
@@ -56,6 +59,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     MatProgressBarModule,
     MatSnackBarModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25
     }),
@@ -69,7 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     //ProfileModule,
   ],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

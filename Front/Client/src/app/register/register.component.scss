@@ -81,11 +81,11 @@
         cursor: default!important;
         opacity: 0.5!important;
     }
-    
+
     .btn-disabled:hover {
         background-color: $primary-color!important;
     }
-    
+
     .submit-btn:hover {
         background-color: $primary-dark;
     }
@@ -183,8 +183,9 @@
 }
 
 
+
 // Small devices (landscape phones, 576px and up)
-@media (max-width: 576px) {  
+@media (max-width: 576px) {
     .login-contnet {
         width: 90%!important;
     }
@@ -193,7 +194,7 @@
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {  }
 
-@media (max-width: 864px) { 
+@media (max-width: 864px) {
     .wave {
         display: none;
     }
@@ -210,14 +211,14 @@
 }
 
 // Large devices (desktops, 992px and up)
-@media (max-width: 992px) { 
+@media (max-width: 992px) {
     .phone-container {
         padding-right: 0px;
     }
 }
 
 // Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { 
+@media (min-width: 1200px) {
     .phone {
         width: 37vw!important;
     }
@@ -227,7 +228,7 @@
 
 }
 
-@media (min-width: 1950px) { 
+@media (min-width: 1950px) {
     .phone {
         width: 760px!important;
     }
