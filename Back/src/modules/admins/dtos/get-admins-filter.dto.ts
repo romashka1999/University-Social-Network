@@ -1,15 +1,8 @@
-import { IsOptional, IsNumber, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
-export class GetAdminsFilterDto {
+export class GetAdminsFilterDto extends PaginationGetFilterDto{
     @IsString()
     @IsOptional()
     email: string;
-
-    @IsNumber()
-    @IsOptional()
-    page: number
-
-    @IsNumber()
-    @IsOptional()
-    pageSize: number
 }

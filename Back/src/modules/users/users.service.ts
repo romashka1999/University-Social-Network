@@ -26,16 +26,7 @@ export class UsersService {
             throw new InternalServerErrorException(error);
         }
     }
-
-    public async updateUserPassword(id: number, password: string): Promise<User> {
-        const user = await this.getUserById(id);
-        user.password = password;
-
-        await user.save();
-
-        return user;
-    }
-
+    
     public async deleteUserById(id: number): Promise<boolean> {
         try {
             const deletedUser = await this.userRepository.delete(id);
