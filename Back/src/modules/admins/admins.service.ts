@@ -17,7 +17,7 @@ export class AdminsService {
         return this.adminRepository.getAdmins(getAdminsFilterDto);
     }
 
-    public creatAdmin(adminCreateDto: AdminCreateDto): Promise<boolean>{
+    public creatAdmin(adminCreateDto: AdminCreateDto): Promise<boolean> {
         return this.adminRepository.createAdmin(adminCreateDto);
     }
 

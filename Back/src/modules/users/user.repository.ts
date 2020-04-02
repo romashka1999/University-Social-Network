@@ -6,7 +6,7 @@ import { UserSignUpDto } from "../auth/dtos/user-sign-up.dto";
 import { UserSignInDto } from "../auth/dtos/user-sign-in.dto";
 import { hashPassword } from "src/modules/auth/helpers/password";
 import { GetUsersFilterDto } from "./dtos/get-users-filter.dto";
-import { UserUpdateDto } from "./dtos/user-update.dto";
+import { SetUserInfoInterface } from "./interfaces/set-user-info.interface";
 
 
 @EntityRepository(User)
@@ -101,13 +101,12 @@ export class UserRepository extends Repository<User> {
         }
     }
 
-
-    public async updateUserById(id: number, userUpdateDto: UserUpdateDto): Promise<boolean> {
+    public async setUserInfo(id: number, userInfo: SetUserInfoInterface): Promise<boolean> {
         try {
             const updatedUser: UpdateResult =  await this
                 .createQueryBuilder('translation')
                 .update(User)
-                .set(userUpdateDto)
+                .set(userInfo)
                 .where("id = :id", { id: id })
                 .execute();
             if(!updatedUser.affected) {
@@ -115,7 +114,17 @@ export class UserRepository extends Repository<User> {
             }
             return true;
         } catch (error) {
-            throw new InternalServerErrorException(error);
+            if(error.code === '23505') {//duplicate email 
+                if(userInfo.email) {
+                    throw new ConflictException("EMAIL_ALREADY_EXISTS");
+                } else if(userInfo.username) {
+                    throw new ConflictException("USERNAME_ALREADY_EXISTS");
+                } else {
+                    throw new ConflictException("PHONENUMBER_ALREADY_EXISTS");
+                }
+            } else {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
 
 
 import { AuthService } from './auth.service';
 import { UserSignInDto } from './dtos/user-sign-in.dto';
 import { UserSignUpDto } from './dtos/user-sign-up.dto';
 import { AdminSignInDto } from './dtos/admin-sign-in.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 
 @Controller('auth')
@@ -13,8 +14,19 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('user/signUp')
-    userSignUp(@Body(ValidationPipe) userSignUpDto: UserSignUpDto): Promise<boolean> {
+    @UseInterceptors(FilesInterceptor('profileImg'))
+    userSignUp(
+        @Body(ValidationPipe) userSignUpDto: UserSignUpDto,
+        @UploadedFiles() file): Promise<boolean> {
+        console.log(file);
         return this.authService.userSignUp(userSignUpDto);
+    }
+
+    @Post('test')
+    @UseInterceptors(FilesInterceptor('profileImg'))
+    test(@UploadedFiles() file) {
+        console.log(file);
+        return 'uploaded';
     }
 
     @Post('user/signIn')

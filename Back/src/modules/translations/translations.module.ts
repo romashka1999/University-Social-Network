@@ -7,6 +7,7 @@ import { TranslationRepository } from './translation.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TranslationRepository])],
-  providers: [TranslationsService]
+  providers: [TranslationsService],
+  exports: [TranslationsService]
 })
 export class TranslationsModule {}

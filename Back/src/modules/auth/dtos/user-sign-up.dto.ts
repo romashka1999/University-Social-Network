@@ -22,21 +22,14 @@ export class UserSignUpDto {
     gender: UserGender;
 
     @IsString()
-    profileImgUrl: string;
-
-
-    @IsString()
-    coverImageUrl: string;
-
-    @IsString()
     @MinLength(3)
-    @MaxLength(20)
+    @MaxLength(30)
     @IsNotEmpty()
     username: string;
 
     @IsString()
     @MinLength(3)
-    @MaxLength(20)
+    @MaxLength(100)
     email: string;
 
     @IsString()

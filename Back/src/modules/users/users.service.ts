@@ -21,7 +21,7 @@ export class UsersService {
 
     public async getUserById(id: number): Promise<User> {
         try {
-            return await this.userRepository.findOne({id: id})
+            return await this.userRepository.findOne({ id })
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
@@ -45,7 +45,7 @@ export class UsersService {
     }
 
     public updateUserById(id: number, userUpdateDto: UserUpdateDto): Promise<boolean> {
-        return this.userRepository.updateUserById(id, userUpdateDto);
+        return this.userRepository.setUserInfo(id, userUpdateDto);
     }
 
     public async setUserPasswordById(id: number, userSetPasswordDto: UserSetPasswordDto): Promise<boolean> {
@@ -58,23 +58,8 @@ export class UsersService {
         if(oldPassword !== password) {
             throw new BadRequestException("PASSWORD_IS_INCORRECT");
         }
-
         const { salt, hashedPassword } = await hashPassword(newPassword);
-
-        try {
-            const updatedUser: UpdateResult =  await this.userRepository
-                .createQueryBuilder('translation')
-                .update(User)
-                .set({salt: salt, password: hashedPassword})
-                .where("id = :id", { id: id })
-                .execute();
-            if(!updatedUser.affected) {
-                throw new NotFoundException("USER_NOT_EXISTS");
-            }
-            return true;
-        } catch (error) {
-            throw new InternalServerErrorException(error);
-        }
+        return this.userRepository.setUserInfo(id, {password: hashedPassword, salt});
     }
 
     public async setUserEmailById(id: number, email: string) {
@@ -82,25 +67,7 @@ export class UsersService {
         if(!user) {
             throw new NotFoundException("USER_NOT_EXISTS");
         }
-
-        try {
-            const updatedUser: UpdateResult =  await this.userRepository
-                .createQueryBuilder('translation')
-                .update(User)
-                .set({email: email})
-                .where("id = :id", { id: id })
-                .execute();
-            if(!updatedUser.affected) {
-                throw new NotFoundException("USER_NOT_EXISTS");
-            }
-            return true;
-        } catch (error) {
-            if(error.code === '23505') {//duplicate email 
-                throw new ConflictException("EMAIL_ALREADY_EXISTS");
-            } else {
-                throw new InternalServerErrorException(error);
-            }
-        }
+        return this.userRepository.setUserInfo(id,  { email });
     }
 
     public async setUserUsernameById(id: number, username: string) {
@@ -108,25 +75,7 @@ export class UsersService {
         if(!user) {
             throw new NotFoundException("USER_NOT_EXISTS");
         }
-
-        try {
-            const updatedUser: UpdateResult =  await this.userRepository
-                .createQueryBuilder('translation')
-                .update(User)
-                .set({username: username})
-                .where("id = :id", { id: id })
-                .execute();
-            if(!updatedUser.affected) {
-                throw new NotFoundException("USER_NOT_EXISTS");
-            }
-            return true;
-        } catch (error) {
-            if(error.code === '23505') {//duplicate username 
-                throw new ConflictException("USERNAME_ALREADY_EXISTS");
-            } else {
-                throw new InternalServerErrorException(error);
-            }
-        }
+        return this.userRepository.setUserInfo(id, { username });
     }
 
     public async setUserPhoneNumberById(id: number, phoneNumber: string) {
@@ -134,25 +83,7 @@ export class UsersService {
         if(!user) {
             throw new NotFoundException("USER_NOT_EXISTS");
         }
-
-        try {
-            const updatedUser: UpdateResult =  await this.userRepository
-                .createQueryBuilder('translation')
-                .update(User)
-                .set({phoneNumber: phoneNumber})
-                .where("id = :id", { id: id })
-                .execute();
-            if(!updatedUser.affected) {
-                throw new NotFoundException("USER_NOT_EXISTS");
-            }
-            return true;
-        } catch (error) {
-            if(error.code === '23505') {//duplicate phoneNumber 
-                throw new ConflictException("PHONENUMBER_ALREADY_EXISTS");
-            } else {
-                throw new InternalServerErrorException(error);
-            }
-        }
+        return this.userRepository.setUserInfo(id, { phoneNumber });
     }
 
 }
