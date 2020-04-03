@@ -1,4 +1,6 @@
 <div class="container">
+    <h1 class="heading">T R A N S L A T I O N S</h1>
+    <hr>
     <div [formGroup]="translationsAddForm" class="row">
         <div class="col-md-3">
             <input type="text" id="username" class="form-control" [formControlName]="'variable'" placeholder="variable">
@@ -15,7 +17,7 @@
     </div>
     <button color="primary" mat-raised-button type="submit"
         [disabled]="(translationsAddForm.invalid && translationsAddForm.touched) || translationsAddForm.pending"
-        (click)="onAddTranslation()" style="margin-top:10px;">Add new Translation</button>
+        (click)="onAddTranslation()" style="margin-top:20px;">add new Translation</button>
     <hr>
 
     <table class="table shadow-lg">
@@ -30,23 +32,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
+            <tr *ngFor="let translation of transltaions">
+                <td>{{translation.id}}</td>
                 <td>
-                    <input class="form-control" placeholder="variable">
+                    <input class="form-control" placeholder="variable" [value]="translation.variable">
                 </td>
                 <td>
-                    <input class="form-control" placeholder="KA">
+                    <input class="form-control" placeholder="KA" [value]="translation.KA">
                 </td>
                 <td>
-                    <input class="form-control" placeholder="EN">
+                    <input class="form-control" placeholder="EN" [value]="translation.EN">
                 </td>
                 <td>
-                    <input class="form-control" placeholder="RU">
+                    <input class="form-control" placeholder="RU" [value]="translation.RU">
                 </td>
                 <td>
-                    <button color="primary" mat-raised-button (click)="onSave()">save</button>
-                    <!-- <button color="accent" mat-raised-button (click)="onSave()">delete</button> -->
+                    <button color="primary" mat-raised-button (click)="onUpdateTranslation(translation)">save</button>
+                    <button color="accent" mat-raised-button (click)="onDeleteTranslation(translation.id)">delete</button>
                 </td>
             </tr>
         </tbody>

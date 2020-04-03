@@ -23,7 +23,7 @@ export class AuthService {
         return this.userRepository.signUp(userSignUpDto);
     }
 
-    public async userSignIn(userSignInDto: UserSignInDto): Promise<{accesToken: string}> {
+    public async userSignIn(userSignInDto: UserSignInDto): Promise<{accessToken: string}> {
         const user = await this.userRepository.signIn(userSignInDto);
 
         if(!user) {
@@ -31,13 +31,13 @@ export class AuthService {
         }
 
         const payload = { user };
-        const accesToken: string = await this.jwtService.signAsync(payload);
+        const accessToken: string = await this.jwtService.signAsync(payload);
 
         // const verify: any = await this.jwtService.verifyAsync(accesToken);
-        return { accesToken }
+        return { accessToken }
     }
 
-    public async adminSignIn(adminSignInDto: AdminSignInDto): Promise<{accesToken: string}> {
+    public async adminSignIn(adminSignInDto: AdminSignInDto): Promise<{accessToken: string}> {
         const admin = await this.adminRepository.signIn(adminSignInDto);
 
         if(!admin) {
@@ -45,10 +45,10 @@ export class AuthService {
         }
 
         const payload = { admin };
-        const accesToken: string = await this.jwtService.signAsync(payload);
+        const accessToken: string = await this.jwtService.signAsync(payload);
 
         // const verify: any = await this.jwtService.verifyAsync(accesToken);
-        return { accesToken }
+        return { accessToken }
     }
 
     

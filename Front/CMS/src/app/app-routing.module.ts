@@ -6,7 +6,7 @@ import { AuthGuardService } from './modules/auth/auth-guard.service';
 const routes: Routes = [
   {path: '', redirectTo: 'auth/login', pathMatch: 'full'},
   {path: 'auth', loadChildren: ()=> import('./modules/auth/auth.module').then( m => m.AuthModule)},
-  {path: 'translations', loadChildren: ()=> import('./modules/translations/translations.module').then( m => m.TranslationsModule)},
+  {path: 'translations', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/translations/translations.module').then( m => m.TranslationsModule)},
   {path: 'dashboard', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/dashboard/dashboard.module').then( m => m.DashboardModule)}
 ];
 

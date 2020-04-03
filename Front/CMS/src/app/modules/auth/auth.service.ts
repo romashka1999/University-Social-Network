@@ -1,34 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/internal/Subject';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private loggedIn = false;
-  public loading = new Subject<boolean>();
 
-  constructor() { }
+  private url = environment.url + '/auth/admin';
 
-  isAuthenticated() {
-    this.loading.next(true);
-    const promise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.loggedIn);
-        this.loading.next(false);
-      }, 700);
-    })
-    return promise;
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router) { }
+
+
+  public login(signedInData: {email: string, password: string}): Observable<any> {
+    return this.http.post(this.url + '/signIn', signedInData);
   }
 
-    login() {
-      this.loggedIn = true;
-    alert('you are logged in');
+  public logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth/login']);
   }
 
-  logout() {
-    this.loggedIn = false;
-    alert('you are logged out');
+  public setTokenToLocalstorage(token: string) {
+    localStorage.setItem('token', token);
+    this.router.navigate(['/dashboard']);
+  }
+
+  public isLoggedIn() {
+    return localStorage.getItem('token') ? true : false;
   }
 }
