@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult } from 'typeorm';
 
@@ -18,25 +18,27 @@ export class TranslationsService {
         return this.translationRepository.getTranslations(getTranslationsFilterDto);
     }
 
-    public createTranslation(translationCreateDto: TranslationCreateDto): Promise<boolean> {
+    public createTranslation(translationCreateDto: TranslationCreateDto): Promise<Translation> {
         return this.translationRepository.createTranslation(translationCreateDto);
     }
 
-    public updateTranslation(id: number, translationUpdateDto: TranslationUpdateDto): Promise<boolean> {
+    public updateTranslation(id: number, translationUpdateDto: TranslationUpdateDto): Promise<Translation> {
         return this.translationRepository.updateTranslation(id, translationUpdateDto);
     }
 
-    public async deleteTranslation(id: number): Promise<boolean> {
+    public async deleteTranslation(id: number): Promise<Translation> {
         try {
             const deletedTranslation: DeleteResult = await this.translationRepository.delete({id: id});
-
             if(!deletedTranslation.affected) {
-                throw new NotFoundException("TRANSLATION_NOT_EXISTS");
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "TRANSLATION_NOT_EXISTS"};
             }
-
-            return true;
+            return deletedTranslation.raw;
         } catch (error) {
-            throw new InternalServerErrorException(error);
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
 }

@@ -3,4 +3,4 @@ db:
   username: 'postgres'
   password: 'ibanez123'
   synchronize: true
-  logging: true
+  logging: false

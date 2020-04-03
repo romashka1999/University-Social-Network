@@ -52,7 +52,7 @@ export class AdminRepository extends Repository<Admin> {
         }
     }
 
-    public async createAdmin(adminCreateDto: AdminCreateDto): Promise<boolean> {
+    public async createAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
         const { email, password } = adminCreateDto;
 
         const { salt, hashedPassword } = await hashPassword(password);// hash pass
@@ -62,10 +62,10 @@ export class AdminRepository extends Repository<Admin> {
         admin.salt = salt;
 
         try {
-            await admin.save();
-            return true;
+            const createdAdmin = await admin.save();
+            return createdAdmin;
         } catch (error) {
-            if(error.code === '23505') {//duplicate email 
+            if(error.code === '23505') {
                 throw new ConflictException("EMAIL_ALREADY_EXISTS");
             } else {
                 throw new InternalServerErrorException(error);

@@ -8,7 +8,9 @@ import {
   MatExpansionModule, MatCardModule, MatTabsModule, MatStepperModule, 
   MatDialogModule,
   MatIconModule,
+  MatSnackBarModule,
  } from '@angular/material';
+ 
 
 const materials = [
   MatButtonModule,
@@ -31,12 +33,12 @@ const materials = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatDialogModule,
-  MatIconModule
+  MatIconModule,
+  MatSnackBarModule
 ];
 
 @NgModule({
   imports: [materials],
-  entryComponents: [],
   exports: [materials]
 })
 export class MaterialModule { }

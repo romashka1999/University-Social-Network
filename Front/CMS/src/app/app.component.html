@@ -2,7 +2,7 @@
     <mat-sidenav mode="over" #refSidenav>
         <mat-nav-list>
             <a mat-list-item [routerLink]="[ '/dashboard']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
-            <a mat-list-item>test</a>
+            <a mat-list-item [routerLink]="[ '/translations']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: false}">Translations</a>
             <a mat-list-item>test</a>
         </mat-nav-list>
     </mat-sidenav>

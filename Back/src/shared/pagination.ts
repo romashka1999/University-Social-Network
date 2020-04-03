@@ -4,8 +4,8 @@ export interface Ipagination {
 }
 
 export const pagination = <Ipagination>(page: number, pageSize: number) => {
-    const offset = page * pageSize;
-    const limit = pageSize;
+    const offset: number = Number(page) * Number(pageSize);
+    const limit: number = Number(pageSize);
 
     return {
         offset,//start index point data fetching

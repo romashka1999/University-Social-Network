@@ -1,5 +1,5 @@
 import { Repository, EntityRepository, UpdateResult } from "typeorm";
-import { ConflictException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { ConflictException, InternalServerErrorException, HttpStatus, HttpException } from "@nestjs/common";
 
 
 import { Translation } from "./translation.entity";
@@ -12,7 +12,7 @@ import { Ipagination, pagination } from "src/shared/pagination";
 export class TranslationRepository extends Repository<Translation> {
     
     
-    public async createTranslation(translationCreateDto: TranslationCreateDto): Promise<boolean> {
+    public async createTranslation(translationCreateDto: TranslationCreateDto): Promise<Translation> {
         const { variable, KA, EN, RU } = translationCreateDto;
 
         const translation = new Translation();
@@ -20,20 +20,20 @@ export class TranslationRepository extends Repository<Translation> {
         translation.KA = KA;
         translation.EN = EN;
         translation.RU = RU;
-
+        
         try {
-            await translation.save();
+            const createdTranslation = await translation.save();
+            return createdTranslation;
         } catch (error) {
-            if(error.code === '23505') {//duplicate username 
+            if(error.code === '23505') {
                 throw new ConflictException("VARIABLE_ALREADY_EXISTS");
             } else {
                 throw new InternalServerErrorException(error);
             }
         }
-        return true;
     }
 
-    public async updateTranslation(id: number, translationUpdateDto: TranslationUpdateDto): Promise<boolean> {
+    public async updateTranslation(id: number, translationUpdateDto: TranslationUpdateDto): Promise<Translation> {
         try {
             const updatedTranslation: UpdateResult = await this
                 .createQueryBuilder('translation')
@@ -42,11 +42,19 @@ export class TranslationRepository extends Repository<Translation> {
                 .where("id = :id", { id: id })
                 .execute();
             if(!updatedTranslation.affected) {
-                throw new NotFoundException("TRANSLATION_NOT_EXISTS");
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "TRANSLATION_NOT_EXISTS"};
             }
-            return true;
+            return updatedTranslation.raw;
         } catch (error) {
-            throw new InternalServerErrorException(error);
+            if(error.code === '23505') {
+                throw new ConflictException("VARIABLE_ALREADY_EXISTS");
+            } else {
+                if(error.statusCode) {
+                    throw new HttpException(error.message, error.statusCode);
+                } else {
+                    throw new InternalServerErrorException(error);
+                }
+            }
         }
     }
 

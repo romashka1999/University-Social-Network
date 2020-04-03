@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { AdminRepository } from './admin.repository';
@@ -17,11 +17,11 @@ export class AdminsService {
         return this.adminRepository.getAdmins(getAdminsFilterDto);
     }
 
-    public creatAdmin(adminCreateDto: AdminCreateDto): Promise<boolean> {
+    public creatAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
         return this.adminRepository.createAdmin(adminCreateDto);
     }
 
-    public async setAdminStatusById(id: number, adminSetStatusDto: AdminSetStatusDto): Promise<boolean> {
+    public async setAdminStatusById(id: number, adminSetStatusDto: AdminSetStatusDto): Promise<Admin> {
         try {
             const updatedUser: UpdateResult =  await this.adminRepository
                 .createQueryBuilder('translation')
@@ -30,25 +30,33 @@ export class AdminsService {
                 .where("id = :id", { id: id })
                 .execute();
             if(!updatedUser.affected) {
-                throw new NotFoundException("ADMIN_NOT_EXISTS");
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "ADMIN_NOT_EXISTS"};
             }
-            return true;
+            return updatedUser.raw;
         } catch (error) {
-            throw new InternalServerErrorException(error);
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
 
-    public async deleteAdminById(id: number): Promise<boolean> {
+    public async deleteAdminById(id: number): Promise<Admin> {
         try {
             const deletedAdmin: DeleteResult = await this.adminRepository.delete({id: id});
 
             if(!deletedAdmin.affected) {
-                throw new NotFoundException("ADMIN_NOT_EXISTS");
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "ADMIN_NOT_EXISTS"};
             }
 
-            return true;
+            return deletedAdmin.raw;
         } catch (error) {
-            throw new InternalServerErrorException(error);
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
 }

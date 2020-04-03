@@ -46,7 +46,7 @@ export class Admin extends BaseEntity {
     })
     salt: string;
 
-    @ManyToOne(type => AdminRole, adminRole => adminRole.admins)
+    @ManyToOne(type => AdminRole, adminRole => adminRole.admins, {eager: false})
     adminRole: AdminRole;
 
     public async validatePassword(password: string): Promise<boolean> {

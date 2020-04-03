@@ -4,12 +4,14 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import * as config from 'config';
 import { AppModule } from './app.module';
+const cors = require('cors');
 
 
 async function bootstrap() {
   const serverConfig = config.get('server');
   const PORT = serverConfig.port;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.use(cors());
   
   if(process.env.NODE_ENV === 'development') {
     app.enableCors();
