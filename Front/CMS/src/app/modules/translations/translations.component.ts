@@ -89,7 +89,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.getTranslationsSub.unsubscribe();
+    // this.getTranslationsSub.unsubscribe();
     // this.createTRanslationSub.unsubscribe();
     // this.updateTranslaionSub.unsubscribe();
     // this.deleteTranslationSub.unsubscribe();

@@ -104,7 +104,7 @@ export class UserRepository extends Repository<User> {
     public async setUserInfo(id: number, userInfo: SetUserInfoInterface): Promise<boolean> {
         try {
             const updatedUser: UpdateResult =  await this
-                .createQueryBuilder('translation')
+                .createQueryBuilder('user')
                 .update(User)
                 .set(userInfo)
                 .where("id = :id", { id: id })

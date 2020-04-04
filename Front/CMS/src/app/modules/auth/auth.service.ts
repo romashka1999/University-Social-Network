@@ -31,6 +31,15 @@ export class AuthService {
     this.router.navigate(['/dashboard']);
   }
 
+  public getTokenFromLocalstorage() {
+    const token = localStorage.getItem('token');
+    if(!token) {
+      this.router.navigate(['/auth/login']);
+    } else {
+      return token;
+    }
+  }
+
   public isLoggedIn() {
     return localStorage.getItem('token') ? true : false;
   }

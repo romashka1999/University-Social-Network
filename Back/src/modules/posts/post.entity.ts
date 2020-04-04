@@ -27,7 +27,7 @@ export class Post extends BaseEntity {
         default: true,
         nullable: false
     })
-    public: boolean;
+    publicPost: boolean;
 
     @ManyToOne(type => User, user => user.posts)
     user: User;
