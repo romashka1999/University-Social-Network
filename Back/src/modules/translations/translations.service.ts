@@ -6,16 +6,16 @@ import { DeleteResult } from 'typeorm';
 import { TranslationRepository } from './translation.repository';
 import { TranslationCreateDto } from './dtos/translation-create.dto';
 import { TranslationUpdateDto } from './dtos/translation-update.dto';
-import { GetTranslationsFilterDto } from './dtos/get-translations-filter.dto';
 import { Translation } from './translation.entity';
+import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
 @Injectable()
 export class TranslationsService {
 
     constructor(@InjectRepository(TranslationRepository) private readonly translationRepository: TranslationRepository) {}
 
-    public getTranslations(getTranslationsFilterDto: GetTranslationsFilterDto): Promise<Array<Translation>> {
-        return this.translationRepository.getTranslations(getTranslationsFilterDto);
+    public getTranslations(paginationGetFilterDto: PaginationGetFilterDto): Promise<Array<Translation>> {
+        return this.translationRepository.getTranslations(paginationGetFilterDto);
     }
 
     public createTranslation(translationCreateDto: TranslationCreateDto): Promise<Translation> {

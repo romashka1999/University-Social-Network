@@ -8,19 +8,26 @@ import { PostCreateDto } from './dtos/post-create.dto';
 import { User } from '../users/user.entity';
 import { Post } from './post.entity';
 import { PostUpdateDto } from './dtos/post-update.dto';
+import { GetUserPostsFilterDto } from './dtos/get-user-posts-filter.dto';
+import { pagination } from 'src/shared/pagination';
 
 @Injectable()
 export class PostsService {
 
     constructor(@InjectRepository(PostRepository) private readonly postRepository: PostRepository) {}
 
-    public async getPostsByUserId(user: User): Promise<Array<Post>> {
+    public async getPostsByUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        const { page, pageSize } = getUserPostsFilterDto;
+        const { offset, limit } = pagination(page, pageSize);
+
         try {
             const posts = this.postRepository.find({
                 where: {
                     user: user,
                     hidden: false
-                }
+                },
+                skip: offset,
+                take: limit
             });
             return posts;
         } catch (error) {

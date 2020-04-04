@@ -5,8 +5,8 @@ import { ConflictException, InternalServerErrorException, HttpStatus, HttpExcept
 import { Translation } from "./translation.entity";
 import { TranslationCreateDto } from "./dtos/translation-create.dto";
 import { TranslationUpdateDto } from "./dtos/translation-update.dto";
-import { GetTranslationsFilterDto } from "./dtos/get-translations-filter.dto";
 import { Ipagination, pagination } from "src/shared/pagination";
+import { PaginationGetFilterDto } from "src/shared/pagination-get-filter.dto";
 
 @EntityRepository(Translation)
 export class TranslationRepository extends Repository<Translation> {
@@ -58,8 +58,8 @@ export class TranslationRepository extends Repository<Translation> {
         }
     }
 
-    public async getTranslations(getTranslationsFilterDto: GetTranslationsFilterDto): Promise<Array<Translation>> {
-        const { page, pageSize } = getTranslationsFilterDto;
+    public async getTranslations(paginationGetFilterDto: PaginationGetFilterDto): Promise<Array<Translation>> {
+        const { page, pageSize } = paginationGetFilterDto;
 
         const query = this.createQueryBuilder('translation');
 

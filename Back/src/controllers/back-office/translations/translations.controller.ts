@@ -3,12 +3,12 @@ import { AuthGuard } from '@nestjs/passport';
 
 
 import { TranslationsService } from 'src/modules/translations/translations.service';
-import { GetTranslationsFilterDto } from 'src/modules/translations/dtos/get-translations-filter.dto';
 import { TranslationCreateDto } from 'src/modules/translations/dtos/translation-create.dto';
 import { TranslationUpdateDto } from 'src/modules/translations/dtos/translation-update.dto';
 import { ResponseCreator } from 'src/shared/response-creator';
 import { GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { Admin } from 'src/modules/admins/admin.entity';
+import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
 
 @Controller('translations')
@@ -20,8 +20,8 @@ export class TranslationsController {
     @Get()
     public async getTranslations(
         @GetAdmin() admin: Admin,
-        @Query(ValidationPipe) getTranslationsFilterDto: GetTranslationsFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.translationsService.getTranslations(getTranslationsFilterDto);
+        @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.translationsService.getTranslations(paginationGetFilterDto);
         return new ResponseCreator('TRANSLATIONS_GOT', gotData);
     }
 

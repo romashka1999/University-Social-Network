@@ -3,7 +3,7 @@ import { SubscribeMessage, WebSocketGateway, OnGatewayInit, WsResponse, MessageB
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
-@WebSocketGateway(3000, {namespace: '/app'})
+@WebSocketGateway(3001, {namespace: '/app'})
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
   @WebSocketServer() wss: Server;
