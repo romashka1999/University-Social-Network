@@ -1,6 +1,5 @@
-import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateResult } from 'typeorm';
 
 
 import { UserRepository } from './user.repository';
@@ -21,9 +20,17 @@ export class UsersService {
 
     public async getUserById(id: number): Promise<User> {
         try {
-            return await this.userRepository.findOne({ id })
+            const user =  await this.userRepository.findOne({ id });
+            if(!user) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "USER_NOT_EXISTS"};
+            }
+            return user;
         } catch (error) {
-            throw new InternalServerErrorException(error);
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
     

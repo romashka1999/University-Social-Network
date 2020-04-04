@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
-import { JwtUserStrategy, JwtAdmintrategy } from './jwt.strategy';
+import { JwtStrategy } from './jwt.strategy';
 
 import * as config from 'config';
 import { MulterModule } from '@nestjs/platform-express';
@@ -37,12 +37,11 @@ const jwtConfig = config.get('jwt');
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtUserStrategy,
-    JwtAdmintrategy
+    JwtStrategy
+    
   ],
   exports: [
-    JwtUserStrategy,
-    JwtAdmintrategy,
+    JwtStrategy,
     PassportModule
   ]
 })

@@ -6,9 +6,11 @@ import { AdminsController } from './admins/admins.controller';
 import { AdminsModule } from 'src/modules/admins/admins.module';
 import { TranslationsController } from './translations/translations.controller';
 import { TranslationsModule } from 'src/modules/translations/translations.module';
+import { AuthModule } from 'src/modules/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
     AdminsModule,
     TranslationsModule
