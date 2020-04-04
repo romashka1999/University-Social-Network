@@ -13,5 +13,10 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     database: dbConfig.database,
     entities: [join(__dirname, '/../**/*.entity{.ts,.js}')],
     synchronize: dbConfig.synchronize,
-    logging: dbConfig.logging
+    logging: dbConfig.logging,
+    extra: {
+        ssl: {
+            rejectUnauthorized : false,
+      }
+    },
 }

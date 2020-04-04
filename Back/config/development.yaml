@@ -1,6 +1,6 @@
 db:
-  host: 'localhost'
-  username: 'postgres'
-  password: 'ibanez123'
+  host: 'ec2-54-247-125-38.eu-west-1.compute.amazonaws.com'
+  username: 'jldonothavbmza'
+  password: '9e29b42b5ef6c7ea0bf720e1624ddd393afff82004612bc857d282c5361bc839'
   synchronize: true
-  logging: false
+  logging: true

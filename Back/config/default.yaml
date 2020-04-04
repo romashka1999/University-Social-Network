@@ -3,7 +3,7 @@ server:
 db:
   type: 'postgres'
   port: 5432
-  database: 'socialnetwork'
+  database: 'd7je13t73q1d56'
 jwt:
   expiresIn: 3600
   secret: 'secret'
