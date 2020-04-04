@@ -30,24 +30,5 @@ services:
     networks:
         - webnet
     command: npm run start:dev
-    environment:
-      DATABASE_URL: db
-    depends_on:
-      - db
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: ibanez123
-      POSTGRES_USER: postgres
-      POSTGRES_DB: socialnetwork
-    ports:
-    - 5432:5432
-    volumes:
-    - ./Back/pgdata:/var/lib/postgresql/data
-    networks:
-      - webnet
 networks:
   webnet:
-volumes:
-  pgdata:
