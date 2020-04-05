@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength, MaxLength, Matches, IsDate, IsEnum } from "class-validator";
+import { IsNotEmpty, IsString, MinLength, MaxLength, Matches, IsEnum, IsDateString } from "class-validator";
 import { UserGender } from "src/modules/users/user.entity";
 
 export class UserSignUpDto {
@@ -9,12 +9,12 @@ export class UserSignUpDto {
     firstName: string;
 
     @IsString()
-    @MinLength(3)
-    @MaxLength(20)
+    @MinLength(1)
+    @MaxLength(100)
     @IsNotEmpty()
     lastName: string;
 
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     birthDate: Date;
 
@@ -22,25 +22,25 @@ export class UserSignUpDto {
     gender: UserGender;
 
     @IsString()
-    @MinLength(3)
-    @MaxLength(30)
+    @MinLength(1)
+    @MaxLength(100)
     @IsNotEmpty()
     username: string;
 
     @IsString()
-    @MinLength(3)
+    @MinLength(1)
     @MaxLength(100)
     email: string;
 
     @IsString()
-    @MinLength(3)
+    @MinLength(1)
     @MaxLength(20)
     @IsNotEmpty()
     phoneNumber: string;
 
     @IsString()
     @MinLength(8)
-    @MaxLength(30)
+    @MaxLength(100)
     @IsNotEmpty()
     @Matches(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/)
     password: string;
