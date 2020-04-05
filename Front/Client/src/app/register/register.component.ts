@@ -2,6 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LanguageService } from '../services/language.service';
 import { TranslateService } from "@ngx-translate/core";
+import {AuthService} from "../services/auth.service";
+import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+
+export interface Users {
+  id?: number
+  firstName: string
+  lastName: string
+  gender: string
+  username: string
+  email: string
+  phoneNumber: string
+  password: string
+  birthDate: Date
+}
 
 
 @Component({
@@ -21,7 +36,14 @@ export class RegisterComponent implements OnInit{
     public loading: boolean = false;
     private lang: string;
 
-    constructor(private translateService: TranslateService, private languageService: LanguageService) {
+    user: Users[] = []
+
+    constructor(private translateService: TranslateService,
+                private languageService: LanguageService,
+                private auth: AuthService,
+                private router: Router,
+                private http: HttpClient
+    ) {
       const currentYear = new Date().getFullYear();
       this.minDate = new Date(currentYear - 100, 0, 1);
       this.maxDate = new Date(currentYear, 2, 31);
@@ -35,7 +57,8 @@ export class RegisterComponent implements OnInit{
         phone: new FormControl('', [Validators.required, Validators.minLength(9)]),
         birthdate: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.email]),
-        image: new FormControl('')
+        image: new FormControl(''),
+        gender: new FormControl('MALE')
     });
 
     ngOnInit() {
@@ -43,12 +66,30 @@ export class RegisterComponent implements OnInit{
     }
 
     onSubmit() {
-        console.log(this.userInfo)
-        // console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
-        this.loading = true;
-        setTimeout(() => {
-            this.loading = false;
-        }, 2000)
+        // console.log(this.userInfo)
+        // // console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
+        // this.loading = true;
+        // setTimeout(() => {
+        //     this.loading = false;
+        // }, 2000)
+
+
+        const newUser: Users = {
+        firstName: 'giorgi',
+        lastName: 'tandila',
+        gender: this.userInfo.value.gender,
+        username: 'giorgi',
+        email: 'skype@gmail.com',
+        phoneNumber: '555101010',
+        password: 'Giorgi123',
+        birthDate: new Date(),
+      }
+        console.log(newUser)
+        this.http.post<Users>('http://localhost:3000/auth/user/signUp', newUser)
+          .subscribe(user => {
+            console.log(user)
+            // this.userInfo.reset()
+          })
     }
 
     FormGroupErrorHandler(controlName: string) {

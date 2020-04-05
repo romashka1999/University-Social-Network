@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from "@ngx-translate/core";
 import { LanguageService } from '../services/language.service';
+import {AuthService} from "../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-login',
@@ -14,7 +16,11 @@ export class LoginComponent implements OnInit{
     public loading: boolean = false;
     public lang: string;
 
-    constructor(private translateService: TranslateService, private languageService: LanguageService) {}
+    constructor(private translateService: TranslateService,
+                private languageService: LanguageService,
+                private auth: AuthService,
+                private router: Router
+                ) {}
 
     public userInfo = new FormGroup({
         username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -32,6 +38,16 @@ export class LoginComponent implements OnInit{
         setTimeout(() => {
             this.loading = false;
         }, 2000)
+
+        const user = {
+          username: this.userInfo.value.username,
+          password: this.userInfo.value.password
+        }
+        this.auth.login(user).subscribe(() => {
+          this.userInfo.reset()
+          this.router.navigate(['/profile'])
+        })
+
     }
 
     FormGroupErrorHandler(controlName: string) {
