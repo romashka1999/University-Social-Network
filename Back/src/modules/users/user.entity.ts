@@ -36,10 +36,10 @@ export class User extends BaseEntity {
     lastName: string;
 
     @Column({
-        type: 'date',
+        type: 'text',
         nullable: false
     })
-    birthDate: Date;
+    birthDate: string;
 
     @Column({
         type: 'enum',

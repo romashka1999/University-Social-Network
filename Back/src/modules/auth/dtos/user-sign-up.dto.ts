@@ -16,7 +16,7 @@ export class UserSignUpDto {
 
     @IsDateString()
     @IsNotEmpty()
-    birthDate: Date;
+    birthDate: string;
 
     @IsEnum(UserGender)
     gender: UserGender;
