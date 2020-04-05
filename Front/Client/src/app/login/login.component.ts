@@ -32,18 +32,17 @@ export class LoginComponent implements OnInit{
     }
 
     onSubmit() {
-        console.log(this.userInfo)
-        console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
+        // console.log(this.userInfo)
+        // console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
         this.loading = true;
         setTimeout(() => {
             this.loading = false;
         }, 2000)
 
-        const user = {
-          username: this.userInfo.value.username,
+        this.auth.login({
+          accountIdentity: this.userInfo.value.username,
           password: this.userInfo.value.password
-        }
-        this.auth.login(user).subscribe(() => {
+        }).subscribe(() => {
           this.userInfo.reset()
           this.router.navigate(['/profile'])
         })

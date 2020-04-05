@@ -4,20 +4,6 @@ import { LanguageService } from '../services/language.service';
 import { TranslateService } from "@ngx-translate/core";
 import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-
-export interface Users {
-  id?: number
-  firstName: string
-  lastName: string
-  gender: string
-  username: string
-  email: string
-  phoneNumber: string
-  password: string
-  birthDate: Date
-}
-
 
 @Component({
     selector: 'app-register',
@@ -36,13 +22,10 @@ export class RegisterComponent implements OnInit{
     public loading: boolean = false;
     private lang: string;
 
-    user: Users[] = []
-
     constructor(private translateService: TranslateService,
                 private languageService: LanguageService,
                 private auth: AuthService,
-                private router: Router,
-                private http: HttpClient
+                private router: Router
     ) {
       const currentYear = new Date().getFullYear();
       this.minDate = new Date(currentYear - 100, 0, 1);
@@ -66,29 +49,26 @@ export class RegisterComponent implements OnInit{
     }
 
     onSubmit() {
-        // console.log(this.userInfo)
-        // // console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
-        // this.loading = true;
-        // setTimeout(() => {
-        //     this.loading = false;
-        // }, 2000)
-
-
-        const newUser: Users = {
-        firstName: 'giorgi',
-        lastName: 'tandila',
-        gender: this.userInfo.value.gender,
-        username: 'giorgi',
-        email: 'skype@gmail.com',
-        phoneNumber: '555101010',
-        password: 'Giorgi123',
-        birthDate: new Date(),
-      }
-        console.log(newUser)
-        this.http.post<Users>('http://localhost:3000/auth/user/signUp', newUser)
+        console.log(this.userInfo)
+        // console.log(`Username: ${this.userInfo.value.username}  |   password: ${this.userInfo.value.password}`)
+        this.loading = true;
+        setTimeout(() => {
+            this.loading = false;
+        }, 2000)
+        this.auth.addUser({
+          firstName: this.userInfo.value.name,
+          lastName: this.userInfo.value.lastname,
+          gender: this.userInfo.value.gender,
+          username: this.userInfo.value.username,
+          email: this.userInfo.value.email,
+          phoneNumber: this.userInfo.value.phone,
+          password: this.userInfo.value.password,
+          birthDate: this.userInfo.value.birthdate
+        })
           .subscribe(user => {
             console.log(user)
-            // this.userInfo.reset()
+            this.userInfo.reset()
+            this.router.navigate(['/login'])
           })
     }
 
