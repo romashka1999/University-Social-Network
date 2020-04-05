@@ -13,10 +13,16 @@ import { SetUserInfoInterface } from "./interfaces/set-user-info.interface";
 export class UserRepository extends Repository<User> {
 
     public async signUp(signUpDto: UserSignUpDto): Promise<boolean> {
-        const { username, password } = signUpDto;
+        const { username, password, firstName, lastName, birthDate, gender, email, phoneNumber} = signUpDto;
 
         const { salt, hashedPassword } = await hashPassword(password);// hash pass
         const user =  new User();
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.birthDate = birthDate;
+        user.gender = gender;
+        user.email = email;
+        user.phoneNumber = phoneNumber;
         user.username = username;
         user.password = hashedPassword;
         user.salt = salt;
