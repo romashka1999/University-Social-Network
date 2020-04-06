@@ -14,6 +14,14 @@
             <div class="login-contnet" [formGroup]="userInfo">
                 <img class="avatar" src="../../assets/images/Login-Avatar.svg">
                 <h2>{{'AUTHORIZATION' | translate}}</h2>
+
+                <div class="alert alert-danger" *ngIf="auth.error$  | async as error">
+                  {{ error | translate}}
+                </div>
+                <div class="alert alert-info" *ngIf="message">
+                  {{ message | translate}}
+                </div>
+
                 <mat-form-field style="width: 100%">
                     <span matPrefix>
                         <i class="material-icons"> account_circle </i>
@@ -26,7 +34,7 @@
                 </mat-form-field>
                 <mat-form-field style="width: 100%">
                     <span matPrefix>
-                        <i class="material-icons"> no_encryption </i>                            
+                        <i class="material-icons"> no_encryption </i>
                     </span>
                     <mat-label>{{'PASSWORD' | translate}}</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">

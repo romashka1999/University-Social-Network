@@ -11,5 +11,8 @@
     "FIRST_STEP": "Fill out fields",
     "EMAIL": "email",
     "IMAGE": "image",
-    "BIRTH_DATE": "Birth date"
+    "BIRTH_DATE": "Birth date",
+    "INVALID_CREDENTIALS": "Invalid credentials",
+    "LOGIN_AGAIN": "Please, fill up form",
+    "AUTH_FAILED": "Session has expired, fill up form again"
 }

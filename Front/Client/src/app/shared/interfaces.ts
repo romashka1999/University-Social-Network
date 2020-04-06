@@ -17,4 +17,5 @@ export interface UserLogin {
 
 export interface StAuthResponse {
   accessToken: string;
+  exp: string;
 }
