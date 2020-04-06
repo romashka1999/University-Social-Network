@@ -7,6 +7,8 @@ import { UserSignInDto } from "../auth/dtos/user-sign-in.dto";
 import { hashPassword } from "src/modules/auth/helpers/password";
 import { GetUsersFilterDto } from "./dtos/get-users-filter.dto";
 import { SetUserInfoInterface } from "./interfaces/set-user-info.interface";
+import { pagination, Ipagination } from "src/shared/pagination";
+import { UserSearchDto } from "./dtos/user-serach.dto";
 
 
 @EntityRepository(User)
@@ -133,4 +135,22 @@ export class UserRepository extends Repository<User> {
             }
         }
     }
+
+    public async searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {
+        const {page, pageSize, search} = userSearchDto;
+        const { offset, limit } = <Ipagination>pagination(page, pageSize);
+
+        try {
+            return await this.createQueryBuilder('user')
+                .orWhere('user.email LIKE :email', {email: `%${search}%`})
+                .orWhere('user.username LIKE :username', {username: `%${search}%`})
+                .orWhere('user.phoneNumber LIKE :phoneNumber', {phoneNumber: `%${search}%`})
+                .select('id', 'username')
+                .skip(offset)
+                .take(limit)
+                .execute();
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }  
 }

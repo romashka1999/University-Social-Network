@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 
@@ -8,6 +8,7 @@ import { GetUsersFilterDto } from './dtos/get-users-filter.dto';
 import { UserUpdateDto } from './dtos/user-update.dto';
 import { UserSetPasswordDto } from './dtos/user-set-password.dto';
 import { hashPassword } from '../auth/helpers/password';
+import { UserSearchDto } from './dtos/user-serach.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,15 +23,11 @@ export class UsersService {
         try {
             const user =  await this.userRepository.findOne({ id });
             if(!user) {
-                throw {statusCode: HttpStatus.BAD_REQUEST, message: "USER_NOT_EXISTS"};
+                throw new NotFoundException("USER_NOT_EXISTS");
             }
             return user;
         } catch (error) {
-            if(error.statusCode) {
-                throw new HttpException(error.message, error.statusCode);
-            } else {
-                throw new InternalServerErrorException(error);
-            }
+            throw new InternalServerErrorException(error);
         }
     }
     
@@ -58,9 +55,7 @@ export class UsersService {
     public async setUserPasswordById(id: number, userSetPasswordDto: UserSetPasswordDto): Promise<boolean> {
         const { oldPassword, newPassword } = userSetPasswordDto;
         const user = await this.getUserById(id);
-        if(!user) {
-            throw new NotFoundException("USER_NOT_EXISTS");
-        }
+
         const { password } = user;
         if(oldPassword !== password) {
             throw new BadRequestException("PASSWORD_IS_INCORRECT");
@@ -70,27 +65,27 @@ export class UsersService {
     }
 
     public async setUserEmailById(id: number, email: string) {
-        const user = await this.getUserById(id);
-        if(!user) {
-            throw new NotFoundException("USER_NOT_EXISTS");
-        }
+        await this.getUserById(id);
         return this.userRepository.setUserInfo(id,  { email });
     }
 
     public async setUserUsernameById(id: number, username: string) {
-        const user = await this.getUserById(id);
-        if(!user) {
-            throw new NotFoundException("USER_NOT_EXISTS");
-        }
+        await this.getUserById(id);
         return this.userRepository.setUserInfo(id, { username });
     }
 
     public async setUserPhoneNumberById(id: number, phoneNumber: string) {
-        const user = await this.getUserById(id);
-        if(!user) {
-            throw new NotFoundException("USER_NOT_EXISTS");
-        }
+        await this.getUserById(id);
         return this.userRepository.setUserInfo(id, { phoneNumber });
     }
+
+    public async checkUserPublicById(id: number): Promise<User | null> {
+        const user = await this.getUserById(id);
+        return user.publicUser ? user : null;
+    }
+
+    public async searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {
+        return this.userRepository.searchUser(userSearchDto);
+    }       
 
 }

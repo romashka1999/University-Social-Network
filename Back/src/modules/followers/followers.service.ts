@@ -15,6 +15,19 @@ export class FollowersService {
     public getFollowersByUserId(userId: number, paginationGetFilterDto: PaginationGetFilterDto): Promise<Follower[]> {
         return this.followerRepository.getFollowersByUserId(userId, paginationGetFilterDto);
     }
+
+    public async getFolloweesByUserId(userId: number): Promise<any[]> {
+        try {
+            return await this.followerRepository.find({
+                where: {
+                    followerId: userId
+                },
+                select: ['userId']
+            });
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
     
     public async checkFollowing(followerId: number, followeeId: number): Promise<boolean> {
         try {

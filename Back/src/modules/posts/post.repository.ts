@@ -6,6 +6,9 @@ import { Post } from "./post.entity";
 import { PostCreateDto } from "./dtos/post-create.dto";
 import { User } from "../users/user.entity";
 import { PostUpdateDto } from "./dtos/post-update.dto";
+import { GetUserPostsFilterDto } from "./dtos/get-user-posts-filter.dto";
+import { pagination, Ipagination } from "src/shared/pagination";
+import { Follower } from "../followers/follower.entity";
 
 
 @EntityRepository(Post)
@@ -44,6 +47,25 @@ export class PostRepository extends Repository<Post> {
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
+    }
+
+    public async getPostsByUserIds(userIds: any[], getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        const { page, pageSize } = getUserPostsFilterDto;
+        const { offset, limit } = pagination<Ipagination>(page, pageSize);
+
+        try {
+            return await this.createQueryBuilder('post')
+                .where('post.userId IN(:...userIds)', {userIds: userIds})
+                .orderBy('createdAt', 'DESC')
+                .skip(offset)
+                .take(limit)
+                .getMany();
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+
+
+
     }
 
     

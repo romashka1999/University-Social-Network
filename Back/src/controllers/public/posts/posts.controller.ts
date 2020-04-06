@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Query, ValidationPipe, Post, Body, ParseIntPipe, Put, Param } from '@nestjs/common';
+import { Controller, UseGuards, Get, Query, ValidationPipe, Post, Body, ParseIntPipe, Put, Param, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { PostsService } from 'src/modules/posts/posts.service';
@@ -17,10 +17,10 @@ export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
     @Get()
-    public async getPostsByUserId(
+    public async getPostsByLoggedUserId(
         @GetUser() user: User,
         @Query(ValidationPipe) getUserPostsFilterDto: GetUserPostsFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.postsService.getPostsByUserId(user, getUserPostsFilterDto);
+        const gotData = await this.postsService.getPostsByLoggedUserId(user, getUserPostsFilterDto);
         return new ResponseCreator("POSTS_GOT", gotData);
     }
 
@@ -39,6 +39,23 @@ export class PostsController {
         @Body(ValidationPipe) postUpdateDto: PostUpdateDto): Promise<ResponseCreator> {
         const updatedData = await this.postsService.updatePostByPostId(user, postId, postUpdateDto);
         return new ResponseCreator("POST_UPDATED", updatedData);
+    }
+
+    @Delete('/:id')
+    public async deletePostByPostId(
+        @GetUser() user: User,
+        @Param('id', ParseIntPipe) postId: number): Promise<ResponseCreator> {
+        const deletedData = await this.postsService.deletePostByPostId(user, postId);
+        return new ResponseCreator("POST_DELETED", deletedData);
+    }
+
+    @Get('/user/:otherUserId')
+    public async getPostsByOtherUserId(
+        @GetUser() user: User,
+        @Param('otherUserId', ParseIntPipe) otherUserId: number,
+        @Query(ValidationPipe) getUserPostsFilterDto: GetUserPostsFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.postsService.getPostsByOtherUserId(user, otherUserId, getUserPostsFilterDto);
+        return new ResponseCreator("POSTS_GOT", gotData);
     }
 
 }

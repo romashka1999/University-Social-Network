@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, HttpStatus, HttpException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpStatus, HttpException, NotFoundException, Inject, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -9,30 +9,25 @@ import { User } from '../users/user.entity';
 import { Post } from './post.entity';
 import { PostUpdateDto } from './dtos/post-update.dto';
 import { GetUserPostsFilterDto } from './dtos/get-user-posts-filter.dto';
-import { pagination } from 'src/shared/pagination';
+import { pagination, Ipagination } from 'src/shared/pagination';
+import { UsersService } from '../users/users.service';
+import { FollowersService } from '../followers/followers.service';
 
 @Injectable()
 export class PostsService {
 
-    constructor(@InjectRepository(PostRepository) private readonly postRepository: PostRepository) {}
+    constructor(
+        @InjectRepository(PostRepository) private readonly postRepository: PostRepository,
+        private readonly usersService: UsersService,
+        private readonly followersService: FollowersService) {}
 
-    public async getPostsByUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
-        const { page, pageSize } = getUserPostsFilterDto;
-        const { offset, limit } = pagination(page, pageSize);
+    public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
+        const followees = await this.followersService.getFolloweesByUserId(user.id);
+        return this.postRepository.getPostsByUserIds(followees, getUserPostsFilterDto);
+    }
 
-        try {
-            const posts = this.postRepository.find({
-                where: {
-                    user: user,
-                    hidden: false
-                },
-                skip: offset,
-                take: limit
-            });
-            return posts;
-        } catch (error) {
-            throw new InternalServerErrorException(error);
-        }
+    public async getPostsByLoggedUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        return this.getPostsByUserId(user, getUserPostsFilterDto);
     }
 
     public createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
@@ -43,7 +38,7 @@ export class PostsService {
         return this.postRepository.updatePostByPostId(user, postId, postUpdateDto);
     }
 
-    public async deletePostByUserIdAndPostId(postId: number, user: User): Promise<Post> {
+    public async deletePostByPostId(user: User, postId: number): Promise<Post> {
         try {
             const deletedePost: DeleteResult = await this.postRepository.delete({id: postId, user: user, hidden: false});
 
@@ -78,8 +73,31 @@ export class PostsService {
         }
     }
 
-    public getPostsForAdmin() {
-        
+    public async getPostsByOtherUserId(user: User, otherUserId: number, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        const otherPublicUser = await this.usersService.checkUserPublicById(otherUserId);
+        if(!otherPublicUser) {
+            throw new BadRequestException("USER_IS_NOT_PUBLIC");
+        }
+        return await this.getPostsByUserId(otherPublicUser, getUserPostsFilterDto);
+    }
+
+    private async getPostsByUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        const { page, pageSize } = getUserPostsFilterDto;
+        const { offset, limit } = pagination<Ipagination>(page, pageSize);
+
+        try {
+            const posts = await this.postRepository.find({
+                where: {
+                    user: user,
+                    hidden: false
+                },
+                skip: offset,
+                take: limit
+            });
+            return posts;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 
     

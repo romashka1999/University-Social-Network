@@ -11,7 +11,7 @@ import { Admin } from 'src/modules/admins/admin.entity';
 import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
 
-@Controller('translations')
+@Controller('backOffice/translations')
 @UseGuards(AuthGuard())
 export class TranslationsController {
 

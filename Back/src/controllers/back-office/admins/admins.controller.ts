@@ -11,7 +11,7 @@ import { GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { Admin } from 'src/modules/admins/admin.entity';
 
 
-@Controller('admins')
+@Controller('backOffice/admins')
 @UseGuards(AuthGuard())
 export class AdminsController {
 

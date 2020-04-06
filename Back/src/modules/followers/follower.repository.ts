@@ -23,6 +23,8 @@ export class FollowerRepository extends Repository<Follower> {
             query.limit(limit);
         }
 
+        query.select('follower.followerId');
+
         try {
             const followers = await query.getMany();
             return followers;
