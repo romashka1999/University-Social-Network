@@ -29,7 +29,7 @@ export class PostRepository extends Repository<Post> {
         }
     }
 
-    public async updatePostByUserIdAndPostId(postId: number, user: User, postUpdateDto: PostUpdateDto): Promise<Post> {
+    public async updatePostByPostId(user: User, postId: number, postUpdateDto: PostUpdateDto): Promise<Post> {
         try {
             const updatedPost: UpdateResult =  await this
                 .createQueryBuilder('post')
