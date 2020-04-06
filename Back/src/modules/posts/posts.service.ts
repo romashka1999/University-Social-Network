@@ -39,8 +39,8 @@ export class PostsService {
         return this.postRepository.createPost(user, postCreateDto);
     }
 
-    public updatePostByUserIdAndPostId(postId: number, user: User, postUpdateDto: PostUpdateDto): Promise<Post> {
-        return this.postRepository.updatePostByUserIdAndPostId(postId, user, postUpdateDto);
+    public updatePostByPostId(user: User, postId: number, postUpdateDto: PostUpdateDto): Promise<Post> {
+        return this.postRepository.updatePostByPostId(user, postId, postUpdateDto);
     }
 
     public async deletePostByUserIdAndPostId(postId: number, user: User): Promise<Post> {

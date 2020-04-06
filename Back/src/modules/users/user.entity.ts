@@ -84,7 +84,7 @@ export class User extends BaseEntity {
         default: true, 
         nullable: false
     })
-    public: boolean;
+    publicUser: boolean;
 
     @Column({
         type: 'enum',
