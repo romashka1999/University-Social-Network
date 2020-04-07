@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique, OneToMany } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 import { validatePassword } from '../auth/helpers/password';
 import { Post } from "../posts/post.entity";
@@ -106,6 +106,11 @@ export class User extends BaseEntity {
     })
     salt: string;
 
+    @CreateDateColumn()
+    createDate: string;
+
+    @UpdateDateColumn()
+    updateDate: string;
 
     @OneToMany(type => Post, post => post.user)
     posts: Post[];

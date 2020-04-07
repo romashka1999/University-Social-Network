@@ -1,10 +1,10 @@
 import { createParamDecorator, BadRequestException } from "@nestjs/common";
 
 export const GetUser = createParamDecorator((data, req) => {
-    if(req.user.admin) {
+    if(req.args[0].user.admin) {
         throw new BadRequestException("YOU_ARE_ADMIN_NOT_USER");
     }
-    const user = req.user.data;
+    const user = req.args[0].user.data;
     return user;
 });
 

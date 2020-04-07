@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { User } from "../users/user.entity";
 import { Comment } from "../comments/comment.entity";
 
@@ -28,6 +28,12 @@ export class Post extends BaseEntity {
         nullable: false
     })
     publicPost: boolean;
+
+    @CreateDateColumn()
+    createDate: string;
+
+    @UpdateDateColumn()
+    updateDate: string;
 
     @ManyToOne(type => User, user => user.posts)
     user: User;

@@ -1,15 +1,15 @@
-import { IsNumber, IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsNumberString, IsString } from "class-validator"
 
 export class UserSearchDto {
     @IsString()
     @IsNotEmpty()
     search: string;
 
-    @IsNumber()
+    @IsNumberString()
     @IsNotEmpty()
     page: number;
 
-    @IsNumber()
+    @IsNumberString()
     @IsNotEmpty()
     pageSize: number;
 }

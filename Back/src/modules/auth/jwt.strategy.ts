@@ -26,6 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: any): Promise<{admin: boolean, data: Admin | User}> {
+        console.log('jwt payload:', payload);
         if(payload.admin) {
             const admin = await this.adminRepository.findOne({where: payload.admin});
             if(!admin) throw new UnauthorizedException("INVALID_TOKEN");

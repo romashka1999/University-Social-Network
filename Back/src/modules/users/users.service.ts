@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 
@@ -9,6 +9,9 @@ import { UserUpdateDto } from './dtos/user-update.dto';
 import { UserSetPasswordDto } from './dtos/user-set-password.dto';
 import { hashPassword } from '../auth/helpers/password';
 import { UserSearchDto } from './dtos/user-serach.dto';
+import { UserSetEmailDto } from './dtos/user-set-email.dto';
+import { UserSetUsernameDto } from './dtos/user-set-username.dto';
+import { UserSetPhoneNumberDto } from './dtos/user-set-phoneNumber.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,9 +22,15 @@ export class UsersService {
         return this.userRepository.getUsers(getUsersFilterDto);
     }
 
-    public async getUserById(id: number): Promise<User> {
+    public async getUserProfileById(id: number): Promise<User> {
         try {
-            const user =  await this.userRepository.findOne({ id });
+            const user =  await this.userRepository.findOne({
+                where: {
+                    id: id
+                },
+                select: ['id', 'firstName', 'lastName', 'birthDate', 'gender', 'profileImgUrl', 
+                'coverImageUrl', 'email', 'username', 'phoneNumber', 'publicUser', 'status']
+            });
             if(!user) {
                 throw new NotFoundException("USER_NOT_EXISTS");
             }
@@ -52,31 +61,46 @@ export class UsersService {
         return this.userRepository.setUserInfo(id, userUpdateDto);
     }
 
+    public async getUserById(id: number): Promise<User> {
+        try {
+            const user =  await this.userRepository.findOne({ id });
+            if(!user) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "USER_NOT_EXISTS"};
+            }
+            return user;
+        } catch (error) {
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
+        }
+    }
+
     public async setUserPasswordById(id: number, userSetPasswordDto: UserSetPasswordDto): Promise<boolean> {
         const { oldPassword, newPassword } = userSetPasswordDto;
         const user = await this.getUserById(id);
 
-        const { password } = user;
-        if(oldPassword !== password) {
+        if(!await user.validatePassword(oldPassword)) {
             throw new BadRequestException("PASSWORD_IS_INCORRECT");
         }
         const { salt, hashedPassword } = await hashPassword(newPassword);
-        return this.userRepository.setUserInfo(id, {password: hashedPassword, salt});
+        return await this.userRepository.setUserInfo(id, {password: hashedPassword, salt});
     }
 
-    public async setUserEmailById(id: number, email: string) {
+    public async setUserEmailById(id: number, userSetEmailDto: UserSetEmailDto) {
         await this.getUserById(id);
-        return this.userRepository.setUserInfo(id,  { email });
+        return await this.userRepository.setUserInfo(id,  userSetEmailDto);
     }
 
-    public async setUserUsernameById(id: number, username: string) {
+    public async setUserUsernameById(id: number, userSetUsernameDto: UserSetUsernameDto) {
         await this.getUserById(id);
-        return this.userRepository.setUserInfo(id, { username });
+        return await this.userRepository.setUserInfo(id, userSetUsernameDto);
     }
 
-    public async setUserPhoneNumberById(id: number, phoneNumber: string) {
+    public async setUserPhoneNumberById(id: number, userSetPhoneNumberDto: UserSetPhoneNumberDto) {
         await this.getUserById(id);
-        return this.userRepository.setUserInfo(id, { phoneNumber });
+        return await this.userRepository.setUserInfo(id, userSetPhoneNumberDto);
     }
 
     public async checkUserPublicById(id: number): Promise<User | null> {
@@ -84,7 +108,7 @@ export class UsersService {
         return user.publicUser ? user : null;
     }
 
-    public async searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {
+    public searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {
         return this.userRepository.searchUser(userSearchDto);
     }       
 

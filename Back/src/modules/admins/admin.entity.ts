@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 import { validatePassword } from '../auth/helpers/password';
 import { AdminRole } from "../admin-roles/admin-role.entity";
@@ -45,6 +45,12 @@ export class Admin extends BaseEntity {
         nullable: false
     })
     salt: string;
+
+    @CreateDateColumn()
+    createDate: string;
+
+    @UpdateDateColumn()
+    updateDate: string;
 
     @ManyToOne(type => AdminRole, adminRole => adminRole.admins, {eager: false})
     adminRole: AdminRole;

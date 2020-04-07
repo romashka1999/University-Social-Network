@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, Post} from '@nestjs/common';
+import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, Post, ParseIntPipe} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 
@@ -9,6 +9,9 @@ import { User } from 'src/modules/users/user.entity';
 import { ResponseCreator } from 'src/shared/response-creator';
 import { UserSearchDto } from 'src/modules/users/dtos/user-serach.dto';
 import { FollowersService } from 'src/modules/followers/followers.service';
+import { UserSetPhoneNumberDto } from 'src/modules/users/dtos/user-set-phoneNumber.dto';
+import { UserSetUsernameDto } from 'src/modules/users/dtos/user-set-username.dto';
+import { UserSetEmailDto } from 'src/modules/users/dtos/user-set-email.dto';
 
 
 @Controller('public/users')
@@ -21,7 +24,7 @@ export class UsersController {
 
     @Get('/profile')
     public async getUserProfile(@GetUser() user: User): Promise<ResponseCreator> {
-        const gotData = await this.usersService.getUserById(user.id);
+        const gotData = await this.usersService.getUserProfileById(user.id);
         return new ResponseCreator("USER_GOT", gotData);
     }
 
@@ -36,28 +39,28 @@ export class UsersController {
     @Patch('/phoneNumber')
     public async updateUserPhoneNumber(
         @GetUser() user: User,
-        @Body('phoneNumber', ValidationPipe) phoneNumber: string): Promise<ResponseCreator> {
-        const updatedData = await this.usersService.setUserPhoneNumberById(user.id, phoneNumber);
+        @Body(ValidationPipe) userSetPhoneNumberDto: UserSetPhoneNumberDto): Promise<ResponseCreator> {
+        const updatedData = await this.usersService.setUserPhoneNumberById(user.id, userSetPhoneNumberDto);
         return new ResponseCreator("USER_UPDATED", updatedData);
     }
 
     @Patch('/username')
     public async updateUsername(
         @GetUser() user: User,
-        @Body('username', ValidationPipe) username: string): Promise<ResponseCreator> {
-        const updatedData = await this.usersService.setUserUsernameById(user.id, username);
+        @Body(ValidationPipe) userSetUsernamedDto: UserSetUsernameDto): Promise<ResponseCreator> {
+        const updatedData = await this.usersService.setUserUsernameById(user.id, userSetUsernamedDto);
         return new ResponseCreator("USER_UPDATED", updatedData);
     }
 
     @Patch('/email')
     public async updateEmail(
         @GetUser() user: User,
-        @Body('email', ValidationPipe) email: string): Promise<ResponseCreator> {
-        const updatedData = await this.usersService.setUserEmailById(user.id, email);
+        @Body(ValidationPipe) userSetEmailDto: UserSetEmailDto): Promise<ResponseCreator> {
+        const updatedData = await this.usersService.setUserEmailById(user.id, userSetEmailDto);
         return new ResponseCreator("USER_UPDATED", updatedData);
     }
 
-    @Get('/serachUsers/:search')
+    @Get('/serachUsers')
     public async searchUsers(@Query(ValidationPipe) userSearchDto: UserSearchDto): Promise<ResponseCreator> {
         const gotData = await this.usersService.searchUser(userSearchDto);
         return new ResponseCreator("USERS_GOT", gotData);
@@ -66,7 +69,7 @@ export class UsersController {
     @Get('/checkfollowing/:followeeId')
     public async checkfollowing(
         @GetUser() user: User,
-        @Param('followeeId', ValidationPipe) followeeId: number): Promise<ResponseCreator> {
+        @Param('followeeId', ParseIntPipe) followeeId: number): Promise<ResponseCreator> {
         const gotData = await this.followersService.checkFollowing(user.id, followeeId);
         return new ResponseCreator("FOLLOWING_GOT", gotData);
     }
@@ -74,16 +77,16 @@ export class UsersController {
     @Get('/followUser/:userId')
     public async followUser(
         @GetUser() user: User,
-        @Param('userId', ValidationPipe) userId: number): Promise<ResponseCreator> {
-        const gotData = await this.followersService.followUser(user.id, userId);
-        return new ResponseCreator("FOLLOWING_GOT", gotData);
+        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
+        const createdData = await this.followersService.followUser(user.id, userId);
+        return new ResponseCreator("FOLLOWING_GOT", createdData);
     }
 
     @Get('/unfollowUser/:userId')
     public async unfollowUser(
         @GetUser() user: User,
-        @Param('userId', ValidationPipe) userId: number): Promise<ResponseCreator> {
-        const gotData = await this.followersService.unfollowUser(user.id, userId);
-        return new ResponseCreator("FOLLOWING_GOT", gotData);
+        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
+        const deletedData = await this.followersService.unfollowUser(user.id, userId);
+        return new ResponseCreator("FOLLOWING_GOT", deletedData);
     }
 }

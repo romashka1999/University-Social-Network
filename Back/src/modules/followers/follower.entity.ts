@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, CreateDateColumn } from "typeorm";
 
 
 @Entity()
@@ -17,4 +17,7 @@ export class Follower extends BaseEntity {
         nullable: false
     })
     followerId: number;
+
+    @CreateDateColumn()
+    createDate: string;
 }

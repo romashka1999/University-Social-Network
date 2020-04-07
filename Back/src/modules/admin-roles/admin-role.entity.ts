@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToMany, JoinTable } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Admin } from "../admins/admin.entity";
 import { AdminPermission } from "../admin-permissions/admin-permission.entity";
 
@@ -15,6 +15,12 @@ export class AdminRole extends BaseEntity {
         default: 'SUPER_ADMIN'
     })
     role: string;
+
+    @CreateDateColumn()
+    createDate: string;
+
+    @UpdateDateColumn()
+    updateDate: string;
 
 
     @ManyToMany(type => AdminPermission)

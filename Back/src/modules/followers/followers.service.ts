@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpStatus, HttpException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult } from 'typeorm';
 
@@ -6,11 +6,14 @@ import { DeleteResult } from 'typeorm';
 import { FollowerRepository } from './follower.repository';
 import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 import { Follower } from './follower.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FollowersService {
 
-    constructor(@InjectRepository(FollowerRepository) private readonly followerRepository: FollowerRepository) { }
+    constructor(
+        @InjectRepository(FollowerRepository) private readonly followerRepository: FollowerRepository,
+        private readonly usersService: UsersService) { }
 
     public getFollowersByUserId(userId: number, paginationGetFilterDto: PaginationGetFilterDto): Promise<Follower[]> {
         return this.followerRepository.getFollowersByUserId(userId, paginationGetFilterDto);
@@ -40,8 +43,13 @@ export class FollowersService {
     }
 
     public async followUser(followerId: number, followeeId: number): Promise<Follower> {
+        if(followerId === followeeId) {
+            throw new BadRequestException("FOLLOWERID_MUST_NOT_BE_EQUAL_TO_FOLLOWEEID");
+        }
+        // check if user followeeId in users tabe
+        await this.usersService.getUserById(followeeId);
         try {
-            const following = this.followerRepository.findOne({ followerId: followerId, userId: followeeId });
+            const following = await this.followerRepository.findOne({ followerId: followerId, userId: followeeId });
             if (following) {
                 throw { statusCode: HttpStatus.BAD_REQUEST, message: "FOLLOWING_ALREADY_EXISTS" };
             }

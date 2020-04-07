@@ -63,6 +63,8 @@ export class UserRepository extends Repository<User> {
 
             if(user && await user.validatePassword(password)) {
                 if(!user || user.password !== password) {
+                    delete user.password;
+                    delete user.salt;
                     return user;
                 } else {
                     return null;
@@ -74,6 +76,8 @@ export class UserRepository extends Repository<User> {
     }
 
     public async getUserByAccountIdentity(accountIdentity: string): Promise<User> | null {
+
+
         try {
             let user = await this.findOne({username: accountIdentity});
             if(user) {
@@ -142,10 +146,13 @@ export class UserRepository extends Repository<User> {
 
         try {
             return await this.createQueryBuilder('user')
+                .orWhere('user.firstName LIKE :firstName', {firstName: `%${search}%`})
+                .orWhere('user.lastName LIKE :lastName', {lastName: `%${search}%`})
                 .orWhere('user.email LIKE :email', {email: `%${search}%`})
                 .orWhere('user.username LIKE :username', {username: `%${search}%`})
                 .orWhere('user.phoneNumber LIKE :phoneNumber', {phoneNumber: `%${search}%`})
-                .select('id', 'username')
+                .orderBy('user.createDate', 'DESC')
+                .select(['user.id', 'user.firstName', 'user.lastName'])
                 .skip(offset)
                 .take(limit)
                 .execute();
