@@ -46,6 +46,7 @@
                     </mat-error>
                 </mat-form-field>
                 <button [ngClass]="userInfo.valid? 'submit-btn' : 'submit-btn btn-disabled'" (click)="userInfo.valid? onSubmit() : ''"> {{'AUTHORIZATION' | translate}} </button>
+              <h2>not registered? go to registration <a routerLink="/register">page</a></h2>
             </div>
         </div>
     </div>

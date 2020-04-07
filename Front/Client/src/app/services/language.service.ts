@@ -7,7 +7,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 export class LanguageService {
 
   private _languages = ['', 'en', 'ka', 'ru'];
-  private defaultLang = 'en';
+  private defaultLang = 'ka';
 
   get languageId() {
     return this._languages.findIndex(l => l == this.language);

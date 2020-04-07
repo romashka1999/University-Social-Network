@@ -19,3 +19,7 @@ export interface StAuthResponse {
   accessToken: string;
   exp: string;
 }
+export interface Gender {
+  value: string;
+  viewValue: string;
+}

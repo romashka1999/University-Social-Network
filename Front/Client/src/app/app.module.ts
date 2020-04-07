@@ -8,9 +8,9 @@ import {AuthInterceptor} from './shared/auth.interceptor';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //Material
-import {MatInputModule} from '@angular/material';
+import {MatInputModule, MatSelectModule} from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -55,31 +55,33 @@ const INTERCEPTOR_PROVIDER: Provider = {
     ProfileInfoComponent,
     HeaderComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatProgressBarModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    StoreDevtoolsModule.instrument({
-      maxAge: 25
-    }),
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    //ProfileModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatProgressBarModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        }),
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        MatSelectModule,
+        //ProfileModule,
+    ],
   providers: [MatDatepickerModule, AuthService, INTERCEPTOR_PROVIDER],
   bootstrap: [AppComponent]
 })

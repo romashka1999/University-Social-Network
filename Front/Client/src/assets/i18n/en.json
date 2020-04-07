@@ -6,13 +6,18 @@
     "LASTNAME": "lastname",
     "PHONE_NUMBER": "phone number",
     "PASSWORD": "password",
-    "FIELD_REQUIRED": "this field is required",
+    "FIELD_REQUIRED": "This field is required",
     "REGISTRATION": "registration",
-    "FIRST_STEP": "Fill out fields",
+    "FIRST_STEP": "Fill up form",
     "EMAIL": "email",
     "IMAGE": "image",
     "BIRTH_DATE": "Birth date",
     "INVALID_CREDENTIALS": "Invalid credentials",
     "LOGIN_AGAIN": "Please, fill up form",
-    "AUTH_FAILED": "Session has expired, fill up form again"
+    "AUTH_FAILED": "Session has expired, fill up form again",
+    "FIELD_MIN_LENGTH": "field min length",
+    "STRONG_PASS": "Need stronger password",
+    "EMAIL_MUST": "Email must be email!",
+    "PHONE_VALID": "Phone must be a phone!"
+
 }
