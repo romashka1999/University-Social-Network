@@ -1,11 +1,11 @@
-import { IsNumber, IsNotEmpty } from "class-validator"
+import { IsNotEmpty, IsNumberString } from "class-validator"
 
 export class GetUserPostsFilterDto {
-    @IsNumber()
+    @IsNumberString()
     @IsNotEmpty()
     page: number
 
-    @IsNumber()
+    @IsNumberString()
     @IsNotEmpty()
     pageSize: number
 }

@@ -103,9 +103,9 @@ export class UsersService {
         return await this.userRepository.setUserInfo(id, userSetPhoneNumberDto);
     }
 
-    public async checkUserPublicById(id: number): Promise<User | null> {
+    public async checkUserPublicById(id: number): Promise<boolean> {
         const user = await this.getUserById(id);
-        return user.publicUser ? user : null;
+        return user.publicUser ? true : false;
     }
 
     public searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {

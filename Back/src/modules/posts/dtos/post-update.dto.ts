@@ -1,11 +1,11 @@
-import { IsString, IsOptional, IsBoolean } from "class-validator";
+import { IsString, IsOptional, IsBooleanString } from "class-validator";
 
 export class PostUpdateDto {
     @IsString()
     @IsOptional()
     content: string;
 
-    @IsBoolean()
+    @IsBooleanString()
     @IsOptional()
     publicPost: boolean;
 }

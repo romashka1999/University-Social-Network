@@ -1,6 +1,5 @@
-import { Injectable, InternalServerErrorException, HttpStatus, HttpException, NotFoundException, Inject, BadRequestException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, UpdateResult } from 'typeorm';
 
 
 import { PostRepository } from './post.repository';
@@ -23,11 +22,12 @@ export class PostsService {
 
     public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
         const followees = await this.followersService.getFolloweesByUserId(user.id);
-        return this.postRepository.getPostsByUserIds(followees, getUserPostsFilterDto);
+        const followeesArray = followees.map(follow => follow.userId);
+        return this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
     }
 
     public async getPostsByLoggedUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
-        return this.getPostsByUserId(user, getUserPostsFilterDto);
+        return this.getPostsByUserId(user.id, getUserPostsFilterDto);
     }
 
     public createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
@@ -38,61 +38,44 @@ export class PostsService {
         return this.postRepository.updatePostByPostId(user, postId, postUpdateDto);
     }
 
-    public async deletePostByPostId(user: User, postId: number): Promise<Post> {
-        try {
-            const deletedePost: DeleteResult = await this.postRepository.delete({id: postId, user: user, hidden: false});
-
-            if(!deletedePost.affected) {
-                throw {statusCode: HttpStatus.BAD_REQUEST, message: "POST_NOT_EXISTS"};
-            }
-
-            return deletedePost.raw;
-        } catch (error) {
-            if(error.statusCode) {
-                throw new HttpException(error.message, error.statusCode);
-            } else {
-                throw new InternalServerErrorException(error);
-            }
-        }
+    public deletePostByPostId(user: User, postId: number): Promise<Post> {
+        return this.postRepository.deletePostByPostId(user, postId);
     }
 
-    public async hidePostByAdmin(postId: number, hidden: boolean) {
-        try {
-            const updatedPost: UpdateResult =  await this.postRepository
-                .createQueryBuilder('post')
-                .update(Post)
-                .set({hidden})
-                .where("id = :id", { id: postId})
-                .execute();
-            if(!updatedPost.affected) {
-                throw new NotFoundException("POST_NOT_EXISTS");
-            }
-            return updatedPost.raw;
-        } catch (error) {
-            throw new InternalServerErrorException(error);
-        }
+    public async hidePostByAdmin(postId: number, hidden: boolean): Promise<Post> {
+        return this.postRepository.hidePostByAdmin(postId, hidden);
     }
 
     public async getPostsByOtherUserId(user: User, otherUserId: number, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
-        const otherPublicUser = await this.usersService.checkUserPublicById(otherUserId);
-        if(!otherPublicUser) {
-            throw new BadRequestException("USER_IS_NOT_PUBLIC");
+        console.log(user.id);
+        console.log(otherUserId);
+        if(user.id === otherUserId) {
+            return await this.getPostsByUserId(user.id, getUserPostsFilterDto);
         }
-        return await this.getPostsByUserId(otherPublicUser, getUserPostsFilterDto);
+        const followingExists = await this.followersService.checkFollowing(user.id, otherUserId);
+        if(!followingExists) {
+            const isUserPublic = await this.usersService.checkUserPublicById(otherUserId);
+            if(!isUserPublic) {
+                throw new BadRequestException("USER_IS_NOT_PUBLIC");
+            }
+        }
+        return await this.getPostsByUserId(otherUserId, getUserPostsFilterDto);
     }
 
-    private async getPostsByUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+    private async getPostsByUserId(userId: number, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        console.log(userId);
         const { page, pageSize } = getUserPostsFilterDto;
         const { offset, limit } = pagination<Ipagination>(page, pageSize);
 
         try {
             const posts = await this.postRepository.find({
                 where: {
-                    user: user,
+                    user: userId,
                     hidden: false
                 },
                 skip: offset,
-                take: limit
+                take: limit,
+                loadRelationIds: true
             });
             return posts;
         } catch (error) {
