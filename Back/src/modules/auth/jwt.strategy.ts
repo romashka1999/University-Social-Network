@@ -32,7 +32,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             if(!admin) throw new UnauthorizedException("INVALID_TOKEN");
             return {admin: true, data: admin};
         } else if(payload.user) {
-            const user = await this.userRepository.findOne({where: payload.user});
+            const user = await this.userRepository.findOne({where: {id: payload.user.id}});
             if(!user) throw new UnauthorizedException("INVALID_TOKEN");
             return {admin: false, data: user};
         } else {

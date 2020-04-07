@@ -49,12 +49,19 @@ export class PostsController {
         return new ResponseCreator("POST_DELETED", deletedData);
     }
 
-    @Get('/user/:otherUserId')
+    @Get('/otherUser/:userId')
     public async getPostsByOtherUserId(
         @GetUser() user: User,
-        @Param('otherUserId', ParseIntPipe) otherUserId: number,
+        @Param('userId', ParseIntPipe) otherUserId: number,
         @Query(ValidationPipe) getUserPostsFilterDto: GetUserPostsFilterDto): Promise<ResponseCreator> {
         const gotData = await this.postsService.getPostsByOtherUserId(user, otherUserId, getUserPostsFilterDto);
+        return new ResponseCreator("POSTS_GOT", gotData);
+    }
+    @Get('/followeesPosts') 
+    public async getFolloweesPostsForLoggedUser(
+        @GetUser() user: User,
+        @Query(ValidationPipe) getUserPostsFilterDto: GetUserPostsFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.postsService.getFolloweesPostsForLoggedUser(user, getUserPostsFilterDto)
         return new ResponseCreator("POSTS_GOT", gotData);
     }
 
