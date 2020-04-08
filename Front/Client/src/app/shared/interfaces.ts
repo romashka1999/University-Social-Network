@@ -8,6 +8,10 @@ export interface Users {
   phoneNumber: string;
   password: string;
   birthDate: Date;
+  publicUser?: boolean;
+  status?: string;
+  profileImgUrl?: null;
+  coverImageUrl?: null;
 }
 
 export interface UserLogin {
@@ -15,11 +19,12 @@ export interface UserLogin {
   password: string;
 }
 
-export interface StAuthResponse {
-  accessToken: string;
-  exp: string;
-}
 export interface Gender {
   value: string;
   viewValue: string;
+}
+export interface UserSearch {
+    user_lastName: string;
+    user_firstName: string;
+    user_id?: number;
 }

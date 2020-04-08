@@ -8,7 +8,7 @@ import {AuthInterceptor} from './shared/auth.interceptor';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //Material
-import {MatInputModule, MatSelectModule} from '@angular/material';
+import {MatCardModule, MatInputModule, MatSelectModule} from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -33,6 +33,8 @@ import {HeaderComponent} from './shared/header/header.component';
 // import { ProfileModule } from './layouts/profile/profile.module';
 //env
 import {environment} from 'src/environments/environment';
+import { SearchComponent } from './layouts/search/search.component';
+import { SettingsComponent } from './layouts/profile/settings/settings.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
@@ -53,7 +55,9 @@ const INTERCEPTOR_PROVIDER: Provider = {
     SidenavComponent,
     ProfileComponent,
     ProfileInfoComponent,
-    HeaderComponent
+    HeaderComponent,
+    SearchComponent,
+    SettingsComponent
   ],
     imports: [
         BrowserModule,
@@ -80,6 +84,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
             }
         }),
         MatSelectModule,
+        MatCardModule,
         //ProfileModule,
     ],
   providers: [MatDatepickerModule, AuthService, INTERCEPTOR_PROVIDER],
