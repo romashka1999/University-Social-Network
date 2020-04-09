@@ -10,7 +10,7 @@ export class HeaderComponent {
     constructor(private data: DataService) {}
     sendValue(event) {
       if (event.target.value !== '') {
-        this.data.searchFunc(event);
+        this.data.searchFunc(event.target.value);
       }
       else console.log("search is empty")
     }

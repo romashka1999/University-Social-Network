@@ -4,6 +4,7 @@
     <div class="card-body">
       <p> fName: {{ searchMatch.user_firstName }}</p>
       <p> lName: {{ searchMatch.user_lastName }}</p>
+<!--      <img href="{{searchMatch.user_profileImgUrl}}">-->
       <div>
         <button class="btn btn-info" (click)="goToProfile(searchMatch.user_id)">view Profile</button>
       </div>

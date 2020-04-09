@@ -9,7 +9,7 @@ export class DataService {
   currentInput = this.searchSource.asObservable()
   constructor(private http: HttpClient) {}
   searchFunc(event: any) {
-    this.searchSource.next(event.target.value);
+    this.searchSource.next(event);
   }
   getProfile(id: number): Observable<any> {
    return  this.http.get<Users[]>(`http://localhost:3000/public/users/profile/${id}`);

@@ -17,5 +17,6 @@ export class ProfileComponent implements OnInit{
         this._snackBar.open('შეტყობინება...', 'დახურვა', {
             duration: 250000,
         });
+        console.log(this.userProfile)
     }
 }

@@ -10,9 +10,7 @@ import {HttpClient} from '@angular/common/http';
     styleUrls: ['./profile-info.component.scss']
 })
 export class ProfileInfoComponent implements OnInit {
-    user = localStorage.getItem('st-token');
-    token =  JSON.parse(atob(this.user.split('.')[1]));
-    userProfile: Users[] = [this.token.user];
+    userProfile: Users[] = [];
     ifFollowed: boolean;
     id: number;
     constructor(private data: DataService, private route: ActivatedRoute, private http: HttpClient) {
@@ -36,12 +34,16 @@ export class ProfileInfoComponent implements OnInit {
     this.http.get(`http://localhost:3000/public/users/followUser/${this.id}`)
       .subscribe((res) => {
         console.log(res)
+        this.ifFollowed = false;
+        console.log(this.ifFollowed)
       })
   }
     unfollowUser() {
     this.http.get(`http://localhost:3000/public/users/unfollowUser/${this.id}`)
       .subscribe((res) => {
         console.log(res)
+        this.ifFollowed = true;
+        console.log(this.ifFollowed)
       })
   }
 }
