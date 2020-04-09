@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {DataService} from '../../services/data.service';
 
 @Component({
@@ -7,7 +7,6 @@ import {DataService} from '../../services/data.service';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-    searchInput: string
     constructor(private data: DataService) {}
     sendValue(event) {
       if (event.target.value !== '') {
@@ -15,4 +14,5 @@ export class HeaderComponent {
       }
       else console.log("search is empty")
     }
+
 }

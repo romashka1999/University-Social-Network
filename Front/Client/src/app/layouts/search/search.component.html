@@ -4,14 +4,10 @@
     <div class="card-body">
       <p> fName: {{ searchMatch.user_firstName }}</p>
       <p> lName: {{ searchMatch.user_lastName }}</p>
-      <div *ngIf="followedArr[searchMatch.user_id]; else elseBlock">
+      <div>
         <button class="btn btn-danger" (click)="unfollowUser(searchMatch.user_id)">unfollow</button>
-        <button class="btn btn-danger" (click)="checkIfFollowed(searchMatch.user_id)">check</button>
+        <button class="btn btn-success" (click)="followUser(searchMatch.user_id)">follow</button>
       </div>
-      <ng-template #elseBlock>
-        <button class="btn btn-success" (click)="followUser(searchMatch.user_id)">Follow</button>
-        <button class="btn btn-danger" (click)="checkIfFollowed(searchMatch.user_id)">check</button>
-      </ng-template>
     </div>
   </div>
 </div>

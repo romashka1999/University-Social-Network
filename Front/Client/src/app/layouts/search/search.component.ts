@@ -11,7 +11,6 @@ import {forkJoin, Observable} from 'rxjs';
 })
 export class SearchComponent implements OnInit {
   searchMatchs: UserSearch[] = []
-  followedArr = []
   constructor(private http: HttpClient, private data: DataService) { }
 
   public ngOnInit() {
@@ -26,7 +25,6 @@ export class SearchComponent implements OnInit {
       })
   }
   followUser(id: number) {
-    this.checkIfFollowed(id)
     this.http.get(`http://localhost:3000/public/users/followUser/${id}`)
       .subscribe((res) => {
         console.log(res)
@@ -38,14 +36,4 @@ export class SearchComponent implements OnInit {
         console.log(res)
       })
   }
-  checkIfFollowed(id: number) {
-     this.http.get<any>(`http://localhost:3000/public/users/checkfollowing/${id}`)
-      .subscribe((res) => {
-        // console.log(this.followedArr);
-        this.followedArr[id] = (res.data);
-        console.log(res.data)
-        return (res.data);
-      })
-  }
-
 }

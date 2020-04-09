@@ -3,13 +3,14 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import { UserLogin, Users} from '../shared/interfaces';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
       public error$: Subject<string> = new Subject<string>()
-      constructor(private http: HttpClient) {}
+      constructor(private http: HttpClient, private router: Router) {}
 
       get token(): string {
         const expDate = new Date(localStorage.getItem('st-token-exp'))
@@ -37,6 +38,7 @@ export class AuthService {
 
       logout() {
         this.setToken(null)
+        this.router.navigate(['/login']);
       }
 
       isAuthenticated(): boolean {

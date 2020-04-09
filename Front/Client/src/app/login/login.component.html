@@ -37,7 +37,7 @@
                         <i class="material-icons"> no_encryption </i>
                     </span>
                     <mat-label>{{'PASSWORD' | translate}}</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <input (keyup.enter)="userInfo.valid? onSubmit(): ''" matInput [type]="hide ? 'password' : 'text'" formControlName="password">
                     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
