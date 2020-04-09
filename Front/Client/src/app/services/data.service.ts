@@ -11,8 +11,8 @@ export class DataService {
   searchFunc(event: any) {
     this.searchSource.next(event.target.value);
   }
-  getProfile(): Observable<any> {
-   return  this.http.get<Users[]>(`http://localhost:3000/public/users/profile`)
+  getProfile(id: number): Observable<any> {
+   return  this.http.get<Users[]>(`http://localhost:3000/public/users/profile/${id}`);
   }
   changePhone(newPhone: string) {
    return  this.http.patch(`http://localhost:3000/public/users/phoneNumber`, {
@@ -38,4 +38,5 @@ export class DataService {
       email: newEmail
     });
   }
+
 }

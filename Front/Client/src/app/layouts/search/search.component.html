@@ -5,8 +5,7 @@
       <p> fName: {{ searchMatch.user_firstName }}</p>
       <p> lName: {{ searchMatch.user_lastName }}</p>
       <div>
-        <button class="btn btn-danger" (click)="unfollowUser(searchMatch.user_id)">unfollow</button>
-        <button class="btn btn-success" (click)="followUser(searchMatch.user_id)">follow</button>
+        <button class="btn btn-info" (click)="goToProfile(searchMatch.user_id)">view Profile</button>
       </div>
     </div>
   </div>

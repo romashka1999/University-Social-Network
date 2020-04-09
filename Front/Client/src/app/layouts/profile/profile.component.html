@@ -4,7 +4,14 @@
     </div>
     <div class="main-container d-flex flex-row">
         <div class="left-side">
-            <app-profile-info></app-profile-info>
+          <div class="main-info-container">
+            <mat-card *ngFor="let user of userProfile">
+              <mat-card-title>{{ user.firstName }} {{ user.lastName }}</mat-card-title>
+              <mat-card-content>email: {{ user.email }}</mat-card-content>
+              <mat-card-content>phone number: {{ user.phoneNumber }}</mat-card-content>
+              <mat-card-content>status: {{ user.status }}</mat-card-content>
+            </mat-card>
+          </div>
         </div>
         <div class="right-side">
           <app-search></app-search>
