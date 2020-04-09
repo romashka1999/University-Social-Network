@@ -30,6 +30,9 @@ export class AuthService {
             throw new UnauthorizedException('INVALID_CREDENTIALS');
         }
 
+        delete user.password;
+        delete user.salt;
+
         const payload = { user };
         const accessToken: string = await this.jwtService.signAsync(payload);
 

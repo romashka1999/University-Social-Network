@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -31,8 +31,8 @@ const jwtConfig = config.get('jwt');
         fileSize: 10000000
       }
     }),
-    AdminsModule,
-    UsersModule
+    forwardRef(() => AdminsModule),
+    forwardRef(() => UsersModule)
   ],
   controllers: [AuthController],
   providers: [

@@ -3,19 +3,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppGateway } from './app.gateway';
 import { typeOrmConfig } from './config/typeorm.config';
-import { AuthModule } from './modules/auth/auth.module';
-import { PublicModule } from './controllers/public/public.module';
-import { BackOfficeModule } from './controllers/back-office/back-office.module';
+import { UsersModule } from './modules/users/users.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { AdminsModule } from './modules/admins/admins.module';
+import { TranslationsModule } from './modules/translations/translations.module';
 
-
- 
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
-    AuthModule,
-    PublicModule,
-    BackOfficeModule
+    UsersModule,
+    PostsModule,
+    AdminsModule,
+    TranslationsModule
   ],
   providers: [AppGateway]
 })
