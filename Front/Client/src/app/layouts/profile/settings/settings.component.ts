@@ -10,13 +10,10 @@ import {Users} from '../../../shared/interfaces';
 export class SettingsComponent implements OnInit {
 
   constructor(private data: DataService) { }
-  userProfile: Users[] = [];
+  user = localStorage.getItem('st-token')
+  token =  JSON.parse(atob(this.user.split('.')[1]));
+  userProfile: Users[] = [this.token.user];
   ngOnInit() {
-    this.data.getProfile()
-      .subscribe(userProfile => {
-        this.userProfile.push(userProfile.data)
-        console.log(this.userProfile);
-      });
   }
 
   changePhone(newPhone: string) {
