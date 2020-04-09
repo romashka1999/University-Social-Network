@@ -31,7 +31,7 @@ const jwtConfig = config.get('jwt');
         fileSize: 10000000
       }
     }),
-    forwardRef(() => AdminsModule),
+    AdminsModule,
     forwardRef(() => UsersModule)
   ],
   controllers: [AuthController],

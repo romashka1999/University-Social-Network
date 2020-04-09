@@ -13,6 +13,7 @@ import { UserSetUsernameDto } from 'src/modules/users/dtos/user-set-username.dto
 import { UserSetEmailDto } from 'src/modules/users/dtos/user-set-email.dto';
 import { Admin } from 'typeorm';
 import { GetUsersFilterDto } from './dtos/get-users-filter.dto';
+import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
 
 @Controller('public/users')
@@ -67,14 +68,6 @@ export class UsersController {
         return new ResponseCreator("USERS_GOT", gotData);
     }
 
-    @Get('/checkfollowing/:followeeId')
-    public async checkFollowing(
-        @GetUser() user: User,
-        @Param('followeeId', ParseIntPipe) followeeId: number): Promise<ResponseCreator> {
-        const gotData = await this.usersService.checkFollowing(user.id, followeeId);
-        return new ResponseCreator("FOLLOWING_GOT", gotData);
-    }
-
     @Get('/followUser/:userId')
     public async followUser(
         @GetUser() user: User,
@@ -89,6 +82,24 @@ export class UsersController {
         @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
         const deletedData = await this.usersService.unfollowUser(user.id, userId);
         return new ResponseCreator("FOLLOWING_GOT", deletedData);
+    }
+
+    @Get('/userFollowings/:userId')
+    public async getUserFollowings(
+        @GetUser() user: User,
+        @Param('userId', ParseIntPipe) userId: number,
+        @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.usersService.getUserFollowings(user.id, userId, paginationGetFilterDto);
+        return new ResponseCreator("FOLLOWINGS_GOT", gotData);
+    }
+
+    @Get('/userFollowers/:userId')
+    public async getUserFollowers(
+        @GetUser() user: User,
+        @Param('userId', ParseIntPipe) userId: number,
+        @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.usersService.getUserFollowers(user.id, userId, paginationGetFilterDto);
+        return new ResponseCreator("FOLLOWERS_GOT", gotData);
     }
 }
 

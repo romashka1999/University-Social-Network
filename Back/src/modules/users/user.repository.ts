@@ -160,4 +160,16 @@ export class UserRepository extends Repository<User> {
             throw new InternalServerErrorException(error);
         }
     }  
+
+    public async getUsersByIds(userIds: number[]): Promise<Array<User>> {
+
+        try {
+            return await this.createQueryBuilder('user')
+                .where('user.id IN(:...userIds)', {userIds: userIds})
+                .select(['user.id', 'user.firstName', 'user.lastName', 'user.profileImgUrl'])
+                .execute();
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
 }

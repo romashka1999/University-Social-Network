@@ -21,7 +21,7 @@ export class PostsService {
         private readonly followersService: FollowersService) {}
 
     public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
-        const followees = await this.followersService.getFolloweesByUserId(user.id);
+        const followees = await this.followersService.getFolloweesByUserId(user.id, {page: null, pageSize: null});
         const followeesArray = followees.map(follow => follow.userId);
         return this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
     }

@@ -13,19 +13,21 @@ import { UserSetEmailDto } from './dtos/user-set-email.dto';
 import { UserSetUsernameDto } from './dtos/user-set-username.dto';
 import { UserSetPhoneNumberDto } from './dtos/user-set-phoneNumber.dto';
 import { FollowersService } from '../followers/followers.service';
+import { Follower } from '../followers/follower.entity';
+import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
 @Injectable()
 export class UsersService {
 
     constructor(
         @InjectRepository(UserRepository) private readonly userRepository: UserRepository,
-        /*private readonly followersService: FollowersService*/) {}
+        private readonly followersService: FollowersService) {}
 
     public getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<Array<User>> {
         return this.userRepository.getUsers(getUsersFilterDto);
     }
 
-    public async getUserProfileById(loggedUserId: number, userId: number): Promise<User> {
+    public async getUserProfileById(loggedUserId: number, userId: number): Promise<User | any> {
         if(loggedUserId === userId) {
             const user = await this.getUserById(loggedUserId);
             delete user.password;
@@ -43,6 +45,8 @@ export class UsersService {
             if(!user.publicUser) {
                 delete user.birthDate;
             }
+            const profile: any = user;
+            profile.following = await this.followersService.checkFollowing(loggedUserId, userId);
             return user;
         }
     }
@@ -133,23 +137,42 @@ export class UsersService {
         }
     } 
 
-
-
-    public checkFollowing(loggedUserId: number, followeeId: number): Promise<any> {
-        // return this.followersService.checkFollowing(loggedUserId, followeeId);
-        return Promise.all[1];
+    public followUser(loggedUserId: number, userId: number): Promise<Follower> {
+        return this.followersService.followUser(loggedUserId, userId);
     }
 
 
-    public followUser(loggedUserId: number, userId: number): Promise<any> {
-        // return this.followersService.followUser(loggedUserId, userId);
-        return Promise.all[1];
+    public unfollowUser(loggedUserId: number, userId: number): Promise<Follower> {
+        return this.followersService.unfollowUser(loggedUserId, userId);
     }
 
 
-    public unfollowUser(loggedUserId: number, userId: number): Promise<any> {
-        // return this.followersService.unfollowUser(loggedUserId, userId);
-        return Promise.all[1];
+
+    public async getUserFollowings(loggedUserId: number, userId: number, paginationGetFilterDto: PaginationGetFilterDto): Promise<Array<User>> {
+        const user = await this.getUserById(userId);
+        if(!user.publicUser) {
+            const followingExists = await this.followersService.checkFollowing(loggedUserId, userId);
+            if(!followingExists) {
+                throw new BadRequestException("USER_IS_NOT_PUBLIC");
+            }
+        }
+        const followees = await this.followersService.getFolloweesByUserId(user.id, paginationGetFilterDto);
+        const followeesArray = followees.map(follow => follow.userId);
+        return await this.userRepository.getUsersByIds(followeesArray);
+    }
+
+
+    public async getUserFollowers(loggedUserId: number, userId: number, paginationGetFilterDto: PaginationGetFilterDto): Promise<Array<User>> {
+        const user = await this.getUserById(userId);
+        if(!user.publicUser) {
+            const followingExists = await this.followersService.checkFollowing(loggedUserId, userId);
+            if(!followingExists) {
+                throw new BadRequestException("USER_IS_NOT_PUBLIC");
+            }
+        }
+        const followers = await this.followersService.getFollowersByUserId(user.id, paginationGetFilterDto);
+        const followersArray = followers.map(follow => follow.followerId);
+        return await this.userRepository.getUsersByIds(followersArray);
     }
 
 }

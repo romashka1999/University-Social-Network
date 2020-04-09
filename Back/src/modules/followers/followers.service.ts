@@ -13,23 +13,14 @@ export class FollowersService {
 
     constructor(
         @InjectRepository(FollowerRepository) private readonly followerRepository: FollowerRepository,
-        private readonly usersService: UsersService) { }
+        /*private readonly usersService: UsersService*/) { }
 
     public getFollowersByUserId(userId: number, paginationGetFilterDto: PaginationGetFilterDto): Promise<Follower[]> {
         return this.followerRepository.getFollowersByUserId(userId, paginationGetFilterDto);
     }
 
-    public async getFolloweesByUserId(userId: number): Promise<any[]> {
-        try {
-            return await this.followerRepository.find({
-                where: {
-                    followerId: userId
-                },
-                select: ['userId']
-            });
-        } catch (error) {
-            throw new InternalServerErrorException(error);
-        }
+    public async getFolloweesByUserId(userId: number, paginationGetFilterDto: PaginationGetFilterDto): Promise<any[]> {
+        return this.followerRepository.getFolloweesByUserId(userId, paginationGetFilterDto);
     }
     
     public async checkFollowing(followerId: number, followeeId: number): Promise<boolean> {
@@ -47,7 +38,7 @@ export class FollowersService {
             throw new BadRequestException("FOLLOWERID_MUST_NOT_BE_EQUAL_TO_FOLLOWEEID");
         }
         // check if user followeeId in users tabe
-        await this.usersService.getUserById(followeeId);
+        //await this.usersService.getUserById(followeeId);
         try {
             const following = await this.followerRepository.findOne({ followerId: followerId, userId: followeeId });
             if (following) {
@@ -57,7 +48,7 @@ export class FollowersService {
             follwer.userId = followeeId;
             follwer.followerId = followerId;
             const createdFollower = await follwer.save();
-            await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "FOLLOW");
+            //await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "FOLLOW");
             return createdFollower;
         } catch (error) {
             if (error.statusCode) {
@@ -74,7 +65,7 @@ export class FollowersService {
             if(!deletedFollowing.affected) {
                 throw { statusCode: HttpStatus.BAD_REQUEST, message: "FOLLOWING_NOT_EXISTS" };
             }
-            await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "UNFOLLOW");
+            //await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "UNFOLLOW");
             return deletedFollowing.raw;
         } catch (error) {
             if (error.statusCode) {
