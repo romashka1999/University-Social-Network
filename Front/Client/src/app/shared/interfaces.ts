@@ -24,6 +24,7 @@ export interface Gender {
   viewValue: string;
 }
 export interface UserSearch {
+    user_profileImgUrl: string;
     user_lastName: string;
     user_firstName: string;
     user_id?: number;
