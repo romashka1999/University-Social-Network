@@ -22,21 +22,29 @@ export class UsersService {
         return this.userRepository.getUsers(getUsersFilterDto);
     }
 
-    public async getUserProfileById(id: number): Promise<User> {
-        try {
-            const user =  await this.userRepository.findOne({
-                where: {
-                    id: id
-                },
-                select: ['id', 'firstName', 'lastName', 'birthDate', 'gender', 'profileImgUrl', 
-                'coverImageUrl', 'email', 'username', 'phoneNumber', 'publicUser', 'status']
-            });
-            if(!user) {
-                throw new NotFoundException("USER_NOT_EXISTS");
-            }
+    public async getUserProfileById(loggedUserId: number, userId: number): Promise<User> {
+        if(loggedUserId === userId) {
+            const user = await this.getUserById(loggedUserId);
+            delete user.password;
+            delete user.salt;
+            delete user.createDate;
+            delete user.updateDate;
             return user;
-        } catch (error) {
-            throw new InternalServerErrorException(error);
+        } else {
+            try {
+                const user = await this.getUserById(userId);
+                delete user.password;
+                delete user.salt;
+                delete user.createDate;
+                delete user.updateDate;
+                delete user.status;
+                if(!user.publicUser) {
+                    delete user.birthDate;
+                }
+                return user;
+            } catch (error) {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
     
@@ -108,8 +116,8 @@ export class UsersService {
         return user.publicUser ? true : false;
     }
 
-    public searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {
-        return this.userRepository.searchUser(userSearchDto);
+    public searchUsers(userSearchDto: UserSearchDto): Promise<Array<User>> {
+        return this.userRepository.searchUsers(userSearchDto);
     }       
 
 }

@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, Post, ParseIntPipe} from '@nestjs/common';
+import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 
@@ -22,9 +22,11 @@ export class UsersController {
         private readonly usersService: UsersService,
         private readonly followersService: FollowersService) {}
 
-    @Get('/profile')
-    public async getUserProfile(@GetUser() user: User): Promise<ResponseCreator> {
-        const gotData = await this.usersService.getUserProfileById(user.id);
+    @Get('/profile/:userId')
+    public async getUserProfile(
+        @GetUser() user: User,
+        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
+        const gotData = await this.usersService.getUserProfileById(user.id, userId);
         return new ResponseCreator("USER_GOT", gotData);
     }
 
@@ -62,7 +64,7 @@ export class UsersController {
 
     @Get('/serachUsers')
     public async searchUsers(@Query(ValidationPipe) userSearchDto: UserSearchDto): Promise<ResponseCreator> {
-        const gotData = await this.usersService.searchUser(userSearchDto);
+        const gotData = await this.usersService.searchUsers(userSearchDto);
         return new ResponseCreator("USERS_GOT", gotData);
     }
 

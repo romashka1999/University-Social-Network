@@ -140,7 +140,7 @@ export class UserRepository extends Repository<User> {
         }
     }
 
-    public async searchUser(userSearchDto: UserSearchDto): Promise<Array<User>> {
+    public async searchUsers(userSearchDto: UserSearchDto): Promise<Array<User>> {
         const {page, pageSize, search} = userSearchDto;
         const { offset, limit } = <Ipagination>pagination(page, pageSize);
 
@@ -152,7 +152,7 @@ export class UserRepository extends Repository<User> {
                 .orWhere('user.username LIKE :username', {username: `%${search}%`})
                 .orWhere('user.phoneNumber LIKE :phoneNumber', {phoneNumber: `%${search}%`})
                 .orderBy('user.createDate', 'DESC')
-                .select(['user.id', 'user.firstName', 'user.lastName'])
+                .select(['user.id', 'user.firstName', 'user.lastName', 'user.profileImgUrl'])
                 .skip(offset)
                 .take(limit)
                 .execute();
