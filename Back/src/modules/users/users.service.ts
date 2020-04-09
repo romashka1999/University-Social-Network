@@ -12,11 +12,14 @@ import { UserSearchDto } from './dtos/user-serach.dto';
 import { UserSetEmailDto } from './dtos/user-set-email.dto';
 import { UserSetUsernameDto } from './dtos/user-set-username.dto';
 import { UserSetPhoneNumberDto } from './dtos/user-set-phoneNumber.dto';
+import { FollowersService } from '../followers/followers.service';
 
 @Injectable()
 export class UsersService {
 
-    constructor(@InjectRepository(UserRepository) private readonly userRepository: UserRepository) {}
+    constructor(
+        @InjectRepository(UserRepository) private readonly userRepository: UserRepository,
+        /*private readonly followersService: FollowersService*/) {}
 
     public getUsers(getUsersFilterDto: GetUsersFilterDto): Promise<Array<User>> {
         return this.userRepository.getUsers(getUsersFilterDto);
@@ -129,5 +132,24 @@ export class UsersService {
             throw new InternalServerErrorException(error);
         }
     } 
+
+
+
+    public checkFollowing(loggedUserId: number, followeeId: number): Promise<any> {
+        // return this.followersService.checkFollowing(loggedUserId, followeeId);
+        return Promise.all[1];
+    }
+
+
+    public followUser(loggedUserId: number, userId: number): Promise<any> {
+        // return this.followersService.followUser(loggedUserId, userId);
+        return Promise.all[1];
+    }
+
+
+    public unfollowUser(loggedUserId: number, userId: number): Promise<any> {
+        // return this.followersService.unfollowUser(loggedUserId, userId);
+        return Promise.all[1];
+    }
 
 }

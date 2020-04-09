@@ -1,26 +1,25 @@
-import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe} from '@nestjs/common';
+import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, UsePipes} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 
 import { UsersService } from 'src/modules/users/users.service';
 import { UserSetPasswordDto } from 'src/modules/users/dtos/user-set-password.dto';
-import { GetUser } from 'src/modules/auth/get-account-data.decorator';
+import { GetUser, GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
 import { ResponseCreator } from 'src/shared/response-creator';
 import { UserSearchDto } from 'src/modules/users/dtos/user-serach.dto';
-import { FollowersService } from 'src/modules/followers/followers.service';
 import { UserSetPhoneNumberDto } from 'src/modules/users/dtos/user-set-phoneNumber.dto';
 import { UserSetUsernameDto } from 'src/modules/users/dtos/user-set-username.dto';
 import { UserSetEmailDto } from 'src/modules/users/dtos/user-set-email.dto';
+import { Admin } from 'typeorm';
+import { GetUsersFilterDto } from './dtos/get-users-filter.dto';
 
 
 @Controller('public/users')
 @UseGuards(AuthGuard())
 export class UsersController {
 
-    constructor(
-        private readonly usersService: UsersService,
-        private readonly followersService: FollowersService) {}
+    constructor(private readonly usersService: UsersService) {}
 
     @Get('/profile/:userId')
     public async getUserProfile(
@@ -69,10 +68,10 @@ export class UsersController {
     }
 
     @Get('/checkfollowing/:followeeId')
-    public async checkfollowing(
+    public async checkFollowing(
         @GetUser() user: User,
         @Param('followeeId', ParseIntPipe) followeeId: number): Promise<ResponseCreator> {
-        const gotData = await this.followersService.checkFollowing(user.id, followeeId);
+        const gotData = await this.usersService.checkFollowing(user.id, followeeId);
         return new ResponseCreator("FOLLOWING_GOT", gotData);
     }
 
@@ -80,7 +79,7 @@ export class UsersController {
     public async followUser(
         @GetUser() user: User,
         @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
-        const createdData = await this.followersService.followUser(user.id, userId);
+        const createdData = await this.usersService.followUser(user.id, userId);
         return new ResponseCreator("FOLLOWING_GOT", createdData);
     }
 
@@ -88,7 +87,29 @@ export class UsersController {
     public async unfollowUser(
         @GetUser() user: User,
         @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
-        const deletedData = await this.followersService.unfollowUser(user.id, userId);
+        const deletedData = await this.usersService.unfollowUser(user.id, userId);
         return new ResponseCreator("FOLLOWING_GOT", deletedData);
     }
+}
+
+@Controller('backOffice/users')
+@UseGuards(AuthGuard())
+export class CMSUsersController {
+
+    constructor(private readonly usersService: UsersService) {}
+
+    @Get()
+    @UsePipes(ValidationPipe)
+    getUsers(
+        @GetAdmin() admin: Admin,
+        @Query() getUsersFilterDto: GetUsersFilterDto): Promise<Array<User>> {
+        return this.usersService.getUsers(getUsersFilterDto);
+    }
+
+    @Get('/:id')
+    getUserById(
+        @GetAdmin() admin: Admin,
+        @Param('id', ParseIntPipe) id: number): Promise<User> {
+        return this.usersService.getUserById(id);
+    } 
 }
