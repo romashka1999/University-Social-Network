@@ -25,18 +25,6 @@ export class SearchComponent implements OnInit {
         }
       })
   }
-  followUser(id: number) {
-    this.http.get(`http://localhost:3000/public/users/followUser/${id}`)
-      .subscribe((res) => {
-        console.log(res)
-      })
-  }
-  unfollowUser(id: number) {
-    this.http.get(`http://localhost:3000/public/users/unfollowUser/${id}`)
-      .subscribe((res) => {
-        console.log(res)
-      })
-  }
   goToProfile(id: number) {
     this.router.navigate(['/profile', id])
     // this.data.getProfile(id)

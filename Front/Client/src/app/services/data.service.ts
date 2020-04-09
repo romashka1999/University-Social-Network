@@ -38,4 +38,5 @@ export class DataService {
       email: newEmail
     });
   }
+
 }

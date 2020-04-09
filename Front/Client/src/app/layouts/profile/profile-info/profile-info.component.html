@@ -4,5 +4,15 @@
   <mat-card-content>email: {{ user.email }}</mat-card-content>
   <mat-card-content>phone number: {{ user.phoneNumber }}</mat-card-content>
   <mat-card-content>status: {{ user.status }}</mat-card-content>
+  <div *ngIf="ifFollowed; else notFollow">
+    <mat-card-actions>
+      <button class="btn btn-danger" (click)="unfollowUser()">Unfollow</button>
+    </mat-card-actions>
+  </div>
+  <ng-template #notFollow>
+    <mat-card-actions>
+      <button class="btn btn-success" (click)="followUser()">Follow</button>
+    </mat-card-actions>
+  </ng-template>
 </mat-card>
 </div>
