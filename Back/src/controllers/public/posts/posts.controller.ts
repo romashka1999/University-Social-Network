@@ -16,14 +16,15 @@ export class PostsController {
 
     constructor(private readonly postsService: PostsService) {}
 
-    @Get()
-    public async getPostsByLoggedUserId(
+    @Get('/user/:userId')
+    public async getPostsByOtherUserId(
         @GetUser() user: User,
+        @Param('userId', ParseIntPipe) userId: number,
         @Query(ValidationPipe) getUserPostsFilterDto: GetUserPostsFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.postsService.getPostsByLoggedUserId(user, getUserPostsFilterDto);
+        const gotData = await this.postsService.getPostsByAnyUserId(user.id, userId, getUserPostsFilterDto);
         return new ResponseCreator("POSTS_GOT", gotData);
     }
-
+    
     @Post()
     public async createPost(
         @GetUser() user: User,
@@ -49,14 +50,6 @@ export class PostsController {
         return new ResponseCreator("POST_DELETED", deletedData);
     }
 
-    @Get('/otherUser/:userId')
-    public async getPostsByOtherUserId(
-        @GetUser() user: User,
-        @Param('userId', ParseIntPipe) otherUserId: number,
-        @Query(ValidationPipe) getUserPostsFilterDto: GetUserPostsFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.postsService.getPostsByOtherUserId(user, otherUserId, getUserPostsFilterDto);
-        return new ResponseCreator("POSTS_GOT", gotData);
-    }
     @Get('/followeesPosts') 
     public async getFolloweesPostsForLoggedUser(
         @GetUser() user: User,

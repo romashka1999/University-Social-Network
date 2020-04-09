@@ -57,6 +57,7 @@ export class FollowersService {
             follwer.userId = followeeId;
             follwer.followerId = followerId;
             const createdFollower = await follwer.save();
+            await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "FOLLOW");
             return createdFollower;
         } catch (error) {
             if (error.statusCode) {
@@ -73,6 +74,7 @@ export class FollowersService {
             if(!deletedFollowing.affected) {
                 throw { statusCode: HttpStatus.BAD_REQUEST, message: "FOLLOWING_NOT_EXISTS" };
             }
+            await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "UNFOLLOW");
             return deletedFollowing.raw;
         } catch (error) {
             if (error.statusCode) {

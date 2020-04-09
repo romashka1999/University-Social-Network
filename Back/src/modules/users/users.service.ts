@@ -31,20 +31,16 @@ export class UsersService {
             delete user.updateDate;
             return user;
         } else {
-            try {
-                const user = await this.getUserById(userId);
-                delete user.password;
-                delete user.salt;
-                delete user.createDate;
-                delete user.updateDate;
-                delete user.status;
-                if(!user.publicUser) {
-                    delete user.birthDate;
-                }
-                return user;
-            } catch (error) {
-                throw new InternalServerErrorException(error);
+            const user = await this.getUserById(userId);
+            delete user.password;
+            delete user.salt;
+            delete user.createDate;
+            delete user.updateDate;
+            delete user.status;
+            if(!user.publicUser) {
+                delete user.birthDate;
             }
+            return user;
         }
     }
     
@@ -119,5 +115,19 @@ export class UsersService {
     public searchUsers(userSearchDto: UserSearchDto): Promise<Array<User>> {
         return this.userRepository.searchUsers(userSearchDto);
     }       
+
+    public async followCntUpdateOnUsers(followerId: number, followeeId: number, action: string): Promise<void> {
+        try {
+            if(action === "FOLLOW") {
+                await this.userRepository.increment({id: followerId}, 'followingsCount', 1);
+                await this.userRepository.increment({id: followeeId}, 'followersCount', 1);
+            } else if(action === "UNFOLLOW") {
+                await this.userRepository.decrement({id: followerId}, 'followingsCount', 1);
+                await this.userRepository.decrement({id: followeeId}, 'followersCount', 1);
+            }
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    } 
 
 }

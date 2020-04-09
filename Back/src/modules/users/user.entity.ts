@@ -18,7 +18,6 @@ export enum UserGender {
 }
 
 @Entity()
-@Unique(['username', 'email', 'phoneNumber'])
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -63,19 +62,22 @@ export class User extends BaseEntity {
 
     @Column({
         type: 'text',
-        nullable: true
+        nullable: false,
+        unique: true
     })
     email: string;
 
     @Column({
         type: 'text',
-        nullable: false
+        nullable: false,
+        unique: true
     })
     username: string;
 
     @Column({
         length: 9,
-        nullable: false
+        nullable: false,
+        unique: true
     })
     phoneNumber: string;
 
@@ -105,6 +107,20 @@ export class User extends BaseEntity {
         nullable: false
     })
     salt: string;
+
+    @Column({
+        type: 'int',
+        nullable: false,
+        default: 0
+    })
+    followersCount: number;
+
+    @Column({
+        type: 'int',
+        nullable: false,
+        default: 0
+    })
+    followingsCount: number;
 
     @CreateDateColumn()
     createDate: string;

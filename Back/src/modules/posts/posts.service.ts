@@ -26,10 +26,6 @@ export class PostsService {
         return this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
     }
 
-    public async getPostsByLoggedUserId(user: User, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
-        return this.getPostsByUserId(user.id, getUserPostsFilterDto);
-    }
-
     public createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
         return this.postRepository.createPost(user, postCreateDto);
     }
@@ -46,20 +42,18 @@ export class PostsService {
         return this.postRepository.hidePostByAdmin(postId, hidden);
     }
 
-    public async getPostsByOtherUserId(user: User, otherUserId: number, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
-        console.log(user.id);
-        console.log(otherUserId);
-        if(user.id === otherUserId) {
-            return await this.getPostsByUserId(user.id, getUserPostsFilterDto);
+    public async getPostsByAnyUserId(loggedUserId, userId: number, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
+        if(loggedUserId === userId) {
+            return await this.getPostsByUserId(loggedUserId, getUserPostsFilterDto);
         }
-        const followingExists = await this.followersService.checkFollowing(user.id, otherUserId);
+        const followingExists = await this.followersService.checkFollowing(loggedUserId, userId);
         if(!followingExists) {
-            const isUserPublic = await this.usersService.checkUserPublicById(otherUserId);
+            const isUserPublic = await this.usersService.checkUserPublicById(userId);
             if(!isUserPublic) {
                 throw new BadRequestException("USER_IS_NOT_PUBLIC");
             }
         }
-        return await this.getPostsByUserId(otherUserId, getUserPostsFilterDto);
+        return await this.getPostsByUserId(userId, getUserPostsFilterDto);
     }
 
     private async getPostsByUserId(userId: number, getUserPostsFilterDto: GetUserPostsFilterDto): Promise<Array<Post>> {
@@ -75,7 +69,6 @@ export class PostsService {
                 },
                 skip: offset,
                 take: limit,
-                loadRelationIds: true
             });
             return posts;
         } catch (error) {

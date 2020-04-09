@@ -6,4 +6,6 @@ export class SetUserInfoInterface extends UserUpdateDto{
     phoneNumber?: string;
     password?: string;
     salt?: string;
+    followersCount?: number;
+    followingsCount?: number;
 }
