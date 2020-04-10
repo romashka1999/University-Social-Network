@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Users} from '../../../shared/interfaces';
+import {Posts, Users} from '../../../shared/interfaces';
 import {DataService} from '../../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
+import {PostService} from '../../../services/post.service';
 
 @Component({
     selector: 'app-profile-info',
@@ -10,40 +11,58 @@ import {HttpClient} from '@angular/common/http';
     styleUrls: ['./profile-info.component.scss']
 })
 export class ProfileInfoComponent implements OnInit {
-    userProfile: Users[] = [];
-    ifFollowed: boolean;
+    user = localStorage.getItem('st-token');
+    token =  JSON.parse(atob(this.user.split('.')[1]));
+    userProfile: Users[] = [this.token.user];
+    anotherUserProfile: Users[] = [this.token.user];
+    posts: Posts[] = [];
     id: number;
-    constructor(private data: DataService, private route: ActivatedRoute, private http: HttpClient) {
+    constructor(private data: DataService,
+                private route: ActivatedRoute,
+                private http: HttpClient,
+                private post: PostService
+    ) {
       route.params.subscribe((param) => {
           this.id = param.id
           this.data.getProfile(param.id)
             .subscribe((res) => {
-              this.userProfile = [res.data]
+              this.anotherUserProfile = [res.data]
               console.log(res.data)
             })
       })
     }
     ngOnInit() {
-      this.http.get<any>(`http://localhost:3000/public/users/checkfollowing/${this.id}`)
-        .subscribe(res => {
-          this.ifFollowed = res.data;
-        });
+      this.post.getPosts(this.id)
+      .subscribe((res: any) => {
+        this.posts = res.data
+        console.log(res.data)
+      })
     }
 
   followUser() {
-    this.http.get(`http://localhost:3000/public/users/followUser/${this.id}`)
+    this.http.get(`http://localhost:3000/public/followers/followUser/${this.id}`)
       .subscribe((res) => {
         console.log(res)
-        this.ifFollowed = false;
-        console.log(this.ifFollowed)
+        this.userProfile[0].following = false;
       })
   }
     unfollowUser() {
-    this.http.get(`http://localhost:3000/public/users/unfollowUser/${this.id}`)
+    this.http.get(`http://localhost:3000/public/followers/unfollowUser/${this.id}`)
       .subscribe((res) => {
         console.log(res)
-        this.ifFollowed = true;
-        console.log(this.ifFollowed)
+        this.userProfile[0].following = true;
+        console.log(this.userProfile[0].following)
       })
+  }
+
+  removePost(id: number) {
+    this.post.deletePost(id)
+      .subscribe(() => {
+        this.posts = this.posts.filter(t => t.id !== id)
+      })
+  }
+
+  editPost(id: number) {
+    // this.post.editPost()
   }
 }

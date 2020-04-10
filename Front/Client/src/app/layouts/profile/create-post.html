@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Create Post</h2>
+<mat-dialog-content [formGroup]="form" class="mat-typography">
+
+  <div class="form-group">
+      <textarea
+                formControlName="content"
+                placeholder="type..."
+                class="form-control"
+                rows="3"></textarea>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button [mat-dialog-close]="true" (click)="close()" mat-button>Close</button>
+  <button (click)="save()" mat-button>Post</button>
+</mat-dialog-actions>

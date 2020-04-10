@@ -1,10 +1,13 @@
-<div class="main-info-container">
-<mat-card *ngFor="let user of userProfile">
+<div class="main-info-container" style="width: 50%">
+
+<mat-card *ngFor="let user of anotherUserProfile">
   <mat-card-title>{{ user.firstName }} {{ user.lastName }}</mat-card-title>
   <mat-card-content>email: {{ user.email }}</mat-card-content>
   <mat-card-content>phone number: {{ user.phoneNumber }}</mat-card-content>
-  <mat-card-content>status: {{ user.status }}</mat-card-content>
-  <div *ngIf="ifFollowed; else notFollow">
+  <mat-card-content>followers: {{ user.followersCount }}</mat-card-content>
+  <mat-card-content>following: {{ user.followingsCount }}</mat-card-content>
+  <div *ngIf="userProfile[0].id !== anotherUserProfile[0].id">
+  <div *ngIf="user.following; else notFollow">
     <mat-card-actions>
       <button class="btn btn-danger" (click)="unfollowUser()">Unfollow</button>
     </mat-card-actions>
@@ -14,5 +17,42 @@
       <button class="btn btn-success" (click)="followUser()">Follow</button>
     </mat-card-actions>
   </ng-template>
+  </div>
 </mat-card>
+
+  <div *ngIf="userProfile[0].id === anotherUserProfile[0].id; else elseBlock">
+    <div *ngIf="posts.length; else noPosts" class="main-info-container">
+      <div style="margin-top: 10px" class="card" *ngFor="let post of posts">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title">{{ userProfile[0].firstName }} {{ userProfile[0].lastName }}</h5>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="moreActionsDropdown" data-toggle="dropdown">More actions</button>
+              <div class="dropdown-menu">
+                <button (click)="editPost(post.id)" class="dropdown-item">Change post</button>
+                <div class="dropdown-divider"></div>
+                <button (click)="removePost(post.id)" class="dropdown-item text-danger" >Delete</button>
+              </div>
+            </div>
+          </div>
+          <p class="card-text">{{ post.content }}</p>
+          <p class="card-text"><small class="text-muted">created Date {{ post.createDate | date:'short' }}</small></p>
+        </div>
+        <img class="card-img-bottom" src="http://via.placeholder.com/300" alt="Card image cap">
+      </div>
+    </div>
+    <ng-template #noPosts>
+      <p><strong>no Posts</strong></p>
+    </ng-template>
+  </div>
+  <ng-template #elseBlock >
+    <div style="margin-top: 10px" class="card" *ngFor="let post of posts">
+      <div class="card-body">
+        <h5 class="card-title">{{ anotherUserProfile[0].firstName }} {{ anotherUserProfile[0].lastName }}</h5>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text"><small class="text-muted">created Date {{ post.createDate | date:'short' }}</small></p>
+      </div>
+      <img class="card-img-bottom" src="http://via.placeholder.com/200" alt="Card image cap">
+    </div>
+  </ng-template>
 </div>

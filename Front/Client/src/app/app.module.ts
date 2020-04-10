@@ -8,7 +8,7 @@ import {AuthInterceptor} from './shared/auth.interceptor';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //Material
-import {MatCardModule, MatInputModule, MatSelectModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatSelectModule} from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -27,7 +27,7 @@ import {RegisterComponent} from './register/register.component';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {SidenavComponent} from './shared/sidenav/sidenav.component';
 import {LayoutsComponent} from './layouts/layouts.component';
-import {ProfileComponent} from './layouts/profile/profile.component';
+import {CreatePost, ProfileComponent} from './layouts/profile/profile.component';
 import {ProfileInfoComponent} from './layouts/profile/profile-info/profile-info.component';
 import {HeaderComponent} from './shared/header/header.component';
 // import { ProfileModule } from './layouts/profile/profile.module';
@@ -57,38 +57,42 @@ const INTERCEPTOR_PROVIDER: Provider = {
     ProfileInfoComponent,
     HeaderComponent,
     SearchComponent,
-    SettingsComponent
+    SettingsComponent,
+    CreatePost
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatInputModule,
-        MatIconModule,
-        ReactiveFormsModule,
-        FormsModule,
-        MatProgressBarModule,
-        MatSnackBarModule,
-        MatStepperModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        StoreDevtoolsModule.instrument({
-            maxAge: 25
-        }),
-        HttpClientModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
-        MatSelectModule,
-        MatCardModule,
-        //ProfileModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    }),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    MatSelectModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDialogModule,
+    //ProfileModule,
+  ],
   providers: [MatDatepickerModule, AuthService, INTERCEPTOR_PROVIDER],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CreatePost]
 })
 export class AppModule {
 }

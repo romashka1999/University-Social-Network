@@ -12,6 +12,9 @@ export interface Users {
   status?: string;
   profileImgUrl?: null;
   coverImageUrl?: null;
+  followersCount?: number;
+  following?: boolean;
+  followingsCount?: number;
 }
 
 export interface UserLogin {
@@ -28,4 +31,13 @@ export interface UserSearch {
     user_lastName: string;
     user_firstName: string;
     user_id?: number;
+}
+export interface Posts {
+  content: string;
+  createDate: Date;
+  hidden: boolean;
+  id: number;
+  publicPost: boolean;
+  updateDate: Date;
+  userId: number;
 }
