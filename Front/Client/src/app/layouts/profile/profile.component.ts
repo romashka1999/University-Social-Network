@@ -5,6 +5,7 @@ import {PostService} from '../../services/post.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {map} from 'rxjs/operators';
+import {DataService} from '../../services/data.service';
 
 @Component({
     selector: 'app-profile',
@@ -15,12 +16,12 @@ export class ProfileComponent implements OnInit{
     constructor(private _snackBar: MatSnackBar,
                 private post: PostService,
                 public dialog: MatDialog,
+                private data: DataService
     ) {}
     user = localStorage.getItem('st-token');
     token =  JSON.parse(atob(this.user.split('.')[1]));
     userProfile: Users[] = [this.token.user];
     posts: Posts[] = [];
-    followerPost: Posts[] = [];
     ngOnInit() {
         this._snackBar.open('შეტყობინება...', 'დახურვა', {
             duration: 250000,
@@ -34,11 +35,11 @@ export class ProfileComponent implements OnInit{
         if (this.userProfile[0].followingsCount > 0) {
           this.post.getFolloweesPosts()
             .subscribe((res: any) => {
-              // console.log('followers post: ', res.data)
-              this.followerPost = res.data;
-            })
+              console.log(res.data);
+              this.posts.push(...res.data);
+            });
         } else {
-         console.log('shen aravis afoloveb!!!')
+         console.log('shen aravis afoloveb!!!');
         }
     }
 

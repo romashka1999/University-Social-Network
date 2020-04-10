@@ -33,6 +33,10 @@ export interface UserSearch {
     user_id?: number;
 }
 export interface Posts {
+  user_firstName: string;
+  user_lastName: string;
+  user_profileImgUrl: string;
+  reactsCount: number;
   content: string;
   createDate: Date;
   hidden: boolean;
