@@ -3,6 +3,7 @@ import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique, OneToMany, 
 import { validatePassword } from '../auth/helpers/password';
 import { Post } from "../posts/post.entity";
 import { Comment } from '../comments/comment.entity';
+import { PostReact } from "../post-reacts/post-react.entity";
 
 
 export enum UserStatus {
@@ -130,6 +131,9 @@ export class User extends BaseEntity {
 
     @OneToMany(type => Post, post => post.user)
     posts: Post[];
+
+    @OneToMany(type => PostReact, postReact => postReact.user)
+    postReacts: PostReact[];
 
     @OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];

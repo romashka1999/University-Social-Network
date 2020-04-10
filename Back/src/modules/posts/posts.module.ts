@@ -8,13 +8,14 @@ import { UsersModule } from '../users/users.module';
 import { FollowersModule } from '../followers/followers.module';
 import { PostsController } from './posts.controller';
 import { AuthModule } from '../auth/auth.module';
+import { AppGateway } from 'src/app.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostRepository]), AuthModule, UsersModule, FollowersModule],
   controllers: [
     PostsController
   ],
-  providers: [PostsService],
+  providers: [PostsService, AppGateway],
   exports: [
     PostsService,
     TypeOrmModule

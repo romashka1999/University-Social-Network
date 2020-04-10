@@ -162,7 +162,6 @@ export class UserRepository extends Repository<User> {
     }  
 
     public async getUsersByIds(userIds: number[]): Promise<Array<User>> {
-
         try {
             return await this.createQueryBuilder('user')
                 .where('user.id IN(:...userIds)', {userIds: userIds})

@@ -14,14 +14,11 @@ import { pagination, Ipagination } from "src/shared/pagination";
 export class PostRepository extends Repository<Post> {
 
     public async createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
-        const { content, publicPost } = postCreateDto;
+        const { content } = postCreateDto;
 
         const post = new Post();
         post.user = user;
         post.content = content;
-        if(publicPost) {
-            post.publicPost = publicPost;
-        }
 
         try {
             const createdPost = await post.save();

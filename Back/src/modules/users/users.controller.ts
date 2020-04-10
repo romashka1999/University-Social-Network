@@ -67,40 +67,6 @@ export class UsersController {
         const gotData = await this.usersService.searchUsers(userSearchDto);
         return new ResponseCreator("USERS_GOT", gotData);
     }
-
-    @Get('/followUser/:userId')
-    public async followUser(
-        @GetUser() user: User,
-        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
-        const createdData = await this.usersService.followUser(user.id, userId);
-        return new ResponseCreator("FOLLOWING_GOT", createdData);
-    }
-
-    @Get('/unfollowUser/:userId')
-    public async unfollowUser(
-        @GetUser() user: User,
-        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
-        const deletedData = await this.usersService.unfollowUser(user.id, userId);
-        return new ResponseCreator("FOLLOWING_GOT", deletedData);
-    }
-
-    @Get('/userFollowings/:userId')
-    public async getUserFollowings(
-        @GetUser() user: User,
-        @Param('userId', ParseIntPipe) userId: number,
-        @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.usersService.getUserFollowings(user.id, userId, paginationGetFilterDto);
-        return new ResponseCreator("FOLLOWINGS_GOT", gotData);
-    }
-
-    @Get('/userFollowers/:userId')
-    public async getUserFollowers(
-        @GetUser() user: User,
-        @Param('userId', ParseIntPipe) userId: number,
-        @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.usersService.getUserFollowers(user.id, userId, paginationGetFilterDto);
-        return new ResponseCreator("FOLLOWERS_GOT", gotData);
-    }
 }
 
 @Controller('backOffice/users')

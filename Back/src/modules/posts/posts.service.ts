@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 
@@ -11,6 +11,7 @@ import { GetUserPostsFilterDto } from './dtos/get-user-posts-filter.dto';
 import { pagination, Ipagination } from 'src/shared/pagination';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from '../followers/followers.service';
+import { AppGateway } from 'src/app.gateway';
 
 @Injectable()
 export class PostsService {
@@ -18,7 +19,8 @@ export class PostsService {
     constructor(
         @InjectRepository(PostRepository) private readonly postRepository: PostRepository,
         private readonly usersService: UsersService,
-        private readonly followersService: FollowersService) {}
+        private readonly followersService: FollowersService,
+        private readonly appGateway: AppGateway) {}
 
     public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
         const followees = await this.followersService.getFolloweesByUserId(user.id, {page: null, pageSize: null});
@@ -26,8 +28,10 @@ export class PostsService {
         return this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
     }
 
-    public createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
-        return this.postRepository.createPost(user, postCreateDto);
+    public async createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
+        const createdPost = await this.postRepository.createPost(user, postCreateDto);
+        this.appGateway.wss.to(`${user.id}`).emit('postCreated', createdPost);
+        return createdPost;
     }
 
     public updatePostByPostId(user: User, postId: number, postUpdateDto: PostUpdateDto): Promise<Post> {
@@ -73,6 +77,22 @@ export class PostsService {
             return posts;
         } catch (error) {
             throw new InternalServerErrorException(error);
+        }
+    }
+
+    public async getPostById(postId: number): Promise<Post> {
+        try {
+            const post = await this.postRepository.findOne({id: postId});
+            if(!post) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "POST_NOT_EXISTS"};
+            }
+            return post;
+        } catch (error) {
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
         }
     }
 
