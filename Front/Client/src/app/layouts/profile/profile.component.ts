@@ -25,17 +25,21 @@ export class ProfileComponent implements OnInit{
         this._snackBar.open('შეტყობინება...', 'დახურვა', {
             duration: 250000,
         });
-        console.log(this.userProfile)
+        // console.log(this.userProfile)
         this.post.getPosts(this.userProfile[0].id)
         .subscribe((res: any) => {
           this.posts = res.data
-          console.log(res.data)
+          console.log('vamowmeb amas', res.data)
         })
-        this.post.getFolloweesPosts()
-          .subscribe((res: any) => {
-            console.log('followers post: ', res.data)
-            this.followerPost = res.data;
-          })
+        if (this.userProfile[0].followingsCount > 0) {
+          this.post.getFolloweesPosts()
+            .subscribe((res: any) => {
+              // console.log('followers post: ', res.data)
+              this.followerPost = res.data;
+            })
+        } else {
+         console.log('shen aravis afoloveb!!!')
+        }
     }
 
   cretePost() {
@@ -45,7 +49,7 @@ export class ProfileComponent implements OnInit{
           this.post.createPost(res)
             .subscribe((pass: any) => {
               console.log(pass)
-              this.posts.push(pass)
+              this.posts.unshift(pass.data)
             })
         }
       });
