@@ -25,7 +25,16 @@ export class PostsService {
     public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
         const followees = await this.followersService.getFolloweesByUserId(user.id, {page: null, pageSize: null});
         const followeesArray = followees.map(follow => follow.userId);
-        return this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
+        const users = await this.usersService.getUsersByIds(followeesArray);
+        const posts = await this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
+        const resultData = [];
+        users.forEach( user => {
+            const post = posts.find( post => post.userId === user.id );
+            delete user.id;
+            const JoiData = {...user, ...post};
+            resultData.push(JoiData);
+        });
+        return resultData;
     }
 
     public async createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
