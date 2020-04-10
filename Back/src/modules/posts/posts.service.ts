@@ -27,10 +27,17 @@ export class PostsService {
         const followeesArray = followees.map(follow => follow.userId);
         const users = await this.usersService.getUsersByIds(followeesArray);
         const posts = await this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
+        const memoUserDP = {};
         return posts.map( post => {
-            const user: any = users.find( (user: any) => user.user_id === post.userId);
-            delete user.user_id;
-            return {...user, ...post}
+            if(memoUserDP[post.userId]) {
+                return {...memoUserDP[post.userId], ...post}
+            } else {
+                const user: any = users.find( (user: any) => user.user_id === post.userId);
+                const userId = user.user_id;
+                delete user.user_id;
+                memoUserDP[userId] = user;
+                return {...memoUserDP[userId], ...post}
+            }   
         });
     }
 
