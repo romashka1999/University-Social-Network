@@ -1,4 +1,4 @@
-import { Injectable, BadGatewayException } from "@nestjs/common";
+import { Injectable, BadGatewayException, ConflictException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { PostReactRepository } from "./post-react.repository";
@@ -6,6 +6,7 @@ import { PaginationGetFilterDto } from "src/shared/pagination-get-filter.dto";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
 import { FollowersService } from "../followers/followers.service";
+import { User } from "../users/user.entity";
 
 
 @Injectable()
@@ -19,6 +20,55 @@ export class PostReactsService {
 
         
     public async getUserReactsByPostId(loggedUserId: number, postId: number, paginationGetFilterDto: PaginationGetFilterDto) {
+        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        const postReacts = await this.postReactRepository.getUserReactsByPostId(postId, paginationGetFilterDto);
+        const postReactsUserIdsArray = postReacts.map(postReact => postReact.userId);
+
+        return await this.usersService.getUsersByIds(postReactsUserIdsArray);
+    }
+
+
+    public async reactPost(loggedUserId: number, postId: number): Promise<any> {
+        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        try {
+            await this.postReactRepository.create({userId: loggedUserId, postId: postId});
+            await this.postsService.updatePostReactCounter(postId, "REACT");
+            const user = await this.usersService.getUserById(loggedUserId);
+            const data = {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                profileImgUrl: user.profileImgUrl
+            }
+            return data;
+        } catch (error) {
+            if(error.code === '23505') {//duplicate username 
+                throw new ConflictException("REACT_ALREADY_EXISTS");
+            } else {
+                throw new InternalServerErrorException(error);
+            }
+        }
+    }
+
+    public async unReactPost(loggedUserId: number, postId: number): Promise<boolean> {
+        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        try {
+            const deletedReact = await this.postReactRepository.delete(postId);
+
+            if(!deletedReact.affected) {
+                throw new NotFoundException("REACT_NOT_EXISTS");
+            }
+            await this.postsService.updatePostReactCounter(postId, "UNREACT");
+            return true;
+        } catch (error) {
+            if(!error.status) {
+                throw new InternalServerErrorException(error);
+            }
+            throw error;
+        }
+    }
+
+    private async checkPostByUserIdAndPostId(loggedUserId: number, postId: number) {
         const post = await this.postsService.getPostById(postId);
         const postUserId = post.userId;
 
@@ -28,11 +78,6 @@ export class PostReactsService {
                 throw new BadGatewayException("USER_IS_NOT_PUBLIC");
             }
         }
-        const postReacts = await this.postReactRepository.getUserReactsByPostId(postId, paginationGetFilterDto);
-        const postReactsUserIdsArray = postReacts.map(postReact => postReact.userId);
-
-        return await this.usersService.getUsersByIds(postReactsUserIdsArray);
     }
-
 
 }

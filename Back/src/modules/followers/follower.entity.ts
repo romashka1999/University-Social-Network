@@ -1,7 +1,8 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, CreateDateColumn } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, Unique } from "typeorm";
 
 
 @Entity()
+@Unique(['userId', 'followerId'])
 export class Follower extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;

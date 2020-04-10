@@ -1,9 +1,10 @@
-import { BaseEntity, PrimaryGeneratedColumn, Entity, ManyToOne, RelationId } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Entity, ManyToOne, RelationId, Unique } from "typeorm";
 import { User } from "../users/user.entity";
 import { Post } from "../posts/post.entity";
 
 
 @Entity()
+@Unique(['user', 'post'])
 export class PostReact extends BaseEntity {
 
     @PrimaryGeneratedColumn()

@@ -41,10 +41,6 @@ export class FollowersService {
         // check if user followeeId in users tabe
         await this.usersService.getUserById(followeeId);
         try {
-            const following = await this.followerRepository.findOne({ followerId: followerId, userId: followeeId });
-            if (following) {
-                throw { statusCode: HttpStatus.BAD_REQUEST, message: "FOLLOWING_ALREADY_EXISTS" };
-            }
             const follwer = new Follower();
             follwer.userId = followeeId;
             follwer.followerId = followerId;

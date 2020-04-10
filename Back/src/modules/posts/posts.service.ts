@@ -96,5 +96,17 @@ export class PostsService {
         }
     }
 
+    public async updatePostReactCounter(postId: number, action: string): Promise<void> {
+        try {
+            if(action === "REACT") {
+                await this.postRepository.increment({id: postId}, 'reactsCount', 1);
+            } else if(action === "UNREACT") {
+                await this.postRepository.decrement({id: postId}, 'reactsCount', 1);
+            }
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    } 
+
     
 }

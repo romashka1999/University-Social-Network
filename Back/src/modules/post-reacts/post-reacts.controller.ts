@@ -19,8 +19,24 @@ export class PostReactsController {
         @GetUser() user: User,
         @Param('postId', ParseIntPipe) postId: number,
         @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
-        const createdData = await this.postReactsService.getUserReactsByPostId(user.id, postId, paginationGetFilterDto);
-        return new ResponseCreator("FOLLOWING_GOT", createdData);
+        const gotData = await this.postReactsService.getUserReactsByPostId(user.id, postId, paginationGetFilterDto);
+        return new ResponseCreator("POSTREACTS_GOT", gotData);
+    }
+
+    @Get('/react/:postId')
+    public async reactPost(
+        @GetUser() user: User,
+        @Param('postId', ParseIntPipe) postId: number): Promise<ResponseCreator> {
+        const updatedData = await this.postReactsService.reactPost(user.id, postId);
+        return new ResponseCreator("POSTREACTS_GOT", updatedData);
+    }
+
+    @Get('/unreact/:postId')
+    public async unReactPost(
+        @GetUser() user: User,
+        @Param('postId', ParseIntPipe) postId: number): Promise<ResponseCreator> {
+        const updatedData = await this.postReactsService.unReactPost(user.id, postId);
+        return new ResponseCreator("POSTREACTS_GOT", updatedData);
     }
 
 }
