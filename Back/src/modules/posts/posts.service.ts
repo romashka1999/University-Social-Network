@@ -27,14 +27,11 @@ export class PostsService {
         const followeesArray = followees.map(follow => follow.userId);
         const users = await this.usersService.getUsersByIds(followeesArray);
         const posts = await this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
-        const resultData = [];
-        users.forEach( user => {
-            const post = posts.find( post => post.userId === user.id );
-            delete user.id;
-            const JoiData = {...user, ...post};
-            resultData.push(JoiData);
+        return posts.map( post => {
+            const user: any = users.find( (user: any) => user.user_id === post.userId);
+            delete user.user_id;
+            return {...user, ...post}
         });
-        return resultData;
     }
 
     public async createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
