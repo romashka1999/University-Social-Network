@@ -48,7 +48,13 @@ export class PostsService {
 
     public async createPost(user: User, postCreateDto: PostCreateDto): Promise<Post> {
         const createdPost = await this.postRepository.createPost(user, postCreateDto);
-        this.appGateway.wss.to(`${user.id}`).emit('postCreated', createdPost);
+
+        const createdPostForSocket: any = { ...createdPost };
+        createdPostForSocket.user_firstName = user.firstName;
+        createdPostForSocket.user_lastName = user.lastName;
+        createdPostForSocket.user_profileImgUrl = user.profileImgUrl;
+        this.appGateway.wss.to(`${user.id}`).emit('postCreated', createdPostForSocket);
+
         return createdPost;
     }
 
