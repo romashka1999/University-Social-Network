@@ -6,6 +6,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {map} from 'rxjs/operators';
 import {DataService} from '../../services/data.service';
+import {WebSocketService} from '../../services/web-socket.service';
 
 @Component({
     selector: 'app-profile',
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit{
     constructor(private _snackBar: MatSnackBar,
                 private post: PostService,
                 public dialog: MatDialog,
-                private data: DataService
+                private webSocket: WebSocketService
     ) {}
     user = localStorage.getItem('st-token');
     token =  JSON.parse(atob(this.user.split('.')[1]));
@@ -30,17 +31,22 @@ export class ProfileComponent implements OnInit{
         this.post.getPosts(this.userProfile[0].id)
         .subscribe((res: any) => {
           this.posts = res.data
-          console.log('vamowmeb amas', res.data)
+          // console.log('vamowmeb amas', res.data)
         })
         if (this.userProfile[0].followingsCount > 0) {
           this.post.getFolloweesPosts()
             .subscribe((res: any) => {
-              console.log(res.data);
+              // console.log(res.data);
               this.posts.push(...res.data);
             });
         } else {
          console.log('shen aravis afoloveb!!!');
         }
+        // this.webSocket.listen('test event')
+        //   .subscribe((data) => {
+        //     console.log('soketiaaaa', data)
+        //   })
+        this.webSocket.connect();
     }
 
   cretePost() {
@@ -49,7 +55,7 @@ export class ProfileComponent implements OnInit{
         if (res !== undefined) {
           this.post.createPost(res)
             .subscribe((pass: any) => {
-              console.log(pass)
+              // console.log(pass)
               this.posts.unshift(pass.data)
             })
         }
