@@ -4,6 +4,7 @@ db:
   type: 'postgres'
   port: 5432
   database: 'd7je13t73q1d56'
+  mongoUri: 'mongodb+srv://romana1:iOYhSPEqo596qwul@cluster0-arfwf.mongodb.net/test?retryWrites=true&w=majority'
 jwt:
   expiresIn: 360000000000
   secret: 'secret'
