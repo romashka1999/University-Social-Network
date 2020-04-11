@@ -12,12 +12,19 @@ export class WebSocketService {
 
   connect() {
     this.socket.on('connect', () => {
-    })
+    });
 
     this.socket.on('joinRoom', () => {
       const token = this.authService.token;
-      this.socket.emit('joinRoom', { token });
-    })
+      const userParsed = JSON.parse(atob(token.split('.')[1]));
+      const id = userParsed.user.id;
+      console.log(id)
+      this.socket.emit('joinRoom', { id });
+    });
+
+    this.socket.on('postCreated', (data) => {
+      console.log(data);
+    });
 
   }
 }

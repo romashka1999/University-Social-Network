@@ -8,8 +8,8 @@ export class RedisStoreClientService {
     constructor() {
         const host: string = 'localhost';
         const port: number = 6379;
-        const options: ClientOpts = { host, port };
         const URL = 'redis://h:pd9c554bc20aeab2a8aa8f8bf2f3b9d5c4c41eec79cd4d1102f2f219f9a5ea25b@ec2-34-240-22-157.eu-west-1.compute.amazonaws.com:25949';
+        const options: ClientOpts = { /** host, port */ url: URL};
         this.client = createClient(options);
         console.log("redis client created");
 
