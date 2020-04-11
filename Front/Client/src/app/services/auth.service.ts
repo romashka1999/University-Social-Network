@@ -4,13 +4,17 @@ import {Observable, Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import { UserLogin, Users} from '../shared/interfaces';
 import {Router} from '@angular/router';
+import {WebSocketService} from './web-socket.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
       public error$: Subject<string> = new Subject<string>()
-      constructor(private http: HttpClient, private router: Router) {}
+      constructor(private http: HttpClient,
+                  private router: Router,
+                  private webSocket: WebSocketService
+      ) {}
 
       get token(): string {
         const expDate = new Date(localStorage.getItem('st-token-exp'))
@@ -37,7 +41,8 @@ export class AuthService {
       }
 
       logout() {
-        this.setToken(null)
+        this.setToken(null);
+        this.webSocket.disconnect()
         this.router.navigate(['/login']);
       }
 

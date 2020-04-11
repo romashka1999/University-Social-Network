@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import { AuthService } from './auth.service';
+import {Observable} from 'rxjs';
 
 
 @Injectable({
@@ -8,19 +8,27 @@ import { AuthService } from './auth.service';
 })
 export class WebSocketService {
   public socket = io('http://localhost:3001/posts');
-  constructor(private authService: AuthService) {}
-
+  constructor() {}
 
   connect() {
-    this.socket.on('connect', () => {
+   return new Observable(() => {
+     this.socket.on('joinRoom', () => {
+       console.log(this.socket.connected);
+       const user = localStorage.getItem('st-token');
+       const token =  JSON.parse(atob(user.split('.')[1]));
+       const id = token.user.id;
+       this.socket.emit('joinRoom', { id });
+     });
+   });
+  }
+  getRealTimePost() {
+    return new Observable((subscriber) => {
+      this.socket.on('postCreated', (data) => {
+        subscriber.next(data);
+      });
     });
-
-    this.socket.on('joinRoom', () => {
-      const token = this.authService.token;
-      const userParsed = JSON.parse(atob(token.split('.')[1]));
-      const id = userParsed.user.id;
-      console.log(id)
-      this.socket.emit('joinRoom', { id });
-    });
+  }
+  disconnect() {
+    this.socket.disconnect();
   }
 }
