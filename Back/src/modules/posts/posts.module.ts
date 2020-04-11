@@ -9,13 +9,14 @@ import { FollowersModule } from '../followers/followers.module';
 import { PostsController } from './posts.controller';
 import { AuthModule } from '../auth/auth.module';
 import { AppGateway } from 'src/app.gateway';
+import { RedisStoreClientService } from 'src/redis-store-client.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostRepository]), AuthModule, UsersModule, FollowersModule],
   controllers: [
     PostsController
   ],
-  providers: [PostsService, AppGateway],
+  providers: [PostsService, AppGateway, RedisStoreClientService],
   exports: [
     PostsService,
     TypeOrmModule

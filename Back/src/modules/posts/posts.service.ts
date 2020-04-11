@@ -12,6 +12,7 @@ import { pagination, Ipagination } from 'src/shared/pagination';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from '../followers/followers.service';
 import { AppGateway } from 'src/app.gateway';
+import { RedisStoreClientService } from 'src/redis-store-client.service';
 
 @Injectable()
 export class PostsService {
@@ -20,9 +21,13 @@ export class PostsService {
         @InjectRepository(PostRepository) private readonly postRepository: PostRepository,
         private readonly usersService: UsersService,
         private readonly followersService: FollowersService,
-        private readonly appGateway: AppGateway) {}
+        private readonly appGateway: AppGateway,
+        private readonly redisStoreClientService: RedisStoreClientService) {}
 
     public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
+        await this.redisStoreClientService.set('roma', 'datoia');
+        console.log('---------------------------------------------------------------');
+        console.log(await this.redisStoreClientService.get('a'));
         const followees = await this.followersService.getFolloweesByUserId(user.id, {page: null, pageSize: null});
         const followeesArray = followees.map(follow => follow.userId);
         const users = await this.usersService.getUsersByIds(followeesArray);
