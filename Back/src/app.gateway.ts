@@ -7,7 +7,7 @@ import { FollowersService } from './modules/followers/followers.service';
 @WebSocketGateway(3001, {namespace: '/posts'})
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
-  @WebSocketServer() wss: Server;
+  @WebSocketServer() wss: any;
 
   constructor(private readonly followersService: FollowersService) {}
 
@@ -18,19 +18,24 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
   async handleDisconnect(client: Socket) {
     this.logger.log(`cient disconnected: ${client.id}`);
-    // const userId = 1;
-    // const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
-    // const followeesArray = followees.map(follow => follow.userId);
-    // client.leave(`${userId}`);
-    // followeesArray.forEach( userId => {
-    //   client.leave(`${userId}`);
-    // });
+    console.log(this.wss.adapter.nsp.adapter.rooms);
   }
 
   private readonly logger: Logger =  new Logger('AppGateWay');
 
   afterInit(server: Server) {
     this.logger.log("initialized");
+  }
+
+  @SubscribeMessage('joinRoom')
+  async handleJoinRoom(@MessageBody() message: { id: number }, @ConnectedSocket() client: Socket) {
+    const userId = message.id;
+    const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
+    const followeesArray = followees.map(follow => follow.userId);
+    client.join(`${userId}`);
+    followeesArray.forEach( userId => {
+      client.join(`${userId}`);
+    });
   }
 
   // @SubscribeMessage('joinInRoom')
@@ -43,19 +48,4 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   //   client.emit('msgToCLient', 'hello'); // response to only one client who sent event
   //   return {event: 'msgToCLient', data: 'hello'} // response to only one client who sent event
   // }
-
-
-  @SubscribeMessage('joinRoom')
-  handleJoinRoom(@MessageBody() message: { token: string }, @ConnectedSocket() client: Socket) {
-    console.log(client.id);
-    console.log(message);
-    // console.log(client);
-    // const userId = 1; 
-    // const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
-    // const followeesArray = followees.map(follow => follow.userId);
-    // client.join(`${userId}`);
-    // followeesArray.forEach( userId => {
-    //   client.join(`${userId}`);
-    // });
-  }
 }

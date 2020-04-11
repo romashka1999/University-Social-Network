@@ -7,8 +7,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class WebSocketService {
-  private socket = io('http://localhost:3001/posts');
+  public socket = io('http://localhost:3001/posts');
   constructor(private authService: AuthService) {}
+
 
   connect() {
     this.socket.on('connect', () => {
@@ -21,10 +22,5 @@ export class WebSocketService {
       console.log(id)
       this.socket.emit('joinRoom', { id });
     });
-
-    this.socket.on('postCreated', (data) => {
-      console.log(data);
-    });
-
   }
 }

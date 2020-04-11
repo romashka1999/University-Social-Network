@@ -47,6 +47,9 @@ export class ProfileComponent implements OnInit{
         //     console.log('soketiaaaa', data)
         //   })
         this.webSocket.connect();
+        this.webSocket.socket.on('postCreated', (data) => {
+          console.log(data);
+        });
     }
 
   cretePost() {
