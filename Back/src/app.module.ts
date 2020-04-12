@@ -14,6 +14,7 @@ import { TranslationsModule } from './modules/translations/translations.module';
 import { PostReactsModule } from './modules/post-reacts/post-reacts.module';
 import { FollowersModule } from './modules/followers/followers.module';
 import { MessagesModule } from './modules/messages/messages.module';
+import { ChatsModule } from './modules/chats/chats.module';
 
 
 @Module({
@@ -26,7 +27,8 @@ import { MessagesModule } from './modules/messages/messages.module';
     AdminsModule,
     TranslationsModule,
     PostReactsModule,
-    MessagesModule
+    MessagesModule,
+    ChatsModule
   ],
   providers: []
 })

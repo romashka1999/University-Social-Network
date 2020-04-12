@@ -5,13 +5,13 @@ import { MessageSchema } from './message.entity';
 import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
 import { AuthModule } from '../auth/auth.module';
-import { UsersModule } from '../users/users.module';
+import { ChatsModule } from '../chats/chats.module';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{name: 'Message', schema: MessageSchema}]),
         AuthModule,
-        UsersModule
+        ChatsModule
     ],
     providers: [MessagesService],
     controllers: [MessagesController]

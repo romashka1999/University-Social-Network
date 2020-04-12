@@ -1,11 +1,12 @@
 import { Schema } from 'mongoose';
 
 export const MessageSchema = new Schema({
-    fromUserId: {
-        type: Number,
+    chatId: {
+        type: String,
         required: true,
+        unique: true
     },
-    toUserId: {
+    userId: {
         type: Number,
         required: true
     },

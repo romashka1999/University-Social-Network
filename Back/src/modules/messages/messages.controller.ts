@@ -16,21 +16,21 @@ export class MessagesController {
 
     constructor(private readonly messagesService: MessagesService) {}
 
-    @Get('/user/:userId')
-    public async getUserMessages(
+    @Get('/chat/:chatId')
+    public async getChatMessages(
         @GetUser() user: User,
-        @Param('userId', ParseIntPipe) userId: number,
+        @Param('chatId') chatId: string,
         @Query(ValidationPipe) getMessagesFilterDto: GetMessagesFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.messagesService.getUserMessages(user.id, userId, getMessagesFilterDto);
+        const gotData = await this.messagesService.getChatMessages(user.id, chatId, getMessagesFilterDto);
         return new ResponseCreator("MESSAGES_GOT", gotData);
     }
 
-    @Post('/user/:userId')
+    @Post('/chat/:chatId')
     public async sendMessageToUser(
         @GetUser() user: User,
-        @Param('userId', ParseIntPipe) userId: number,
+        @Param('chatId') chatId: string,
         @Body(ValidationPipe) sendMessageDto: SendMessageDto): Promise<ResponseCreator> {
-        const createdData = await this.messagesService.sendMessageToUser(user.id, userId, sendMessageDto);
+        const createdData = await this.messagesService.sendMessageToChat(user.id, chatId, sendMessageDto);
         return new ResponseCreator("MESSAGE_SENT", createdData);
     }
 
@@ -38,7 +38,7 @@ export class MessagesController {
     public async deleteMessage(
         @GetUser() user: User,
         @Param('messageId') messageId: string): Promise<ResponseCreator> {
-        const deletedData = await this.messagesService.deleteMessage(user.id, messageId);
+        const deletedData = await this.messagesService.deleteMessageFromChat(user.id, messageId);
         return new ResponseCreator("MESSAGE_DELETED", deletedData);
     }
     

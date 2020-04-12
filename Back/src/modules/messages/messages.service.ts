@@ -1,15 +1,15 @@
-import { Injectable, InternalServerErrorException, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { GetMessagesFilterDto } from './dto/get-messages.filter.dto';
 import { Ipagination, pagination } from 'src/shared/pagination';
 import { SendMessageDto } from './dto/send-message.dto';
-import { UsersService } from '../users/users.service';
+import { ChatsService } from '../chats/chats.service';
 
 
 export interface IMessage {
-    fromUserId: number;
-    toUserId: number;
+    chatId: string;
+    userId: number;
     content: string;
     sendDate: Date;
 }
@@ -19,19 +19,24 @@ export class MessagesService {
                     
     constructor(
         @InjectModel('Message') private readonly Message: Model<any>,
-        private readonly usersService: UsersService) {} 
+        private readonly chatsService: ChatsService) {} 
 
-    public async getUserMessages(loggedUserId: number, userId: number, getMessagesFilterDto: GetMessagesFilterDto): Promise<any> {
+    public async getChatMessages(loggedUserId: number, chatId: string, getMessagesFilterDto: GetMessagesFilterDto): Promise<any> {
         const { page, pageSize } = getMessagesFilterDto;
         const { offset, limit } = <Ipagination>pagination(page, pageSize);
+        const chat = await this.chatsService.getChatById(chatId);
+        const users = chat.users;
         try {
             return await this.Message.find({
-                $or: [
-                    {fromUserId: loggedUserId, toUserId: userId},
-                    {fromUserId: userId, toUserId: loggedUserId},
-                ]
+                where: {
+                    chatId: chatId,
+                    $or: [
+                        {userId: users[0]},
+                        {userId: users[1]}
+                    ]
+                }
             },
-                ['fromUserId', 'toUserId', 'content', 'sendDate']
+                ['chatId', 'userId', 'content', 'sendDate']
             )
             .skip(offset)
             .limit(limit)
@@ -42,15 +47,12 @@ export class MessagesService {
     }
 
 
-    public async sendMessageToUser(loggedUserId: number, userId: number, sendMessageDto: SendMessageDto): Promise<any> {
-        if(loggedUserId === userId) {
-            throw new BadRequestException("YOU_CANT_SENT_MESSAGE_YOURSELF");
-        }
-        await this.usersService.getUserById(userId);
+    public async sendMessageToChat(loggedUserId: number, chatId: string, sendMessageDto: SendMessageDto): Promise<any> {
+        await this.chatsService.getChatById(chatId);
         try {
             const message = new this.Message({
-                fromUserId: loggedUserId,
-                toUserId: userId,
+                chatId: chatId,
+                userId: loggedUserId,
                 content: sendMessageDto.content
             });
             return await message.save();
@@ -59,12 +61,12 @@ export class MessagesService {
         }
     }
 
-    public async deleteMessage(loggedUserId: number, messageId: string): Promise<any> {
+    public async deleteMessageFromChat(loggedUserId: number, messageId: string): Promise<any> {
         const deletedMaxTime = 1; // min;
         try {
             const message = await this.Message.findOne({
                     _id: messageId,
-                    fromUserId: loggedUserId
+                    userId: loggedUserId
             });
             if(!message) {
                 throw { statusCode: HttpStatus.BAD_REQUEST, message: "MESSAGE_NOT_EXISTS" };

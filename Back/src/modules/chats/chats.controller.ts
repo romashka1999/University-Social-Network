@@ -1,0 +1,33 @@
+import { Controller, UseGuards, Get, Query, ValidationPipe, ParseIntPipe, Param } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
+import { User } from 'src/modules/users/user.entity';
+import { ResponseCreator } from 'src/shared/response-creator';
+import { GetUser } from 'src/modules/auth/get-account-data.decorator';
+import { ChatsService } from './chats.service';
+import { GetChatsFilterDto } from './dto/get-chats.filter.dto';
+
+
+
+@Controller('public/chats')
+@UseGuards(AuthGuard())
+export class ChatsController {
+
+    constructor(private readonly chatsService: ChatsService) {}
+
+    @Get('/user/:userId')
+    public async getChatByUserId(
+        @GetUser() user: User,
+        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
+        const gotData = await this.chatsService.findOrCreateChat(user.id, userId);
+        return new ResponseCreator("CHAT_GOT", gotData);
+    } 
+
+    @Get()
+    public async getUserChats(
+        @GetUser() user: User,
+        @Query(ValidationPipe) getChatsFilterDto: GetChatsFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.chatsService.getUserChats(user.id, getChatsFilterDto);
+        return new ResponseCreator("CHATS_GOT", gotData);
+    }
+}
