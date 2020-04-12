@@ -20,7 +20,10 @@ import { ChatsModule } from './modules/chats/chats.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
-    MongooseModule.forRoot('mongodb://roma:roma123@ds115493.mlab.com:15493/heroku_9xznllvz'),
+    MongooseModule.forRoot('mongodb://roma:roma123@ds115493.mlab.com:15493/heroku_9xznllvz', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }),
     UsersModule,
     FollowersModule,
     PostsModule,
