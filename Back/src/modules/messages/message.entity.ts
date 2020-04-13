@@ -1,10 +1,9 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
 export const MessageSchema = new Schema({
     chatId: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     userId: {
         type: Number,
@@ -15,8 +14,20 @@ export const MessageSchema = new Schema({
         required: true,
         trim: true
     },
-    sendDate: {
-        type: Date,
-        default: new Date()
+    imageUrl: {
+        type: String,
+        default: null
     }
+}, {
+    timestamps: true
 });
+
+export interface IMessage extends Document{
+    _id: string;
+    chatId: string;
+    userId: number;
+    content: string;
+    imageUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

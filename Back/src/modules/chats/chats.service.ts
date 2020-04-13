@@ -1,22 +1,18 @@
 import { Injectable, InternalServerErrorException, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model , connection} from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { GetChatsFilterDto } from './dto/get-chats.filter.dto';
 import { Ipagination, pagination } from 'src/shared/pagination';
 import { UsersService } from '../users/users.service';
+import { IChat } from './chat.entity';
 
-
-export interface IChat {
-    users: any[];
-    createdAt: Date;
-}
 
 @Injectable()
 export class ChatsService {
                     
     constructor(
-        @InjectModel('Chat') private readonly Chat: Model<any>,
+        @InjectModel('Chat') private readonly Chat: Model<IChat>,
         private readonly usersService: UsersService) {} 
 
 
@@ -26,9 +22,8 @@ export class ChatsService {
         try {
             return await this.Chat.find({
                             users: { $in: [userId] }  
-                        },
-                            ['users', 'createdAt']
-                        )
+                        })
+                        .select(['users', 'createdAt', 'updatedAt'])
                         .skip(offset)
                         .limit(limit)
                         .sort({createdAt: 'desc'})
@@ -44,15 +39,21 @@ export class ChatsService {
         }
         await this.usersService.getUserById(userId);
         try {
-            const chat = await this.Chat.find({
-                users: { $in: [loggedUserId, userId] }
-            });
+            const chat = await this.Chat.findOne({
+                $or: [
+                    {users: [loggedUserId, userId]},
+                    {users: [userId, loggedUserId]}
+                ],
+                
+            }).select(['users', 'createdAt', 'updatedAt']);
 
             if(!chat) {
                 const chat = new this.Chat({
                     users: [loggedUserId, userId]
                 });
-                return await chat.save();
+                const createdChat = await chat.save();
+                delete createdChat.__v;
+                return createdChat;
             } else {
                 return chat;
             }
