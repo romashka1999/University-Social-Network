@@ -9,6 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
 
 import * as config from 'config';
 import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+
 import { AdminsModule } from '../admins/admins.module';
 import { UsersModule } from '../users/users.module';
 
@@ -27,8 +29,15 @@ const jwtConfig = config.get('jwt');
     }),
     MulterModule.register({
       dest: './uploads',
+      storage: diskStorage({
+        // destination: './uploads', 
+        filename: (req, file, cb) => { 
+          console.log(req.files[0].fieldname);
+          return cb(null, file.filename + '.jpg')
+        }
+      }),
       limits: {
-        fileSize: 10000000
+        fileSize: 1000000000
       }
     }),
     AdminsModule,

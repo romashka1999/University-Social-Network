@@ -35,6 +35,20 @@ export class Post extends BaseEntity {
     })
     reactsCount: number;
 
+    @Column({
+        type: 'int',
+        nullable: false,
+        default: 0
+    })
+    commentsCount: number;
+
+    @Column({
+        type: 'int',
+        nullable: false,
+        default: 0
+    })
+    sharesCount: number;
+
     @ManyToOne(type => User, user => user.posts)
     user: User;
 

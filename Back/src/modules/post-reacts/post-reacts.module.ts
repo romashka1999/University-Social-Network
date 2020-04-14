@@ -10,10 +10,10 @@ import { AuthModule } from '../auth/auth.module';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([PostReactRepository]), 
+        TypeOrmModule.forFeature([PostReactRepository]),
         AuthModule,
-        UsersModule, 
-        FollowersModule, 
+        UsersModule,
+        FollowersModule,
         PostsModule
     ],
     providers: [PostReactsService],
@@ -23,4 +23,4 @@ import { AuthModule } from '../auth/auth.module';
         TypeOrmModule
     ]
 })
-export class PostReactsModule {}
+export class PostReactsModule { }
