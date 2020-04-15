@@ -11,7 +11,7 @@ export class MessagesService {
   constructor(private http: HttpClient) {}
 
   getChatMessages(id: string): Observable<MessageModel> {
-   return  this.http.get<MessageModel>(`http://localhost:3000/public/messages/chat/${id}?page=0&pageSize=10`);
+   return  this.http.get<MessageModel>(`http://localhost:3000/public/messages/chat/${id}?page=0&pageSize=20`);
   }
   getUserChats(): Observable<ChatModel> {
     return this.http.get<ChatModel>(`http://localhost:3000/public/chats?page=0&pageSize=10`);
