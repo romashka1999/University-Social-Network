@@ -8,7 +8,11 @@ import {AuthInterceptor} from './shared/auth.interceptor';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 //Material
-import {MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatSelectModule} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';

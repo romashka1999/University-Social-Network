@@ -5,7 +5,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 import {Gender} from '../shared/interfaces';
-import {ErrorStateMatcher} from '@angular/material';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

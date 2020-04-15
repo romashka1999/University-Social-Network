@@ -2,7 +2,7 @@ import {OnInit, Component, Inject, OnDestroy} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Posts, Users} from '../../shared/interfaces';
 import {PostService} from '../../services/post.service';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {WebSocketService} from '../../services/web-socket.service';
 import {Subscription} from 'rxjs';
