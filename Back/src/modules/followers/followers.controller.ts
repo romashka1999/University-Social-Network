@@ -48,4 +48,12 @@ export class FollowersController {
         const gotData = await this.followersService.getUserFollowers(user.id, userId, paginationGetFilterDto);
         return new ResponseCreator("FOLLOWERS_GOT", gotData);
     }
+
+    @Get('/checkFollowing/:userId')
+    public async checkFollowing(
+        @GetUser() user: User,
+        @Param('userId', ParseIntPipe) userId: number): Promise<ResponseCreator> {
+        const gotData = await this.followersService.checkFollowing(user.id, userId);
+        return new ResponseCreator("FOLLOWING_GOT", gotData);
+    }
 }
