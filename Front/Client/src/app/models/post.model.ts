@@ -1,14 +1,12 @@
-
-
 export interface GetPost_Response {
     message: string;
-    data: GetPostData[]
+    data: GetPostData[];
 }
 
 export interface GetPostData {
     id: number;
     content: string;
-    hidden: boolean
+    hidden: boolean;
     createDate: string;
     updateDate: string;
     reactsCount: number;

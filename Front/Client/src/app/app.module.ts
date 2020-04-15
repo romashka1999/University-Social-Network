@@ -41,6 +41,7 @@ import { SharedTimelineComponent } from './shared/timeline/timeline.component';
 import { SharedPostComponent } from './shared/post/post.component';
 import { SharedStoryComponent } from './shared/story/story.component';
 import { SharedPostPopupComponent } from './shared/post-popup/popup.component';
+import { MessagesComponent } from './shared/messages/messages.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
@@ -70,7 +71,8 @@ const INTERCEPTOR_PROVIDER: Provider = {
     SharedTimelineComponent,
     SharedPostComponent,
     SharedStoryComponent,
-    SharedPostPopupComponent
+    SharedPostPopupComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
