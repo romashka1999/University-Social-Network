@@ -8,6 +8,7 @@ import {AuthGuard} from './services/auth.guard';
 import {SearchComponent} from './layouts/search/search.component';
 import {SettingsComponent} from './layouts/profile/settings/settings.component';
 import {ProfileInfoComponent} from './layouts/profile/profile-info/profile-info.component';
+import { HomeComponent } from './layouts/home/home.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: '', component: LayoutsComponent, canActivate: [AuthGuard], children: [
     {path: '', redirectTo: 'profile', pathMatch: 'full'},
+    {path: 'home', component: HomeComponent},
     {path: 'profile', component: ProfileComponent},
     {path: 'profile/:id', component: ProfileInfoComponent},
     {path: 'search', component: SearchComponent},

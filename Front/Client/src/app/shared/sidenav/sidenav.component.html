@@ -1,40 +1,20 @@
-<div class="sidenav-container d-flex flex-row align-items-center">
-    <div class="wrapper">
-        <div class="logo-container">
-            სახელი
+<div class="sidenav-container">
+    <div class="wrapper d-flex flex-column">
+        <div class="logo-wrapper d-flex flex-row justify-content-center align-items-center">
+          <img src="assets/images/logo.png" alt="logo">
         </div>
-        <div class="content d-flex flex-column">
-          <a class="nav-link" routerLink="/profile">
-            <div class="item-container">
-                <div class="container-content d-flex flex-row">
-                    <span matPrefix class="d-flex flex-column">
-                        <i class="material-icons"> account_circle </i>
-                    </span>
-                    <div class="item-body">
-                        პროფილი
-                    </div>
-                </div>
-            </div>
-          </a>
-          <a class="nav-link" routerLink="/settings">
-            <div class="item-container">
-                <div class="container-content d-flex flex-row">
-                    <span matPrefix class="d-flex flex-column">
-                        <i class="material-icons"> settings </i>
-                    </span>
-                    <div class="item-body">
-                      პარამეტრები
-                    </div>
-                </div>
-            </div>
-          </a>
-
-          <div class="item-container">
-            <div class="container-content d-flex flex-row">
-              <div class="item-body">
-                  <button class="btn btn-outline-danger" (click)="auth.logout()">Logout</button>
-              </div>
-            </div>
+        <div class="menu-wrapper">
+          <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span class="material-icons active"> home </span>
+          </div>
+          <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span class="material-icons"> chat_bubble </span>
+          </div>
+          <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span class="material-icons"> call </span>
+          </div>
+          <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span class="material-icons"> power_settings_new </span>
           </div>
         </div>
     </div>
