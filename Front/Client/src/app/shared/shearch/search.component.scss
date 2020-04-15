@@ -1,0 +1,41 @@
+.search-wrapper {
+    width: 100%;
+    padding: 10px;
+    border-radius: 30px;
+    background-color: #eaeaea;
+    .search-content {
+        .search-icon {
+            max-height: 30px;
+            span {
+                font-size: 1.8em;
+                opacity: 0.6;
+                cursor: default;
+            }
+        }
+        .search-input {
+            //margin-top: 2px;
+            width: calc((100% - 64px));
+            input {
+                background-color: transparent;
+                border: 0;
+                width: 100%;
+                font-size: 1.2em;
+                padding-left: 10px;
+                padding-right: 10px;
+                outline: none;
+            }
+        }
+        .mic-icon {
+            max-height: 30px;
+            span {
+                font-size: 1.8em;
+                opacity: 0.6;
+                cursor: pointer;
+                transition-duration: 0.3s;
+            }
+            span:hover {
+                opacity: 1;
+            }
+        }
+    }
+}

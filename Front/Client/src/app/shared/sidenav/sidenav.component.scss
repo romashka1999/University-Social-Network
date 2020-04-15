@@ -5,32 +5,42 @@
     position: fixed;
     top: 0;
     left: 0;
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 7%;
+    max-width: 7%;
     height: 100vh;
-    //border: 1px solid black;
-    padding: 25px 10px 25px 10px;
-    color: #5b667e;
-    background-color: #fff;
-    border-radius: 10px;
-    -moz-box-shadow:    5px 1px 15px 0px $primary-light-color;
-    -webkit-box-shadow: 5px 1px 15px 0px $primary-light-color;
-    box-shadow:         5px 1px 15px 0px $primary-light-color;
+    padding: 7vh 20px 30px 3vh;
+    color: #504d60;
+    background-color: #080321;
+    .logo-wrapper {
+        img {
+            width: 50%;
+            cursor: pointer;
+            min-width: 40px;
+            max-width: 50px;
+        }
+    }
+    .menu-wrapper {
+        margin-top: 6vh;
+        .sidenav-icon {
+            margin-top: 3vh;
+            span {
+                padding: 13px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1.6em;
+                transition-duration: 0.3s;
+            }
+            .active {
+                background-color: #322e47;
+                color: #536DFE
+            }
+            span:hover:not(.active) {
+                color: white;
+            }
+        }
+    }
 }
 
-.wrapper {
-    flex: 1;
-    height: 100%;
-    .logo-container {
-        width: 100%;
-        padding: 0px 10px;
-        color: $primary-color
-    }
-    .content {
-        width: 100%;
-        padding-top: 30px
-    }
-}
 
 .item-container {
     cursor: pointer;

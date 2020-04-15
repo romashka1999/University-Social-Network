@@ -23,18 +23,24 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
+import { HomeComponent } from './layouts/home/home.component';
 //Redux devtool
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {SidenavComponent} from './shared/sidenav/sidenav.component';
 import {LayoutsComponent} from './layouts/layouts.component';
 import {CreatePost, ProfileComponent} from './layouts/profile/profile.component';
 import {ProfileInfoComponent} from './layouts/profile/profile-info/profile-info.component';
-import {HeaderComponent} from './shared/header/header.component';
 // import { ProfileModule } from './layouts/profile/profile.module';
 //env
 import {environment} from 'src/environments/environment';
 import { SearchComponent } from './layouts/search/search.component';
 import { SettingsComponent } from './layouts/profile/settings/settings.component';
+import { SharedSearchComponent } from './shared/shearch/search.component';
+import { SharedProfileComponent } from './shared/profile/profile.component';
+import { SharedTimelineComponent } from './shared/timeline/timeline.component';
+import { SharedPostComponent } from './shared/post/post.component';
+import { SharedStoryComponent } from './shared/story/story.component';
+import { SharedPostPopupComponent } from './shared/post-popup/popup.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
@@ -55,10 +61,16 @@ const INTERCEPTOR_PROVIDER: Provider = {
     SidenavComponent,
     ProfileComponent,
     ProfileInfoComponent,
-    HeaderComponent,
     SearchComponent,
     SettingsComponent,
-    CreatePost
+    CreatePost,
+    HomeComponent,
+    SharedSearchComponent,
+    SharedProfileComponent,
+    SharedTimelineComponent,
+    SharedPostComponent,
+    SharedStoryComponent,
+    SharedPostPopupComponent
   ],
   imports: [
     BrowserModule,
