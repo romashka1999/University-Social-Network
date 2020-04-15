@@ -20,13 +20,61 @@ export class ChatsService {
         const { page, pageSize } = getChatsFilterDto;
         const { offset, limit } = <Ipagination>pagination(page, pageSize);
         try {
-            return await this.Chat.find({
+            let chats = await this.Chat.find({
                             users: { $in: [userId] }  
                         })
                         .select(['users', 'createdAt', 'updatedAt'])
                         .skip(offset)
                         .limit(limit)
-                        .sort({createdAt: 'desc'})
+                        .sort({createdAt: 'desc'});
+            let chatUserIds = [];
+            chats.forEach(chat => {
+                chatUserIds.push(chat.users);
+            });
+            function flatten(arr) {
+                return arr.reduce(function (flat, toFlatten) {
+                  return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+                }, []);
+            }
+            chatUserIds = flatten(chatUserIds);
+
+            const uniqueChatUserIdsArray = [];
+            const uniqueChatUserIds = new Set();
+
+            for(let userId of chatUserIds) {
+                let beforeSetSise = uniqueChatUserIds.size;
+                uniqueChatUserIds.add(userId);
+                if(uniqueChatUserIds.size !== beforeSetSise) {
+                    uniqueChatUserIdsArray.push(userId);
+                }
+            }
+            const users = await this.usersService.getUsersByIds(uniqueChatUserIdsArray);
+            const memoUserDP = {};
+            for(let chat of chats) {
+                let usersArray = [];
+                for(let chatUserId of chat.users) {
+                    if(memoUserDP[chatUserId]) {
+                        usersArray.push({
+                            firstName: memoUserDP[chatUserId]?.user_firstName,
+                            lastname: memoUserDP[chatUserId]?.user_lastName,
+                            prifileImgUrl: memoUserDP[chatUserId]?.user_profileImgUrl,
+                            userId: chatUserId
+                        });
+                    } else {
+                        const user: any = users.find( (user: any) => user.user_id === chatUserId);
+                        memoUserDP[chatUserId] = user;
+                        usersArray.push({
+                            firstName: memoUserDP[chatUserId]?.user_firstName,
+                            lastname: memoUserDP[chatUserId]?.user_lastName,
+                            prifileImgUrl: memoUserDP[chatUserId]?.user_profileImgUrl,
+                            userId: chatUserId
+                        });
+                    } 
+                }
+                chat.users = usersArray;
+            }
+            return chats;
+
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
