@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.post.getPosts(this.userProfile[0].id)
         .subscribe((res: any) => {
           this.posts = res.data
+          console.log(res)
           // console.log('vamowmeb amas', res.data)
         })
         if (this.userProfile[0].followingsCount > 0) {
