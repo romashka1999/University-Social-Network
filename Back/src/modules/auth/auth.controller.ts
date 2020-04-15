@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
 
 
 import { AuthService } from './auth.service';
@@ -7,6 +7,7 @@ import { UserSignUpDto } from './dtos/user-sign-up.dto';
 import { AdminSignInDto } from './dtos/admin-sign-in.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ResponseCreator } from 'src/shared/response-creator';
+import { imageFileFilter } from 'src/utils/file-uploading.utils';
 
 
 @Controller('auth')
@@ -18,14 +19,16 @@ export class AuthController {
     @UseInterceptors(FilesInterceptor('profileImg'))
     userSignUp(
         @Body(ValidationPipe) userSignUpDto: UserSignUpDto,
-        @UploadedFiles() file): Promise<boolean> {
+        @UploadedFile() file): Promise<boolean> {
         console.log(file);
         return this.authService.userSignUp(userSignUpDto);
     }
 
     @Post('test')
-    @UseInterceptors(FilesInterceptor('profileImg'))
-    test(@UploadedFiles() file) {
+    @UseInterceptors(FilesInterceptor('profileImg', 1, {
+        fileFilter: imageFileFilter
+    }))
+    test(@UploadedFile() file) {
         console.log(file);
         return 'uploaded';
     }

@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn, RelationId } from "typeorm";
 import { Post } from "../posts/post.entity";
 import { User } from "../users/user.entity";
 
@@ -30,6 +30,12 @@ export class Comment extends BaseEntity {
     @ManyToOne(type => Post, post => post.comments)
     post: Post;
 
+    @RelationId((comment: Comment) => comment.post)
+    postId: number;
+
     @ManyToOne(type => User, user => user.comments)
     user: User;
+
+    @RelationId((comment: Comment) => comment.user)
+    userId: number;
 }

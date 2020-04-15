@@ -1,46 +1,37 @@
-import { Injectable, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpException, HttpStatus, BadGatewayException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+
 import { GetMessagesFilterDto } from './dto/get-messages.filter.dto';
 import { Ipagination, pagination } from 'src/shared/pagination';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsService } from '../chats/chats.service';
+import { IMessage } from './message.entity';
 
-
-export interface IMessage {
-    chatId: string;
-    userId: number;
-    content: string;
-    sendDate: Date;
-}
 
 @Injectable()
 export class MessagesService {
                     
     constructor(
-        @InjectModel('Message') private readonly Message: Model<any>,
+        @InjectModel('Message') private readonly Message: Model<IMessage>,
         private readonly chatsService: ChatsService) {} 
 
     public async getChatMessages(loggedUserId: number, chatId: string, getMessagesFilterDto: GetMessagesFilterDto): Promise<any> {
         const { page, pageSize } = getMessagesFilterDto;
         const { offset, limit } = <Ipagination>pagination(page, pageSize);
         const chat = await this.chatsService.getChatById(chatId);
-        const users = chat.users;
+        if(!chat.users.find( userId => userId === loggedUserId)) {
+            throw new BadGatewayException("YOU_ARE_NOT_CHAT_MEMBER");
+        }
         try {
-            return await this.Message.find({
-                where: {
-                    chatId: chatId,
-                    $or: [
-                        {userId: users[0]},
-                        {userId: users[1]}
-                    ]
-                }
+            return await this.Message.find({ 
+                chatId: chatId, 
             },
-                ['chatId', 'userId', 'content', 'sendDate']
+                ['chatId', 'userId', 'content', 'imageUrl', 'createdAt']
             )
             .skip(offset)
             .limit(limit)
-            .sort({sendDate: 'desc'})
+            .sort({createdAt: 'desc'})
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
@@ -74,8 +65,8 @@ export class MessagesService {
                 let limit: Date = new Date();
                 limit.setMinutes(limit.getMinutes() + deletedMaxTime);
                 console.log(Number(limit), 'limit');
-                console.log(Number(message.sendDate), 'sendeDate');
-                if(Number(message.sendDate) > Number(limit)) {
+                console.log(Number(message.createdAt), 'sendeDate');
+                if(Number(message.createdAt) > Number(limit)) {
                     throw { statusCode: HttpStatus.BAD_REQUEST, message: "DELETE_MESSAGE_IS_TIME_LIMITED" };
                 }
                 return await this.Message.findByIdAndDelete(messageId);
