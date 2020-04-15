@@ -1,0 +1,19 @@
+<div class="post-wrapper d-flex flex-column" *ngIf="PostData">
+    <div class="post-header d-flex flex-row">
+        <div class="user-photo"></div>
+        <div class="user-info d-flex flex-column justify-content-center" *ngIf="PostData.user_firstName && PostData.user_lastName">
+            <div class="user-name">{{PostData.user_firstName}}, {{PostData.user_lastName}}</div>
+            <div class="user-postDate">{{PostData.createDate | date}}</div>
+        </div>
+    </div>
+    <div class="post-body d-flex flex-column">
+        <div class="post-content" *ngIf="PostData.content">
+            {{PostData.content}}
+        </div>
+        <div class="post-image"><img src="../../../assets/images/post_photo.jpg"></div>
+        <!-- <div class="post-reactions d-flex flex-row">
+            <span class="material-icons"> timer </span>
+            <span class="material-icons"> timer </span>
+        </div> -->
+    </div>
+</div>

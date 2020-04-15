@@ -1,0 +1,52 @@
+<div class="profile-wrapper d-flex flex-column">
+    <div class="content-icon" [ngClass]="{'content-icon-hidden': !tabState}">
+        <div *ngIf="tabState" class="right-icon icon d-flex flex-row justify-content-center align-items-center">
+            <span class="material-icons" (click)="toogleTabState(false)"> chevron_right </span>
+        </div>
+        <div *ngIf="!tabState" class="right-icon icon d-flex flex-row justify-content-center align-items-center">
+            <span class="material-icons" (click)="toogleTabState(true)"> chevron_left </span>
+        </div>
+    </div>
+    <div class="user-profile-wrapper d-flex flex-row">
+        <div class="user-image-wrapper">
+            <div class="user-image"></div>
+        </div>
+        <div class="user-name-wrapper d-flex flex-row justify-content-center align-items-center">
+            <div class="user-name d-flex flex-column">
+                <div class="name">სახელი, გვარი</div>
+                <div class="location d-flex flex-row">
+                    <span class="material-icons">location_on</span>
+                    <div class="city d-flex flex-row justify-content-center align-items-center">თბილისი, საქართველო</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="user-followers-wrapper d-flex flex-row justify-content-center align-items-center">
+        <div class="user-followers-container">
+            <div class="user-followers-count d-flex flex-column justify-content-center align-items-center">
+                <div class="count d-flex flex-row justify-content-center align-items-center">
+                    568
+                </div>
+                <div class="count-txt flex-row justify-content-center align-items-center">
+                    გამომწერი
+                </div>
+            </div>
+        </div>
+        <div class="user-followers-container">
+            <div class="user-followers-count d-flex flex-column justify-content-center align-items-center">
+                <div class="count d-flex flex-row">
+                    385
+                </div>
+                <div class="count-txt flex-row justify-content-center align-items-center">
+                    გამოწერილი
+                </div>
+            </div>
+        </div>
+        <div class="user-followers-container d-flex flex-row justify-content-center align-items-center">
+            <button class="follow">გამოწერა</button>
+        </div>
+    </div>
+    <div class="user-timeline-wrapper">
+        <shared-timeline></shared-timeline>
+    </div>
+</div>

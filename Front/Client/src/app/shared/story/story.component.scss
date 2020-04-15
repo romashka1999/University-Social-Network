@@ -1,0 +1,23 @@
+.story-wrapper {
+    .story-item-wrapper {
+        width: 10%;
+        min-width: 50px;
+        .story-item-content {
+            //width: 50px;
+            //border: 1px solid black;
+            .story-image-wrapper {
+                .story-image {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: 2px solid yellowgreen
+                }
+            }
+            .story-name {
+                font-size: 0.7em;
+                opacity: 0.6;
+                text-align: center;
+            }
+        }
+    }
+}
