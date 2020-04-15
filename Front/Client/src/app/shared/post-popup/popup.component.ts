@@ -8,7 +8,7 @@ import { TabStore } from 'src/app/stores/tab.store';
 })
 export class SharedPostPopupComponent implements OnInit{
 
-    @ViewChild('postBody', {static: false}) postContent:ElementRef;
+    @ViewChild('postBody') postContent:ElementRef;
 
     @Output() postData: EventEmitter<string> = new EventEmitter();
 

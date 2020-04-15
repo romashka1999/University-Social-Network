@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
 
   public hide = true;
   public loading: boolean = false;
-  private lang: string;
+  public lang: string;
 
   constructor(private translateService: TranslateService,
               private languageService: LanguageService,
