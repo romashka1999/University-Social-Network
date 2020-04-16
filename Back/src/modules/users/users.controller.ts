@@ -1,5 +1,6 @@
 import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, UsePipes} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
 
 import { UsersService } from 'src/modules/users/users.service';
@@ -13,9 +14,8 @@ import { UserSetUsernameDto } from 'src/modules/users/dtos/user-set-username.dto
 import { UserSetEmailDto } from 'src/modules/users/dtos/user-set-email.dto';
 import { Admin } from 'typeorm';
 import { GetUsersFilterDto } from './dtos/get-users-filter.dto';
-import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
-
+@ApiTags('users')
 @Controller('public/users')
 @UseGuards(AuthGuard())
 export class UsersController {

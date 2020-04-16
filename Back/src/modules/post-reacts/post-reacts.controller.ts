@@ -1,5 +1,6 @@
 import { Controller, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
@@ -7,7 +8,7 @@ import { ResponseCreator } from 'src/shared/response-creator';
 import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 import { PostReactsService } from './post-reacts.service';
 
-
+@ApiTags('postReacts')
 @Controller('public/postReacts')
 @UseGuards(AuthGuard())
 export class PostReactsController {

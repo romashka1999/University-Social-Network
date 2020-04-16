@@ -1,5 +1,7 @@
 import { Controller, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, Post, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
@@ -8,7 +10,7 @@ import { CommentsService } from './comments.service';
 import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
 import { CommentCreateDto } from './dto/comment-create.dto';
 
-
+@ApiTags('comments')
 @Controller('public/comments')
 @UseGuards(AuthGuard())
 export class CommentsController {
