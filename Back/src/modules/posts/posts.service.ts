@@ -56,7 +56,7 @@ export class PostsService {
         createdPostForSocket.user_firstName = user.firstName;
         createdPostForSocket.user_lastName = user.lastName;
         createdPostForSocket.user_profileImgUrl = user.profileImgUrl;
-        this.postsGateway.wss.to(`${user.id}`).emit('postCreated', createdPostForSocket);
+        this.postsGateway.wss.to(`${user.id}posts`).emit('postCreated', createdPostForSocket);
 
         return createdPost;
     }
