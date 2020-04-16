@@ -35,9 +35,10 @@
       </div>
       <div class="mesgs">
         <div
+          #scrollMe
           infiniteScroll
-          [infiniteScrollDistance]="10"
-          [infiniteScrollThrottle]="1000"
+          [infiniteScrollDistance]="100"
+          [infiniteScrollThrottle]="50"
           (scrolledUp)="onScroll()"
           [infiniteScrollContainer]="'.msg_history'"
           [fromRoot]="true"

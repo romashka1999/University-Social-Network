@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MessagesService} from '../../services/messages.service';
 import {ChatDataModel} from '../../models/chat.model';
 import {MessageDataModel} from '../../models/message.model';
@@ -20,6 +20,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   myId = this.token.user.id;
   currentChatId: string;
   page = 0;
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   ngOnInit() {
       this.getChatSub = this.messagesService.getUserChats()
       .subscribe((res) => {
@@ -50,6 +51,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         // @ts-ignore
         this.messages.push(res.data);
         console.log(this.messages);
+        this.scrollToBottom();
       });
   }
   onScroll() {
@@ -60,5 +62,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
         console.log(res)
         this.messages.unshift(...res.data.reverse());
       });
+  }
+
+  scrollToBottom(): void {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      console.log('shevida')
   }
 }

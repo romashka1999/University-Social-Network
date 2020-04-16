@@ -26,12 +26,7 @@ export interface Gender {
   value: string;
   viewValue: string;
 }
-export interface UserSearch {
-    user_profileImgUrl: string;
-    user_lastName: string;
-    user_firstName: string;
-    user_id?: number;
-}
+
 export interface Posts {
   user_firstName: string;
   user_lastName: string;

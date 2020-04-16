@@ -39,7 +39,7 @@ import {ProfileInfoComponent} from './layouts/profile/profile-info/profile-info.
 import {environment} from 'src/environments/environment';
 import { SearchComponent } from './layouts/search/search.component';
 import { SettingsComponent } from './layouts/profile/settings/settings.component';
-import { SharedSearchComponent } from './shared/shearch/search.component';
+import { SharedSearchComponent } from './shared/search/search.component';
 import { SharedProfileComponent } from './shared/profile/profile.component';
 import { SharedTimelineComponent } from './shared/timeline/timeline.component';
 import { SharedPostComponent } from './shared/post/post.component';

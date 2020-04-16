@@ -2,8 +2,8 @@
     <div class="post-header d-flex flex-row">
         <div class="user-photo"></div>
         <div class="user-info d-flex flex-column justify-content-center" *ngIf="PostData.user_firstName && PostData.user_lastName">
-            <div class="user-name">{{PostData.user_firstName}}, {{PostData.user_lastName}}</div>
-            <div class="user-postDate">{{PostData.createDate | date}}</div>
+            <div class="user-name">{{PostData.user_firstName}} {{PostData.user_lastName}}</div>
+            <div class="user-postDate">{{PostData.createDate | date: 'short'}}</div>
         </div>
     </div>
     <div class="post-body d-flex flex-column">

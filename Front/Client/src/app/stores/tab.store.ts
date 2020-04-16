@@ -6,6 +6,6 @@ export class TabStore {
 
   profileSidenavState$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
-  postPopupState$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  postPopupState$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
 }

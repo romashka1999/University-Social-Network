@@ -13,6 +13,5 @@ export class SharedTimelineComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
-        
     }
 }

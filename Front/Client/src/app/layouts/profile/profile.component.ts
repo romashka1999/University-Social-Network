@@ -25,30 +25,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
     userProfile: Users[] = [this.token.user];
     posts: Posts[] = [];
     ngOnInit() {
-        this._snackBar.open('შეტყობინება...', 'დახურვა', {
-            duration: 250000,
-        });
-        // console.log(this.userProfile)
-        this.post.getPosts(this.userProfile[0].id)
-        .subscribe((res: any) => {
-          this.posts = res.data
-          console.log(res)
-          // console.log('vamowmeb amas', res.data)
-        })
-        if (this.userProfile[0].followingsCount > 0) {
-          this.post.getFolloweesPosts()
-            .subscribe((res: any) => {
-              // console.log(res.data);
-              this.posts.push(...res.data);
-            });
-        } else {
-         console.log('shen aravis afoloveb!!!');
-        }
-        this.connectSocketSub = this.webSocket.connect().subscribe();
-        this.realTimePostSub = this.webSocket.getRealTimePost().subscribe((data: any) => {
-          this.posts.unshift(data)
-          console.log(data);
-        })
+        // this._snackBar.open('შეტყობინება...', 'დახურვა', {
+        //     duration: 250000,
+        // });
+        // // console.log(this.userProfile)
+        // this.post.getPosts(this.userProfile[0].id)
+        // .subscribe((res: any) => {
+        //   this.posts = res.data
+        //   console.log(res)
+        //   // console.log('vamowmeb amas', res.data)
+        // })
+        // if (this.userProfile[0].followingsCount > 0) {
+        //   this.post.getFolloweesPosts()
+        //     .subscribe((res: any) => {
+        //       // console.log(res.data);
+        //       this.posts.push(...res.data);
+        //     });
+        // } else {
+        //  console.log('shen aravis afoloveb!!!');
+        // }
+        // this.connectSocketSub = this.webSocket.connect().subscribe();
+        // this.realTimePostSub = this.webSocket.getRealTimePost().subscribe((data: any) => {
+        //   this.posts.unshift(data)
+        //   console.log(data);
+        // })
     }
     ngOnDestroy() {
       this.connectSocketSub.unsubscribe();
