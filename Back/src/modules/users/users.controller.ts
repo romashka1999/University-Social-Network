@@ -1,6 +1,6 @@
 import { Controller, Patch, Body, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, UsePipes} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 
 import { UsersService } from 'src/modules/users/users.service';
@@ -15,6 +15,10 @@ import { UserSetEmailDto } from 'src/modules/users/dtos/user-set-email.dto';
 import { Admin } from 'typeorm';
 import { GetUsersFilterDto } from './dtos/get-users-filter.dto';
 
+@ApiHeader({
+    name: 'token',
+    description: 'token for Auth',
+})
 @ApiTags('users')
 @Controller('public/users')
 @UseGuards(AuthGuard())

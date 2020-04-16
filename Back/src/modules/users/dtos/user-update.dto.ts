@@ -24,7 +24,7 @@ export class UserUpdateDto {
     lastName?: string;
 
     @ApiProperty({
-        type: IsDateString,
+        type: Date,
         description: 'birthDate of user',
         required: false
     })

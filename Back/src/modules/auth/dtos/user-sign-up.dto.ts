@@ -29,7 +29,7 @@ export class UserSignUpDto {
     lastName: string;
 
     @ApiProperty({
-        type: IsDateString,
+        type: Date,
         description: 'birthDate of user',
         required: true
     })

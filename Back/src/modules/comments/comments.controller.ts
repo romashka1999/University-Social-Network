@@ -1,6 +1,6 @@
 import { Controller, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, Post, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
@@ -10,6 +10,10 @@ import { CommentsService } from './comments.service';
 import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
 import { CommentCreateDto } from './dto/comment-create.dto';
 
+@ApiHeader({
+    name: 'token',
+    description: 'token for Auth',
+})
 @ApiTags('comments')
 @Controller('public/comments')
 @UseGuards(AuthGuard())

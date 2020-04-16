@@ -13,7 +13,7 @@ export class PostUpdateDto {
     content: string;
 
     @ApiProperty({
-        type: IsBooleanString,
+        type: Boolean,
         description: 'publicPost of post',
         required: false
     })

@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Get, Query, ValidationPipe, ParseIntPipe, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { User } from 'src/modules/users/user.entity';
 import { ResponseCreator } from 'src/shared/response-creator';
@@ -9,6 +9,10 @@ import { ChatsService } from './chats.service';
 import { GetChatsFilterDto } from './dto/get-chats.filter.dto';
 
 
+@ApiHeader({
+    name: 'token',
+    description: 'token for Auth',
+})
 @ApiTags('chats')
 @Controller('public/chats')
 @UseGuards(AuthGuard())
