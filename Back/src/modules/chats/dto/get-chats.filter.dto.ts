@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class GetChatsFilterDto {
 
     @ApiProperty({
-        type: IsNumberString,
+        type: Number,
         description: 'page for pagination',
         required: true
     })
@@ -13,7 +13,7 @@ export class GetChatsFilterDto {
     page: number;
 
     @ApiProperty({
-        type: IsNumberString,
+        type: Number,
         description: 'pageSize for pagination',
         required: true
     })

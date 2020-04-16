@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class GetUsersFilterDto extends PaginationGetFilterDto {
 
     @ApiProperty({
-        type: IsNumberString,
+        type: Number,
         description: 'age of user',
         required: false
     })

@@ -13,7 +13,7 @@ export class UserSearchDto {
     search: string;
 
     @ApiProperty({
-        type: IsNumberString,
+        type: Number,
         description: 'age of user',
         required: true
     })
@@ -22,7 +22,7 @@ export class UserSearchDto {
     page: number;
 
     @ApiProperty({
-        type: IsNumberString,
+        type: Number,
         description: 'age of user',
         required: true
     })

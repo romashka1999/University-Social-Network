@@ -1,6 +1,6 @@
 import { Controller, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
@@ -8,6 +8,10 @@ import { ResponseCreator } from 'src/shared/response-creator';
 import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 import { FollowersService } from './followers.service';
 
+@ApiHeader({
+    name: 'token',
+    description: 'token for Auth',
+})
 @ApiTags('followers')
 @Controller('public/followers')
 @UseGuards(AuthGuard())

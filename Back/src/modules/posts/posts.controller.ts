@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Get, Query, ValidationPipe, Post, Body, ParseIntPipe, Put, Param, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { PostsService } from 'src/modules/posts/posts.service';
 import { User } from 'src/modules/users/user.entity';
@@ -10,6 +10,10 @@ import { GetUserPostsFilterDto } from 'src/modules/posts/dtos/get-user-posts-fil
 import { PostCreateDto } from 'src/modules/posts/dtos/post-create.dto';
 import { PostUpdateDto } from 'src/modules/posts/dtos/post-update.dto';
 
+@ApiHeader({
+    name: 'token',
+    description: 'token for Auth',
+})
 @ApiTags('posts')
 @Controller('public/posts')
 @UseGuards(AuthGuard())

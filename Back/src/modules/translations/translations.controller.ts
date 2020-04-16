@@ -1,6 +1,6 @@
 import { Controller, Param, ParseIntPipe, Body, Get, Put, Query, ValidationPipe, Delete, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 
 import { TranslationsService } from 'src/modules/translations/translations.service';
@@ -11,6 +11,10 @@ import { GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { Admin } from 'src/modules/admins/admin.entity';
 import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 
+@ApiHeader({
+    name: 'token',
+    description: 'token for Auth',
+})
 @ApiTags('translations')
 @Controller('backOffice/translations')
 @UseGuards(AuthGuard())
