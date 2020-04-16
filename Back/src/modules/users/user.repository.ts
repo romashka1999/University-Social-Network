@@ -168,6 +168,7 @@ export class UserRepository extends Repository<User> {
                 .select(['user.id', 'user.firstName', 'user.lastName', 'user.profileImgUrl'])
                 .execute();
         } catch (error) {
+            console.log('amshiasdasd', error);
             throw new InternalServerErrorException(error);
         }
     }

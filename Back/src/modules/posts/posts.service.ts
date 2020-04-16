@@ -30,6 +30,9 @@ export class PostsService {
         console.log(await this.redisStoreClientService.get('a'));
         const followees = await this.followersService.getFolloweesByUserId(user.id, {page: null, pageSize: null});
         const followeesArray = followees.map(follow => follow.userId);
+        if(followeesArray.length < 1) {
+            return [];
+        }
         const users = await this.usersService.getUsersByIds(followeesArray);
         const posts = await this.postRepository.getPostsByUserIds(followeesArray, getUserPostsFilterDto);
         const memoUserDP = {};

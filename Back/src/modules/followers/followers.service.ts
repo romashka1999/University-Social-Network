@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, HttpStatus, HttpException, BadRequestException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpStatus, HttpException, BadRequestException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult } from 'typeorm';
 
@@ -48,7 +48,9 @@ export class FollowersService {
             await this.usersService.followCntUpdateOnUsers(followerId, followeeId, "FOLLOW");
             return createdFollower;
         } catch (error) {
-            if (error.statusCode) {
+            if(error.code === '23505') {
+                throw new ConflictException("FOLLOWING_ALREADY_EXISTS");
+            } else if (error.statusCode) {
                 throw new HttpException(error.message, error.statusCode);
             } else {
                 throw new InternalServerErrorException(error);
