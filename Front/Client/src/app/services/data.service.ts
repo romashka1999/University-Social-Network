@@ -1,18 +1,20 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Users} from '../shared/interfaces';
 import {HttpClient} from '@angular/common/http';
+import {GetUser_Response, UserSearchModel} from '../models/user.model';
 
 @Injectable({providedIn: 'root'})
 export class DataService {
-  public searchSource = new BehaviorSubject(null);
-  currentInput = this.searchSource.asObservable()
   constructor(private http: HttpClient) {}
-  searchFunc(event: any) {
-    this.searchSource.next(event);
+  searchResult = new Subject();
+
+  searchUser(value: string): Observable<UserSearchModel> {
+    return  this.http.get<UserSearchModel>(`http://localhost:3000/public/users/serachUsers?search=${value}&page=0&pageSize=10`);
   }
-  getProfile(id: number): Observable<any> {
-   return  this.http.get<Users[]>(`http://localhost:3000/public/users/profile/${id}`);
+
+  getProfile(id: number): Observable<GetUser_Response> {
+    return  this.http.get<GetUser_Response>(`http://localhost:3000/public/users/profile/${id}`);
   }
   changePhone(newPhone: string) {
    return  this.http.patch(`http://localhost:3000/public/users/phoneNumber`, {

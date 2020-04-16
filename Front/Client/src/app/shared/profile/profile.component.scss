@@ -82,6 +82,14 @@
                 color: white;
                 background: linear-gradient(90deg, rgba(95,69,241,1) 0%, rgba(186,11,194,1) 100%);
             }
+            .unfollow {
+              width: 110px;
+              height: 45px;
+              border-radius: 25px;
+              border: 0;
+              color: white;
+              background: linear-gradient(90deg, rgb(241, 95, 53) 0%, rgb(194, 29, 34) 100%);
+            }
         }
     }
     .user-timeline-wrapper {
@@ -100,20 +108,20 @@
     .user-timeline-wrapper::-webkit-scrollbar {
         width: 10px;
     }
-    
+
     /* Track */
     .user-timeline-wrapper::-webkit-scrollbar-track {
         background: transparent;
         margin-top: 30px;
         margin-bottom: 30px;
     }
-    
+
     /* Handle */
     .user-timeline-wrapper::-webkit-scrollbar-thumb {
         background: #555;
         border-radius: 10px;
     }
-    
+
     /* Handle on hover */
     .user-timeline-wrapper::-webkit-scrollbar-thumb:hover {
         background: #3f4cfb;

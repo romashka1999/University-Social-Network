@@ -8,7 +8,7 @@ import { TabStore } from 'src/app/stores/tab.store';
 })
 export class SharedPostPopupComponent implements OnInit{
 
-    @ViewChild('postBody') postContent:ElementRef;
+    @ViewChild('postBody') postContent: ElementRef;
 
     @Output() postData: EventEmitter<string> = new EventEmitter();
 
@@ -21,6 +21,6 @@ export class SharedPostPopupComponent implements OnInit{
     onSubmit() {
         console.log(this.postContent.nativeElement.value);
         this.postData.emit(this.postContent.nativeElement.value);
-        this.postContent.nativeElement.value = ""
+        this.postContent.nativeElement.value = '';
     }
 }
