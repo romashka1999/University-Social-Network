@@ -1,5 +1,6 @@
 import { Controller, UseGuards, Get, Query, ValidationPipe, Post, Body, ParseIntPipe, Param, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
 import { User } from 'src/modules/users/user.entity';
 import { ResponseCreator } from 'src/shared/response-creator';
@@ -9,7 +10,7 @@ import { GetMessagesFilterDto } from './dto/get-messages.filter.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 
 
-
+@ApiTags('messages')
 @Controller('public/messages')
 @UseGuards(AuthGuard())
 export class MessagesController {

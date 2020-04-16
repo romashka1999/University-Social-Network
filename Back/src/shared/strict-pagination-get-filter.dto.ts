@@ -1,11 +1,23 @@
-import { IsNumber, IsNotEmpty } from "class-validator"
+import { IsNotEmpty, IsNumberString } from "class-validator"
+import { ApiProperty } from "@nestjs/swagger";
 
 export class StrictPaginationGetFilterDto {
-    @IsNumber()
-    @IsNotEmpty()
-    page: number
 
-    @IsNumber()
+    @ApiProperty({
+        type: IsNumberString,
+        description: 'page for pagination',
+        required: true
+    })
+    @IsNumberString()
     @IsNotEmpty()
-    pageSize: number
+    page: number;
+
+    @ApiProperty({
+        type: IsNumberString,
+        description: 'pageSize for pagination',
+        required: true
+    })
+    @IsNumberString()
+    @IsNotEmpty()
+    pageSize: number;
 }

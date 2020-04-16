@@ -1,4 +1,5 @@
 import { Controller, Post, Body, ValidationPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { ApiTags, ApiForbiddenResponse, ApiCreatedResponse } from '@nestjs/swagger';
 
 
 import { AuthService } from './auth.service';
@@ -9,13 +10,15 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ResponseCreator } from 'src/shared/response-creator';
 import { imageFileFilter } from 'src/utils/file-uploading.utils';
 
-
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
 
     constructor(private readonly authService: AuthService) {}
 
     @Post('user/signUp')
+    @ApiCreatedResponse({ description: 'user signuped successfully'})
+    @ApiForbiddenResponse({ description: 'forbidden'})
     @UseInterceptors(FilesInterceptor('profileImg'))
     userSignUp(
         @Body(ValidationPipe) userSignUpDto: UserSignUpDto,
