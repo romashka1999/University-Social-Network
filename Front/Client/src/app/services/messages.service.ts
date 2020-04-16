@@ -10,8 +10,9 @@ import {ChatModel} from '../models/chat.model';
 export class MessagesService {
   constructor(private http: HttpClient) {}
 
-  getChatMessages(id: string): Observable<MessageModel> {
-   return  this.http.get<MessageModel>(`http://localhost:3000/public/messages/chat/${id}?page=0&pageSize=20`);
+  getChatMessages(id: string, page?: number): Observable<MessageModel> {
+    console.log("esaa", page)
+   return  this.http.get<MessageModel>(`http://localhost:3000/public/messages/chat/${id}?page=${page}&pageSize=10`);
   }
   getUserChats(): Observable<ChatModel> {
     return this.http.get<ChatModel>(`http://localhost:3000/public/chats?page=0&pageSize=10`);

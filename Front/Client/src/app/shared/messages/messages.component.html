@@ -17,7 +17,7 @@
         </div>
         <div class="inbox_chat">
           <div *ngFor="let chats of chat" class="chat_list active_chat">
-            <div (click)="getChat(chats._id)" style="cursor: pointer" class="chat_people">
+            <div (click)="getChat(chats._id, 0)" style="cursor: pointer" class="chat_people">
               <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"> </div>
               <div *ngIf="chats.users[1].userId !== myId;else anotherUser" class="chat_ib">
                 <h5> {{ chats.users[1].firstName }} {{ chats.users[1].lastname }} <span class="chat_date">{{ chats.updatedAt | date: 'short' }}</span></h5>
@@ -34,7 +34,15 @@
         </div>
       </div>
       <div class="mesgs">
-        <div  class="msg_history">
+        <div
+          infiniteScroll
+          [infiniteScrollDistance]="10"
+          [infiniteScrollThrottle]="1000"
+          (scrolledUp)="onScroll()"
+          (reset)="page"
+          [infiniteScrollContainer]="'.msg_history'"
+          [fromRoot]="true"
+          class="msg_history">
           <div *ngFor="let message of messages">
           <div *ngIf="message.userId !== myId; else outgoing" class="incoming_msg">
             <div  class="incoming_msg_img">

@@ -19,6 +19,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   token =  JSON.parse(atob(this.user.split('.')[1]));
   myId = this.token.user.id;
   currentChatId: string;
+  page = 0;
   ngOnInit() {
       this.getChatSub = this.messagesService.getUserChats()
       .subscribe((res) => {
@@ -30,12 +31,15 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.getChatSub.unsubscribe();
   }
 
-  getChat(chatId: string) {
+  getChat(chatId: string, page?: number) {
     this.currentChatId = chatId;
-    this.messagesService.getChatMessages(chatId)
+    this.page = page;
+    this.messagesService.getChatMessages(this.currentChatId, page)
       .subscribe((res) => {
+        console.log(page)
         console.log(res.data);
         this.messages = res.data;
+        this.messages.reverse();
       });
   }
   sendMessage(chatId: string, content: string) {
@@ -46,6 +50,15 @@ export class MessagesComponent implements OnInit, OnDestroy {
         // @ts-ignore
         this.messages.push(res.data);
         console.log(this.messages);
+      });
+  }
+  onScroll() {
+    console.log('scrolled!!');
+    this.page += 1;
+    this.messagesService.getChatMessages(this.currentChatId, this.page)
+      .subscribe((res) => {
+        console.log(res)
+        this.messages.unshift(...res.data.reverse());
       });
   }
 }

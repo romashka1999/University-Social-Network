@@ -46,6 +46,7 @@ import { SharedPostComponent } from './shared/post/post.component';
 import { SharedStoryComponent } from './shared/story/story.component';
 import { SharedPostPopupComponent } from './shared/post-popup/popup.component';
 import { MessagesComponent } from './shared/messages/messages.component';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
@@ -91,6 +92,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     MatStepperModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    InfiniteScrollModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25
     }),
