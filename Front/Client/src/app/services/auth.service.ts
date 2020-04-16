@@ -5,6 +5,7 @@ import {catchError, tap} from 'rxjs/operators';
 import { UserLogin, Users} from '../shared/interfaces';
 import {Router} from '@angular/router';
 import {WebSocketService} from './web-socket.service';
+import { environment } from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AuthService {
       }
 
       login(user: UserLogin): Observable<any> {
-       return  this.http.post<any>('http://localhost:3000/auth/user/signIn', user)
+       return  this.http.post<any>(`${environment.api}/auth/user/signIn`, user)
          .pipe(
            tap(this.setToken),
            catchError(this.handleError.bind(this))
@@ -35,7 +36,7 @@ export class AuthService {
 
       addUser(user: Users): Observable<any> {
         return this.http.post<any>(
-          'http://localhost:3000/auth/user/signUp',
+          `${environment.api}/auth/user/signUp`,
           user
         );
       }

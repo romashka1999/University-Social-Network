@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "https://test.example.com",
+  api: "http://206.189.223.56:3000",
+  socketApi: "http://206.189.223.56:3001"
 };
 

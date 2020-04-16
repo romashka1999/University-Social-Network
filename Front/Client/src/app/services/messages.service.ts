@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {MessageModel} from '../models/message.model';
 import {ChatModel} from '../models/chat.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,13 @@ export class MessagesService {
 
   getChatMessages(id: string, page?: number): Observable<MessageModel> {
     console.log("esaa", page)
-   return  this.http.get<MessageModel>(`http://localhost:3000/public/messages/chat/${id}?page=${page}&pageSize=10`);
+   return  this.http.get<MessageModel>(`${environment.api}/public/messages/chat/${id}?page=${page}&pageSize=10`);
   }
   getUserChats(): Observable<ChatModel> {
-    return this.http.get<ChatModel>(`http://localhost:3000/public/chats?page=0&pageSize=10`);
+    return this.http.get<ChatModel>(`${environment.api}/public/chats?page=0&pageSize=10`);
   }
   sendMessage(id: string, content: string): Observable<MessageModel> {
-    return this.http.post<MessageModel>(`http://localhost:3000/public/messages/chat/${id}`, {
+    return this.http.post<MessageModel>(`${environment.api}/public/messages/chat/${id}`, {
       content
     });
   }

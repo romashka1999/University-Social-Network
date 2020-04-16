@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Observable} from 'rxjs';
-
+import { environment } from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatsWebSocket {
-  public socket = io('http://localhost:3001/chats');
+  public socket = io(`${environment.socketApi}/chats`);
   constructor() {}
 
   connect() {
