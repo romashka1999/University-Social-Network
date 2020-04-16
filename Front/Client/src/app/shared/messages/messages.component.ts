@@ -63,7 +63,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         console.log(res.data);
         // გაასწორე თუ მაგარი კაციხარ ცხვარმენ
         // @ts-ignore
-        this.messages.push(res.data);
+        //this.messages.push(res.data);
         console.log(this.messages);
         this.scrollToBottom();
       });
