@@ -6,14 +6,16 @@ import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
 import { AuthModule } from '../auth/auth.module';
 import { ChatsModule } from '../chats/chats.module';
+import { ChatsGateway } from 'src/chat.gateway';
+import { FollowersModule } from '../followers/followers.module';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{name: 'Message', schema: MessageSchema}]),
         AuthModule,
-        ChatsModule
+        ChatsModule,
     ],
-    providers: [MessagesService],
+    providers: [MessagesService, ChatsGateway],
     controllers: [MessagesController]
 })
 export class MessagesModule {}

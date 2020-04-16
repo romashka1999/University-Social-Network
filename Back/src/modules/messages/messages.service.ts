@@ -7,6 +7,7 @@ import { Ipagination, pagination } from 'src/shared/pagination';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsService } from '../chats/chats.service';
 import { IMessage } from './message.entity';
+import { ChatsGateway } from 'src/chat.gateway';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class MessagesService {
                     
     constructor(
         @InjectModel('Message') private readonly Message: Model<IMessage>,
-        private readonly chatsService: ChatsService) {} 
+        private readonly chatsService: ChatsService,
+        private readonly chatsGateway: ChatsGateway) {} 
 
     public async getChatMessages(loggedUserId: number, chatId: string, getMessagesFilterDto: GetMessagesFilterDto): Promise<any> {
         const { page, pageSize } = getMessagesFilterDto;
@@ -46,7 +48,9 @@ export class MessagesService {
                 userId: loggedUserId,
                 content: sendMessageDto.content
             });
-            return await message.save();
+            const createdMessage = await message.save();
+            this.chatsGateway.wss.to(`${chatId}chats`).emit('messageCreated', createdMessage);
+            return createdMessage;
         } catch (error) {
             throw new InternalServerErrorException(error);
         }

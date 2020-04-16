@@ -11,7 +11,7 @@ import { GetUserPostsFilterDto } from './dtos/get-user-posts-filter.dto';
 import { pagination, Ipagination } from 'src/shared/pagination';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from '../followers/followers.service';
-import { AppGateway } from 'src/app.gateway';
+import { PostsGateway } from 'src/posts.gateway';
 import { RedisStoreClientService } from 'src/redis-store-client.service';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class PostsService {
         @InjectRepository(PostRepository) private readonly postRepository: PostRepository,
         private readonly usersService: UsersService,
         private readonly followersService: FollowersService,
-        private readonly appGateway: AppGateway,
+        private readonly postsGateway: PostsGateway,
         private readonly redisStoreClientService: RedisStoreClientService) {}
 
     public async getFolloweesPostsForLoggedUser(user: User, getUserPostsFilterDto: GetUserPostsFilterDto) {
@@ -56,7 +56,7 @@ export class PostsService {
         createdPostForSocket.user_firstName = user.firstName;
         createdPostForSocket.user_lastName = user.lastName;
         createdPostForSocket.user_profileImgUrl = user.profileImgUrl;
-        this.appGateway.wss.to(`${user.id}`).emit('postCreated', createdPostForSocket);
+        this.postsGateway.wss.to(`${user.id}`).emit('postCreated', createdPostForSocket);
 
         return createdPost;
     }

@@ -5,7 +5,7 @@ import { Socket, Server } from 'socket.io';
 import { FollowersService } from './modules/followers/followers.service';
 
 @WebSocketGateway(3001, {namespace: '/posts'})
-export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
+export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
   @WebSocketServer() wss: any;
 
@@ -32,9 +32,9 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     const userId = message.id;
     const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
     const followeesArray = followees.map(follow => follow.userId);
-    client.join(`${userId}`);
+    client.join(`${userId}posts`);
     followeesArray.forEach( userId => {
-      client.join(`${userId}`);
+      client.join(`${userId}posts`);
     });
   }
 

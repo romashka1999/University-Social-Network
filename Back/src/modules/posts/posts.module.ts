@@ -8,7 +8,7 @@ import { UsersModule } from '../users/users.module';
 import { FollowersModule } from '../followers/followers.module';
 import { PostsController } from './posts.controller';
 import { AuthModule } from '../auth/auth.module';
-import { AppGateway } from 'src/app.gateway';
+import { PostsGateway } from 'src/posts.gateway';
 import { RedisStoreClientService } from 'src/redis-store-client.service';
 
 @Module({
@@ -16,7 +16,7 @@ import { RedisStoreClientService } from 'src/redis-store-client.service';
   controllers: [
     PostsController
   ],
-  providers: [PostsService, AppGateway, RedisStoreClientService],
+  providers: [PostsService, PostsGateway, RedisStoreClientService],
   exports: [
     PostsService,
     TypeOrmModule

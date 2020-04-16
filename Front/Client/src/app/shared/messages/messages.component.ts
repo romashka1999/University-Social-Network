@@ -3,6 +3,7 @@ import {MessagesService} from '../../services/messages.service';
 import {ChatDataModel} from '../../models/chat.model';
 import {MessageDataModel} from '../../models/message.model';
 import {Subscription} from 'rxjs';
+import { ChatsWebSocket } from 'src/app/services/chats-websocket.service';
 
 @Component({
   selector: 'app-messages',
@@ -11,7 +12,11 @@ import {Subscription} from 'rxjs';
 })
 export class MessagesComponent implements OnInit, OnDestroy {
 
-  constructor(private messagesService: MessagesService) { }
+  constructor(
+    private readonly messagesService: MessagesService,
+    private readonly chatsWebSocket: ChatsWebSocket) { }
+
+
   public getChatSub: Subscription;
   chat: ChatDataModel[] = [];
   messages: MessageDataModel[] = [];
@@ -27,6 +32,11 @@ export class MessagesComponent implements OnInit, OnDestroy {
         this.chat = res.data;
         console.log(res.data);
       });
+
+     this.chatsWebSocket.connect().subscribe();
+        this.chatsWebSocket.getRealTimeChat().subscribe((data: any) => {
+          this.messages.push(data);
+        });
   }
   ngOnDestroy() {
     this.getChatSub.unsubscribe();
