@@ -14,20 +14,20 @@ import { FollowersService } from '../../services/followers.service';
 })
 export class SharedProfileComponent implements OnInit, OnDestroy {
 
-  public tabState: boolean
+  public tabState: boolean;
   public userProfile = [JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user];
   public anotherUserProfile: GetUserData = this.userProfile[0];
   public ifFollow = false;
   posts: GetPostData[];
   constructor(private tabStore: TabStore,
-    private postService: PostService,
-    private dataService: DataService,
-    private followersService: FollowersService,
+              private postService: PostService,
+              private dataService: DataService,
+              private followersService: FollowersService,
   ) { }
   private userSub: Subscription;
   private postSub: Subscription;
   ngOnInit() {
-    this.tabStore.profileSidenavState$.subscribe((res: boolean) => { this.tabState = res })
+    this.tabStore.profileSidenavState$.subscribe((res: boolean) => { this.tabState = res; });
     this.postService.getPosts(this.anotherUserProfile.id)
       .subscribe((res) => {
         this.posts = res.data;

@@ -18,6 +18,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
     private chatsWebSocketSub: Subscription;
     private chatsWebSocketSub2: Subscription;
+    private messageTyping: Subscription;
 
   public getChatSub: Subscription;
   chat: ChatDataModel[] = [];
@@ -27,6 +28,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   myId = this.token.user.id;
   currentChatId: string;
   page = 0;
+  typing = '';
+  timeout;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   ngOnInit() {
       this.getChatSub = this.messagesService.getUserChats()
@@ -39,6 +42,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
       this.chatsWebSocketSub2 = this.chatsWebSocket.getRealTimeChat()
         .subscribe((data: any) => {
           this.messages.push(data);
+          this.scrollToBottom();
         });
   }
   ngOnDestroy() {
@@ -48,15 +52,38 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   getChat(chatId: string, page?: number) {
-    this.currentChatId = chatId;
-    this.page = page;
-    this.messagesService.getChatMessages(this.currentChatId, page)
-      .subscribe((res) => {
-        console.log(page)
-        console.log(res.data);
-        this.messages = res.data;
-        this.messages.reverse();
-      });
+    if (chatId !== this.currentChatId) {
+      try {
+        this.messageTyping.unsubscribe();
+      } catch (e) {
+        console.log('ylexar');
+      }
+      this.currentChatId = chatId;
+      this.page = page;
+      this.messagesService.getChatMessages(this.currentChatId, page)
+        .subscribe((res) => {
+          console.log(page);
+          console.log(res.data);
+          this.messages = res.data;
+          this.messages.reverse();
+        });
+      this.messageTyping = this.chatsWebSocket.typingToClient()
+        .subscribe((res: any) => {
+          console.log('typing to client', res);
+          if (this.myId !== res.userId) {
+            this.typing = 'typing...';
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              this.typing = '';
+            }, 2000);
+          }
+        });
+    } else {
+        console.log('igive chatshi dgexar');
+    }
+  }
+  isTypingari() {
+    this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
   }
   sendMessage(chatId: string, content: string) {
     this.messagesService.sendMessage(chatId, content)

@@ -13,7 +13,7 @@ export class MessagesService {
 
   getChatMessages(id: string, page?: number): Observable<MessageModel> {
     console.log("esaa", page)
-   return  this.http.get<MessageModel>(`${environment.api}/public/messages/chat/${id}?page=${page}&pageSize=10`);
+    return  this.http.get<MessageModel>(`${environment.api}/public/messages/chat/${id}?page=${page}&pageSize=10`);
   }
   getUserChats(): Observable<ChatModel> {
     return this.http.get<ChatModel>(`${environment.api}/public/chats?page=0&pageSize=10`);
