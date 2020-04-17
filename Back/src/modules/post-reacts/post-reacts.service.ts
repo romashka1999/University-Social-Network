@@ -5,10 +5,11 @@ import { PostReactRepository } from "./post-react.repository";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
 import { FollowersService } from "../followers/followers.service";
-import { StrictPaginationGetFilterDto } from "src/shared/strict-pagination-get-filter.dto";
+import { StrictPaginationGetFilterDto } from "src/shared/dtos/strict-pagination-get-filter.dto";
 import { User } from "../users/user.entity";
 import { Post } from "../posts/post.entity";
 import { PostReact } from "./post-react.entity";
+import { PostsGateway } from "src/sockets/posts.gateway";
 
 
 @Injectable()
@@ -18,7 +19,8 @@ export class PostReactsService {
         @InjectRepository(PostReactRepository) private readonly postReactRepository: PostReactRepository,
         private readonly usersService: UsersService,
         private readonly postsService: PostsService, 
-        private readonly followersService: FollowersService) {}
+        private readonly followersService: FollowersService,
+        private readonly postsGateway: PostsGateway) {}
 
         
     public async getUserReactsByPostId(loggedUserId: number, postId: number, strictPaginationGetFilterDto: StrictPaginationGetFilterDto) {
@@ -48,6 +50,7 @@ export class PostReactsService {
                 lastName: user.lastName,
                 profileImgUrl: user.profileImgUrl
             }
+            this.postsGateway.postReacted(user.id, data);
             return data;
         } catch (error) {
             if(error.code === '23505') {
@@ -67,6 +70,7 @@ export class PostReactsService {
                 throw new NotFoundException("REACT_NOT_EXISTS");
             }
             await this.postsService.updatePostReactCounter(postId, "UNREACT");
+            this.postsGateway.postUnReacted(loggedUserId);
             return true;
         } catch (error) {
             if(!error.status) {

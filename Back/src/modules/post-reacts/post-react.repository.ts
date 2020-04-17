@@ -1,9 +1,9 @@
 import { Repository, EntityRepository } from "typeorm";
 
 import { PostReact } from "./post-react.entity";
-import { Ipagination, pagination } from "src/shared/pagination";
+import { Ipagination, pagination } from "src/shared/utils/pagination";
 import { InternalServerErrorException } from "@nestjs/common";
-import { StrictPaginationGetFilterDto } from "src/shared/strict-pagination-get-filter.dto";
+import { StrictPaginationGetFilterDto } from "src/shared/dtos/strict-pagination-get-filter.dto";
 
 @EntityRepository(PostReact)
 export class PostReactRepository extends Repository<PostReact> {

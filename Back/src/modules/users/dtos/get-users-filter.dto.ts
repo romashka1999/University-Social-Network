@@ -1,5 +1,5 @@
 import { IsOptional, IsNumberString } from 'class-validator';
-import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
+import { PaginationGetFilterDto } from 'src/shared/dtos/pagination-get-filter.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetUsersFilterDto extends PaginationGetFilterDto {

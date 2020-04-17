@@ -30,7 +30,7 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private postService: PostService
   ) { }
-  
+
 
   ngOnInit() {
     //Tab state Active - Hidden
@@ -40,17 +40,17 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
 
     // Check if user is selected
     this.tabStore.profileSidenavContent$.subscribe(res => {
-      if(res) { 
+      if (res) {
         this.userService.getUserProfile(res).subscribe(userProfile => {
           this.user = userProfile.data;   // Another user
           this.isCurrent = false;
           this.isFollowed(userProfile.data.id)
-          this.getUserPosts(); 
+          this.getUserPosts();
         })
       } else {
         this.user = this.userService.getCurrentUser();   // Current user
         this.isCurrent = true;
-        this.getUserPosts(); 
+        this.getUserPosts();
       }
     })
 

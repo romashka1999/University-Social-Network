@@ -7,6 +7,7 @@ import { FollowersModule } from '../followers/followers.module';
 import { PostsModule } from '../posts/posts.module';
 import { PostReactsController } from './post-reacts.controller';
 import { AuthModule } from '../auth/auth.module';
+import { PostsGateway } from 'src/sockets/posts.gateway';
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import { AuthModule } from '../auth/auth.module';
         FollowersModule,
         PostsModule
     ],
-    providers: [PostReactsService],
+    providers: [PostReactsService, PostsGateway],
     controllers: [PostReactsController],
     exports: [
         PostReactsService,

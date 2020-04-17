@@ -4,7 +4,7 @@ import { DeleteResult } from 'typeorm';
 
 
 import { FollowerRepository } from './follower.repository';
-import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
+import { PaginationGetFilterDto } from 'src/shared/dtos/pagination-get-filter.dto';
 import { Follower } from './follower.entity';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user.entity';

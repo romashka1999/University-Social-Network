@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { User } from 'src/modules/users/user.entity';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { MessagesService } from './messages.service';
 import { GetMessagesFilterDto } from './dto/get-messages.filter.dto';

@@ -6,10 +6,10 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { TranslationsService } from 'src/modules/translations/translations.service';
 import { TranslationCreateDto } from 'src/modules/translations/dtos/translation-create.dto';
 import { TranslationUpdateDto } from 'src/modules/translations/dtos/translation-update.dto';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { Admin } from 'src/modules/admins/admin.entity';
-import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
+import { PaginationGetFilterDto } from 'src/shared/dtos/pagination-get-filter.dto';
 
 @ApiHeader({
     name: 'token',

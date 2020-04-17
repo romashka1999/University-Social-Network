@@ -7,7 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as config from 'config';
 import { AppModule } from './app.module';
 const cors = require('cors');
-
+const fileUpload = require('express-fileupload');
 
 async function bootstrap() {
   const serverConfig = config.get('server');
@@ -24,7 +24,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, doc);
   
   app.use(cors());
-  
+  app.use(fileUpload());
+
   if(process.env.NODE_ENV === 'development') {
     app.enableCors();
   }

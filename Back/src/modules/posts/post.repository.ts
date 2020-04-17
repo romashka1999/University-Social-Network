@@ -7,7 +7,7 @@ import { PostCreateDto } from "./dtos/post-create.dto";
 import { User } from "../users/user.entity";
 import { PostUpdateDto } from "./dtos/post-update.dto";
 import { GetUserPostsFilterDto } from "./dtos/get-user-posts-filter.dto";
-import { pagination, Ipagination } from "src/shared/pagination";
+import { pagination, Ipagination } from "src/shared/utils/pagination";
 
 
 @EntityRepository(Post)

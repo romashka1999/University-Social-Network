@@ -5,8 +5,8 @@ import { ConflictException, InternalServerErrorException, HttpStatus, HttpExcept
 import { Translation } from "./translation.entity";
 import { TranslationCreateDto } from "./dtos/translation-create.dto";
 import { TranslationUpdateDto } from "./dtos/translation-update.dto";
-import { Ipagination, pagination } from "src/shared/pagination";
-import { PaginationGetFilterDto } from "src/shared/pagination-get-filter.dto";
+import { Ipagination, pagination } from "src/shared/utils/pagination";
+import { PaginationGetFilterDto } from "src/shared/dtos/pagination-get-filter.dto";
 
 @EntityRepository(Translation)
 export class TranslationRepository extends Repository<Translation> {

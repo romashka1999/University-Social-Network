@@ -7,7 +7,7 @@ import { UsersService } from 'src/modules/users/users.service';
 import { UserSetPasswordDto } from 'src/modules/users/dtos/user-set-password.dto';
 import { GetUser, GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { UserSearchDto } from 'src/modules/users/dtos/user-serach.dto';
 import { UserSetPhoneNumberDto } from 'src/modules/users/dtos/user-set-phoneNumber.dto';
 import { UserSetUsernameDto } from 'src/modules/users/dtos/user-set-username.dto';

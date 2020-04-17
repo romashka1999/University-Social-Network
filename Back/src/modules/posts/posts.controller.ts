@@ -4,7 +4,7 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { PostsService } from 'src/modules/posts/posts.service';
 import { User } from 'src/modules/users/user.entity';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { GetUserPostsFilterDto } from 'src/modules/posts/dtos/get-user-posts-filter.dto';
 import { PostCreateDto } from 'src/modules/posts/dtos/post-create.dto';

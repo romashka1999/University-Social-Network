@@ -7,7 +7,7 @@ import { AdminsService } from 'src/modules/admins/admins.service';
 import { GetAdminsFilterDto } from 'src/modules/admins/dtos/get-admins-filter.dto';
 import { AdminSetStatusDto } from 'src/modules/admins/dtos/admin-set-status.dto';
 import { AdminCreateDto } from 'src/modules/admins/dtos/admin-create.dto';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { GetAdmin } from 'src/modules/auth/get-account-data.decorator';
 import { Admin } from 'src/modules/admins/admin.entity';
 

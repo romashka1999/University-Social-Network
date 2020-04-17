@@ -1,46 +1,37 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {GetUserData} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatsSocketService {
   public socket = io(`${environment.socketApi}/chats`);
-
+  public userProfile: GetUserData = JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user;
   constructor() {
   }
 
   connect() {
-    return new Observable(() => {
       this.socket.on('joinRoom', () => {
         console.log(this.socket.connected);
-        const user = localStorage.getItem('st-token');
-        const token = JSON.parse(atob(user.split('.')[1]));
-        const id = token.user.id;
+        const id = this.userProfile.id;
         this.socket.emit('joinRoom', {id});
       });
-    });
   }
 
-  getRealTimeChat() {
-    return new Observable((subscriber) => {
-      this.socket.on('messageCreated', (data) => {
-        subscriber.next(data);
-      });
-    });
+  messageCreated(cb) {
+      this.socket.on('messageCreated', cb);
   }
 
-  typingToServer(message: { chatId: string, userId: number }) {
-    this.socket.emit('typingToServer', message);
+  typingToServer(chatId: string, userId: number) {
+      this.socket.emit('typingToServer', { chatId, userId });
   }
 
-  typingToClient() {
-    this.socket.on('typingToClient', (message: { chatId: string, userId: number }) => {
-      console.log(message);
-    });
+  typingToClient(cb) {
+      this.socket.on('typingToClient', cb)
   }
+  
 
   disconnect() {
     this.socket.disconnect();

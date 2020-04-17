@@ -7,7 +7,7 @@ import { TranslationRepository } from './translation.repository';
 import { TranslationCreateDto } from './dtos/translation-create.dto';
 import { TranslationUpdateDto } from './dtos/translation-update.dto';
 import { Translation } from './translation.entity';
-import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
+import { PaginationGetFilterDto } from 'src/shared/dtos/pagination-get-filter.dto';
 
 @Injectable()
 export class TranslationsService {

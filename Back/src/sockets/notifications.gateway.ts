@@ -3,13 +3,16 @@ import { SubscribeMessage, WebSocketGateway, OnGatewayInit, MessageBody,
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { ChatsService } from '../modules/chats/chats.service';
+import { FollowersService } from 'src/modules/followers/followers.service';
 
-@WebSocketGateway(3001, {namespace: '/chats'})
-export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
+@WebSocketGateway(3001, {namespace: '/notifications'})
+export class NotificationsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
   @WebSocketServer() wss: any;
 
-  constructor(private readonly chatsService: ChatsService) {}
+  constructor(
+    private readonly chatsService: ChatsService,
+    private readonly followersService: FollowersService) {}
 
   async handleConnection(client: Socket, ...args: any[]) {
     this.logger.log(`ChatsGateway cient connected: ${client.id}`);
@@ -21,7 +24,7 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     console.log(this.wss.adapter.nsp.adapter.rooms);
   }
 
-  private readonly logger: Logger =  new Logger('ChatsGateWay');
+  private readonly logger: Logger =  new Logger('NotificationsGateway');
 
   afterInit(server: Server) {
     this.logger.log("initialized");
@@ -30,17 +33,19 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   @SubscribeMessage('joinRoom')
   async handleJoinRoom(@MessageBody() message: { id: number }, @ConnectedSocket() client: Socket) {
     const userId = message.id;
+
     const chats = await this.chatsService.getUserChats(userId, {page: 0, pageSize: 100});
     const chatsArray = chats.map(chat => chat._id);
     chatsArray.forEach( chatId => {
       client.join(`${chatId}chats`);
     });
+
+    const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
+    const followeesArray = followees.map(follow => follow.userId);
+    client.join(`${userId}posts`);
+    followeesArray.forEach( userId => {
+      client.join(`${userId}posts`);
+    });
   }
 
-  @SubscribeMessage('typingToServer')
-  async handleMessage(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
-    if(client.in(`${message.chatId}chats`)) {
-      this.wss.to(`${message.chatId}chats`).emit('typingToClient', message);
-    }
-  }
 }

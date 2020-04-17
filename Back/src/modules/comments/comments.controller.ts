@@ -5,9 +5,9 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { CommentsService } from './comments.service';
-import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
+import { StrictPaginationGetFilterDto } from 'src/shared/dtos/strict-pagination-get-filter.dto';
 import { CommentCreateDto } from './dto/comment-create.dto';
 import { CommentUpdateDto } from './dto/comment-update.dto';
 
@@ -50,11 +50,12 @@ export class CommentsController {
         return new ResponseCreator("COMMENT_UPDATED", updatedData);
     }
 
-    @Delete('/:commentId')
+    @Delete('post/:postId/comment/:commentId')
     public async deleteComment(
         @GetUser() user: User,
+        @Param('postId', ParseIntPipe) postId: number,
         @Param('commentId', ParseIntPipe) commentId: number): Promise<ResponseCreator> {
-        const deletedData = await this.commentsService.deleteComment(user.id, commentId);
+        const deletedData = await this.commentsService.deleteComment(user.id, postId, commentId);
         return new ResponseCreator("COMMENT_DELETED", deletedData);
     }
 
