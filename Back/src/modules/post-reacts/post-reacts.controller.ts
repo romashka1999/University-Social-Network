@@ -5,8 +5,8 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
 import { ResponseCreator } from 'src/shared/response-creator';
-import { PaginationGetFilterDto } from 'src/shared/pagination-get-filter.dto';
 import { PostReactsService } from './post-reacts.service';
+import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
 
 @ApiHeader({
     name: 'token',
@@ -23,8 +23,8 @@ export class PostReactsController {
     public async getUserReactsByPostId(
         @GetUser() user: User,
         @Param('postId', ParseIntPipe) postId: number,
-        @Query(ValidationPipe) paginationGetFilterDto: PaginationGetFilterDto): Promise<ResponseCreator> {
-        const gotData = await this.postReactsService.getUserReactsByPostId(user.id, postId, paginationGetFilterDto);
+        @Query(ValidationPipe) strictPaginationGetFilterDto: StrictPaginationGetFilterDto): Promise<ResponseCreator> {
+        const gotData = await this.postReactsService.getUserReactsByPostId(user.id, postId, strictPaginationGetFilterDto);
         return new ResponseCreator("POSTREACTS_GOT", gotData);
     }
 
@@ -32,24 +32,24 @@ export class PostReactsController {
     public async reactPost(
         @GetUser() user: User,
         @Param('postId', ParseIntPipe) postId: number): Promise<ResponseCreator> {
-        const updatedData = await this.postReactsService.reactPost(user.id, postId);
-        return new ResponseCreator("POSTREACTS_GOT", updatedData);
+        const createdData = await this.postReactsService.reactPost(user, postId);
+        return new ResponseCreator("POSTREACT_CREATED", createdData);
     }
 
     @Get('/unreact/:postId')
     public async unReactPost(
         @GetUser() user: User,
         @Param('postId', ParseIntPipe) postId: number): Promise<ResponseCreator> {
-        const updatedData = await this.postReactsService.unReactPost(user.id, postId);
-        return new ResponseCreator("POSTREACTS_GOT", updatedData);
+        const deletedData = await this.postReactsService.unReactPost(user.id, postId);
+        return new ResponseCreator("POSTREACT_DELETED", deletedData);
     }
 
     @Get('/checkReact/:postId')
     public async checkReact(
         @GetUser() user: User,
         @Param('postId', ParseIntPipe) postId: number): Promise<ResponseCreator> {
-        const updatedData = await this.postReactsService.checkReact(user.id, postId);
-        return new ResponseCreator("POSTREACT_GOT", updatedData);
+        const gotData = await this.postReactsService.checkReact(user.id, postId);
+        return new ResponseCreator("POSTREACT_GOT", gotData);
     }
 
 }

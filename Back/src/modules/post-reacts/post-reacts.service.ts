@@ -2,10 +2,13 @@ import { Injectable, BadGatewayException, ConflictException, InternalServerError
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { PostReactRepository } from "./post-react.repository";
-import { PaginationGetFilterDto } from "src/shared/pagination-get-filter.dto";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
 import { FollowersService } from "../followers/followers.service";
+import { StrictPaginationGetFilterDto } from "src/shared/strict-pagination-get-filter.dto";
+import { User } from "../users/user.entity";
+import { Post } from "../posts/post.entity";
+import { PostReact } from "./post-react.entity";
 
 
 @Injectable()
@@ -18,30 +21,36 @@ export class PostReactsService {
         private readonly followersService: FollowersService) {}
 
         
-    public async getUserReactsByPostId(loggedUserId: number, postId: number, paginationGetFilterDto: PaginationGetFilterDto) {
+    public async getUserReactsByPostId(loggedUserId: number, postId: number, strictPaginationGetFilterDto: StrictPaginationGetFilterDto) {
         await this.checkPostByUserIdAndPostId(loggedUserId, postId);
-        const postReacts = await this.postReactRepository.getUserReactsByPostId(postId, paginationGetFilterDto);
+        const postReacts = await this.postReactRepository.getUserReactsByPostId(postId, strictPaginationGetFilterDto);
         const postReactsUserIdsArray = postReacts.map(postReact => postReact.userId);
-
+        if(postReactsUserIdsArray.length < 1) {
+            return [];
+        }
         return await this.usersService.getUsersByIds(postReactsUserIdsArray);
     }
 
 
-    public async reactPost(loggedUserId: number, postId: number): Promise<any> {
-        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+    public async reactPost(user: User, postId: number): Promise<any> {
+        const loggedUserId = user.id;
+        const post = await this.checkPostByUserIdAndPostId(loggedUserId, postId);
         try {
-            await this.postReactRepository.create({userId: loggedUserId, postId: postId});
+            const postReact = new PostReact();
+            postReact.user = user;
+            postReact.post = post;
+            const createdPostReact = await postReact.save();
             await this.postsService.updatePostReactCounter(postId, "REACT");
-            const user = await this.usersService.getUserById(loggedUserId);
             const data = {
-                id: user.id,
+                postReactId: createdPostReact.id,
+                userId: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 profileImgUrl: user.profileImgUrl
             }
             return data;
         } catch (error) {
-            if(error.code === '23505') {//duplicate username 
+            if(error.code === '23505') {
                 throw new ConflictException("REACT_ALREADY_EXISTS");
             } else {
                 throw new InternalServerErrorException(error);
@@ -67,7 +76,7 @@ export class PostReactsService {
         }
     }
 
-    private async checkPostByUserIdAndPostId(loggedUserId: number, postId: number) {
+    private async checkPostByUserIdAndPostId(loggedUserId: number, postId: number): Promise<Post> {
         const post = await this.postsService.getPostById(postId);
         const postUserId = post.userId;
 
@@ -77,6 +86,7 @@ export class PostReactsService {
                 throw new BadGatewayException("USER_IS_NOT_PUBLIC");
             }
         }
+        return post;
     }
 
 
