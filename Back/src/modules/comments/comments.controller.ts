@@ -1,4 +1,4 @@
-import { Controller, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, Post, Body } from '@nestjs/common';
+import { Controller, ValidationPipe, UseGuards, Get, Query, Param, ParseIntPipe, Post, Body, Put, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
@@ -9,6 +9,7 @@ import { ResponseCreator } from 'src/shared/response-creator';
 import { CommentsService } from './comments.service';
 import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
 import { CommentCreateDto } from './dto/comment-create.dto';
+import { CommentUpdateDto } from './dto/comment-update.dto';
 
 @ApiHeader({
     name: 'token',
@@ -36,8 +37,25 @@ export class CommentsController {
         @GetUser() user: User,
         @Param('postId', ParseIntPipe) postId: number,
         @Body(ValidationPipe) commentCreateDto: CommentCreateDto): Promise<ResponseCreator> {
-        const createdData = await this.commentsService.writeComment(user.id, postId, commentCreateDto);
+        const createdData = await this.commentsService.writeComment(user, postId, commentCreateDto);
         return new ResponseCreator("COMMENT_CREATED", createdData);
+    }
+
+    @Put('/:commentId')
+    public async updateComment(
+        @GetUser() user: User,
+        @Param('commentId', ParseIntPipe) commentId: number,
+        @Body(ValidationPipe) commentUpdateDto: CommentUpdateDto): Promise<ResponseCreator> {
+        const updatedData = await this.commentsService.updateComment(user.id, commentId, commentUpdateDto);
+        return new ResponseCreator("COMMENT_UPDATED", updatedData);
+    }
+
+    @Delete('/:commentId')
+    public async deleteComment(
+        @GetUser() user: User,
+        @Param('commentId', ParseIntPipe) commentId: number): Promise<ResponseCreator> {
+        const deletedData = await this.commentsService.deleteComment(user.id, commentId);
+        return new ResponseCreator("COMMENT_DELETED", deletedData);
     }
 
 }

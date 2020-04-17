@@ -10,6 +10,8 @@ import { FollowersService } from '../followers/followers.service';
 import { CommentCreateDto } from './dto/comment-create.dto';
 import { Comment } from './comment.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { User } from '../users/user.entity';
+import { CommentUpdateDto } from './dto/comment-update.dto';
 
 @Injectable()
 export class CommentsService {
@@ -31,44 +33,38 @@ export class CommentsService {
             }
         }
         const {offset, limit} = <Ipagination>pagination(strictPaginationGetFilterDto.page, strictPaginationGetFilterDto.pageSize);
-        let comments;
         try {
-            comments = await this.commentRepository.createQueryBuilder('comment')
-                    .where('comment.postId = :posId', {posId: postId})
+            const comments = await this.commentRepository.createQueryBuilder('comment')
+                    .where('comment.post = :postId', {postId: postId})
+                    .leftJoinAndSelect('comment.user', 'user')
                     .skip(offset)
                     .take(limit)
                     .getMany();
+
+            comments.forEach( (comment: any )=> {
+                const user = {...comment.user};
+                delete comment.user;
+                comment.userFirstName = user.firstName;
+                comment.userLastName = user.lastName;
+                comment.userProfileImgUrl = user.profileImgUrl;
+            });
+            return comments;
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
-
-        const commentsUserIds = comments.map(comment => comment.userId);
-        const users = await this.usersService.getUsersByIds(commentsUserIds);
-
-        const memoUserDP = {};
-        return comments.map( comment => {
-            if(memoUserDP[comment.userId]) {
-                return {...memoUserDP[comment.userId], ...comment}
-            } else {
-                const user: any = users.find( (user: any) => user.user_id === comment.userId);
-                const userId = user.user_id;
-                delete user.user_id;
-                memoUserDP[userId] = user;
-                return {...memoUserDP[userId], ...comment}
-            }   
-        });
     }
 
 
-    public async writeComment(loggedUserId: number, postId: number, commentCreateDto: CommentCreateDto): Promise<Comment> {
+    public async writeComment(user: User, postId: number, commentCreateDto: CommentCreateDto): Promise<Comment> {
+        const loggedUserId = user.id
         const post = await this.postsService.getPostById(postId);
-        const user = await this.usersService.getUserById(post.userId);
-        if(!user.publicUser) {
-            if(!await this.followersService.checkFollowing(loggedUserId, user.id)) {
+        const userOfPost = await this.usersService.getUserById(post.userId);
+        if(!userOfPost.publicUser) {
+            if(!await this.followersService.checkFollowing(loggedUserId, userOfPost.id)) {
                 throw new BadRequestException("USER_IS_NOT_PUBLIC");
             }
         }
-        return await this.commentRepository.createComment(loggedUserId, postId, commentCreateDto);
+        return await this.commentRepository.createComment(user, post, commentCreateDto);
     }
 
 
@@ -104,14 +100,9 @@ export class CommentsService {
         }
     }
 
-    public async updateComment(loggedUserId: number, commentId: number, commentCreateDto: CommentCreateDto): Promise<Comment> {
+    public async updateComment(loggedUserId: number, commentId: number, commentUpdateDto: CommentUpdateDto): Promise<Comment> {
         try {
-            const updatedComment: UpdateResult =  await this.commentRepository
-                .createQueryBuilder('comment')
-                .update(Comment)
-                .set(commentCreateDto)
-                .where("comment.id = :id AND comment.userId = :userId", { id: commentId, userId: loggedUserId })
-                .execute();
+            const updatedComment: UpdateResult = await this.commentRepository.update({id: commentId, userId: loggedUserId}, commentUpdateDto)
             if(!updatedComment.affected) {
                 throw {statusCode: HttpStatus.NOT_FOUND, message: "COMMENT_NOT_EXISTS"};
             }
