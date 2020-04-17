@@ -14,7 +14,7 @@ import { UserSearchDto } from "./dtos/user-serach.dto";
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-    public async signUp(signUpDto: UserSignUpDto): Promise<boolean> {
+    public async signUp(signUpDto: UserSignUpDto, prifileImgaName: string): Promise<boolean> {
         const { username, password, firstName, lastName, birthDate, gender, email, phoneNumber} = signUpDto;
 
         const { salt, hashedPassword } = await hashPassword(password);// hash pass
@@ -28,27 +28,14 @@ export class UserRepository extends Repository<User> {
         user.username = username;
         user.password = hashedPassword;
         user.salt = salt;
+        user.profileImgUrl = './uploads/profileImages/' + prifileImgaName;
 
         try {
             await user.save();
             return true;
         } catch (error) {
-            if(error.code === '23505') {//duplicate username 
-                try {
-                    const username = await this.findOne({username: signUpDto.username});
-                    if(username) {
-                        throw new ConflictException("USERNAME_ALREADY_EXISTS");
-                    } 
-
-                    const email = await this.findOne({email: signUpDto.email});
-                    if(email) {
-                        throw new ConflictException("EMAIL_ALREADY_EXISTS");
-                    } 
-                    throw new ConflictException("PHONENUMBER_ALREADY_EXISTS");
-
-                } catch (error) {
-                    throw new InternalServerErrorException(error);
-                }
+            if(error.code === '23505') {
+                throw new ConflictException("ACCOUNTIDENTITY_ALREADY_EXISTS -" + error.detail);
             } else {
                 throw new InternalServerErrorException(error);
             }
