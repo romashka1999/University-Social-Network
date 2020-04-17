@@ -14,34 +14,25 @@ export class ChatsSocketService {
   }
 
   connect() {
-    return new Observable(() => {
       this.socket.on('joinRoom', () => {
         console.log(this.socket.connected);
         const id = this.userProfile.id;
         this.socket.emit('joinRoom', {id});
       });
-    });
   }
 
-  getRealTimeChat() {
-    return new Observable((subscriber) => {
-      this.socket.on('messageCreated', (data) => {
-        subscriber.next(data);
-      });
-    });
+  getRealTimeChat(cb) {
+      this.socket.on('messageCreated', cb);
   }
 
   typingToServer(chatId: string, userId: number) {
       this.socket.emit('typingToServer', { chatId, userId });
   }
 
-  typingToClient() {
-    return new Observable((subscriber) => {
-      this.socket.on('typingToClient', (message: { chatId: string, userId: number }) => {
-        subscriber.next(message);
-      });
-    });
+  typingToClient(cb) {
+      this.socket.on('typingToClient', cb)
   }
+  
 
   disconnect() {
     this.socket.disconnect();
