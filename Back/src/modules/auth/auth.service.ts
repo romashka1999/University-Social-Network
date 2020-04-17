@@ -20,11 +20,13 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    public userSignUp(userSignUpDto: UserSignUpDto, profileImgFile: any): Promise<boolean> {
+    public async userSignUp(userSignUpDto: UserSignUpDto, profileImgFile: any): Promise<boolean> {
+        let prifileImgaName = null;
         if(profileImgFile) {
-            uploadFile(profileImgFile, 'profileImages')
+            console.log('shemovida', profileImgFile);
+            prifileImgaName = await uploadFile(profileImgFile, 'profileImages')
         }
-        return this.userRepository.signUp(userSignUpDto);
+        return this.userRepository.signUp(userSignUpDto, prifileImgaName);
     }
 
     public async userSignIn(userSignInDto: UserSignInDto): Promise<{accessToken: string}> {

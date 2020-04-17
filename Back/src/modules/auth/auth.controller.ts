@@ -22,7 +22,7 @@ export class AuthController {
     userSignUp(
         @Req() req: any,
         @Body(ValidationPipe) userSignUpDto: UserSignUpDto): Promise<boolean> {
-        return this.authService.userSignUp(userSignUpDto, req.files.profileImg);
+        return this.authService.userSignUp(userSignUpDto, req?.files?.profileImg);
     }
 
     @Post('user/signIn')
