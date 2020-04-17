@@ -20,6 +20,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   private getUserChatsSub: Subscription;
   private getChatMessagesSub: Subscription;
 
+  chatId: string;
   chat: ChatDataModel[] = [];
   messages: MessageDataModel[] = [];
   user = localStorage.getItem('st-token');
@@ -43,6 +44,17 @@ export class MessagesComponent implements OnInit, OnDestroy {
       this.messages.push(data);
       this.scrollToBottom();
     });
+
+    this.chatsWebSocket.typingToClient((message: { chatId: string, userId: number }) => {
+      if (this.myId === message.userId || this.chatId !== message.chatId) {
+        return
+      }
+      this.typing = true;
+      this.scrollToBottom();
+      setTimeout(() => {
+        this.typing = false;
+      }, 2000);
+    });
   }
 
   ngOnDestroy() {
@@ -55,6 +67,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   getChat(chatId: string, page?: number) {
+    this.chatId = chatId;
+    this.typing = false;
     if (chatId === this.currentChatId) {
       return
     }
@@ -62,20 +76,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.page = page;
 
     this.getChatMessagesSub = this.messagesService.getChatMessages(this.currentChatId, page).subscribe((res) => {
+      this.typing = false;
       this.messages = res.data;
       this.messages.reverse();
     });
 
-    this.chatsWebSocket.typingToClient((message: { chatId: string, userId: number }) => {
-      if (this.myId === message.userId) {
-        return
-      }
-      this.typing = true;
-      this.scrollToBottom();
-      setTimeout(() => {
-        this.typing = false;
-      }, 2000);
-    });
+    
   }
 
   isTyping() {
