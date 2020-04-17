@@ -27,11 +27,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
   myId = this.token.user.id;
   currentChatId: string;
   page = 0;
-  typing = '';
-  timeout;
+  typing: boolean = false;
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
-  
+
   ngOnInit() {
 
     this.getUserChatsSub = this.messagesService.getUserChats().subscribe((res) => {
@@ -71,10 +70,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
       if (this.myId === message.userId) {
         return
       }
-      this.typing = 'typing...';
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        this.typing = '';
+      this.typing = true;
+      this.scrollToBottom();
+      setTimeout(() => {
+        this.typing = false;
       }, 2000);
     });
   }
@@ -92,7 +91,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   onScroll() {
-    console.log('scrolled!!');
     this.page++;
     this.messagesService.getChatMessages(this.currentChatId, this.page).subscribe((res) => {
       this.messages.unshift(...res.data.reverse());

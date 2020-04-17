@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {GetUserData} from '../models/user.model';
 
