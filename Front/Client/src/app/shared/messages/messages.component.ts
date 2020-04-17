@@ -14,15 +14,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly messagesService: MessagesService,
-<<<<<<< HEAD
     private readonly chatsWebSocket: ChatsSocketService) { }
 
-=======
-    private readonly chatsWebSocket: ChatsSocketService
-  ) {}
-    private chatsWebSocketSub2: Subscription;
-    private messageTyping: Subscription;
->>>>>>> 2ab6315e2f7c83b2583f8c1a7217fcad2d6e1066
 
   public getChatSub: Subscription;
   chat: ChatDataModel[] = [];
@@ -41,50 +34,28 @@ export class MessagesComponent implements OnInit, OnDestroy {
         this.chat = res.data;
         console.log(res.data);
       });
-
-<<<<<<< HEAD
     this.chatsWebSocket.connect();
-    
+
     this.chatsWebSocket.getRealTimeChat((data: any) => {
       this.messages.push(data);
       this.scrollToBottom();
     });
   }
-  ngOnDestroy() {
 
-=======
-      this.chatsWebSocket.connect();
-      this.chatsWebSocketSub2 = this.chatsWebSocket.getRealTimeChat()
-        .subscribe((data: any) => {
-          this.messages.push(data);
-          this.scrollToBottom();
-        });
-  }
   ngOnDestroy() {
     this.getChatSub.unsubscribe();
-    this.chatsWebSocketSub2.unsubscribe();
->>>>>>> 2ab6315e2f7c83b2583f8c1a7217fcad2d6e1066
   }
 
   getChat(chatId: string, page?: number) {
     if (chatId !== this.currentChatId) {
-<<<<<<< HEAD
-
-=======
-      try {
-        this.messageTyping.unsubscribe();
-      } catch (e) {
-        console.log('unsubscribe undefined');
-      }
->>>>>>> 2ab6315e2f7c83b2583f8c1a7217fcad2d6e1066
       this.currentChatId = chatId;
       this.page = page;
 
       this.messagesService.getChatMessages(this.currentChatId, page).subscribe((res) => {
-          console.log(page);
-          console.log(res.data);
-          this.messages = res.data;
-          this.messages.reverse();
+        console.log(page);
+        console.log(res.data);
+        this.messages = res.data;
+        this.messages.reverse();
       });
 
       this.chatsWebSocket.typingToClient((message: { chatId: string, userId: number }) => {
@@ -123,12 +94,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   scrollToBottom(): void {
-<<<<<<< HEAD
-    this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    console.log('shevida')
-=======
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
       console.log('shevida');
->>>>>>> 2ab6315e2f7c83b2583f8c1a7217fcad2d6e1066
   }
 }
