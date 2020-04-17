@@ -21,7 +21,7 @@ export class ChatsSocketService {
       });
   }
 
-  getRealTimeChat(cb) {
+  messageCreated(cb) {
       this.socket.on('messageCreated', cb);
   }
 
