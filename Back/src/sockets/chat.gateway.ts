@@ -1,9 +1,8 @@
-import { SubscribeMessage, WebSocketGateway, OnGatewayInit, WsResponse, MessageBody,
+import { SubscribeMessage, WebSocketGateway, OnGatewayInit, MessageBody,
    ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-import { FollowersService } from './modules/followers/followers.service';
-import { ChatsService } from './modules/chats/chats.service';
+import { ChatsService } from '../modules/chats/chats.service';
 
 @WebSocketGateway(3001, {namespace: '/chats'})
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
@@ -13,7 +12,7 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   constructor(private readonly chatsService: ChatsService) {}
 
   async handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`cient connected: ${client.id}`);
+    this.logger.log(`ChatsGateway cient connected: ${client.id}`);
     client.emit('joinRoom', {});
   }
 
@@ -22,7 +21,7 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     console.log(this.wss.adapter.nsp.adapter.rooms);
   }
 
-  private readonly logger: Logger =  new Logger('AppGateWay');
+  private readonly logger: Logger =  new Logger('ChatsGateWay');
 
   afterInit(server: Server) {
     this.logger.log("initialized");
@@ -38,14 +37,10 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     });
   }
 
-  // @SubscribeMessage('joinInRoom')
-  // handleMessage(
-  //   @MessageBody() message: { token: string }, 
-  //   @ConnectedSocket() client: Socket
-  // ): WsResponse<unknown> {
-  //   this.wss.to(message.room).emit('msgToClient', message); // for room broadcast 
-  //   this.wss.emit('msgToCLient', 'hello'); // response to all clients who sent event
-  //   client.emit('msgToCLient', 'hello'); // response to only one client who sent event
-  //   return {event: 'msgToCLient', data: 'hello'} // response to only one client who sent event
-  // }
+  @SubscribeMessage('typingToServer')
+  async handleMessage(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
+    if(client.in(`${message.chatId}chats`)) {
+      this.wss.to(`${message.chatId}chats`).emit('typingToClient', message);
+    }
+  }
 }

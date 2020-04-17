@@ -6,8 +6,7 @@ import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
 import { AuthModule } from '../auth/auth.module';
 import { ChatsModule } from '../chats/chats.module';
-import { ChatsGateway } from 'src/chat.gateway';
-import { FollowersModule } from '../followers/followers.module';
+import { ChatsGateway } from 'src/sockets/chat.gateway';
 
 @Module({
     imports: [

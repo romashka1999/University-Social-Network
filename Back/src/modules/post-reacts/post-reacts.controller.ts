@@ -44,4 +44,12 @@ export class PostReactsController {
         return new ResponseCreator("POSTREACTS_GOT", updatedData);
     }
 
+    @Get('/checkReact/:postId')
+    public async checkReact(
+        @GetUser() user: User,
+        @Param('postId', ParseIntPipe) postId: number): Promise<ResponseCreator> {
+        const updatedData = await this.postReactsService.checkReact(user.id, postId);
+        return new ResponseCreator("POSTREACT_GOT", updatedData);
+    }
+
 }

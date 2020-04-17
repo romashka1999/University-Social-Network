@@ -4,7 +4,7 @@ import {Observable, Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {UserLogin, Users} from '../shared/interfaces';
 import {Router} from '@angular/router';
-import {PostSocketService} from './post-socket.service';
+import {PostSocketService} from './posts-socket.service';
 import {environment} from '../../environments/environment';
 import {ChatsSocketService} from './chats-socket.service';
 

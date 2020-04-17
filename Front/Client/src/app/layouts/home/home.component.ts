@@ -3,7 +3,7 @@ import {TabStore} from 'src/app/stores/tab.store';
 import {PostService} from 'src/app/services/post.service';
 import {GetPostData} from 'src/app/models/post.model';
 import {Subscription} from 'rxjs';
-import {PostSocketService} from '../../services/post-socket.service';
+import {PostSocketService} from '../../services/posts-socket.service';
 
 
 @Component({

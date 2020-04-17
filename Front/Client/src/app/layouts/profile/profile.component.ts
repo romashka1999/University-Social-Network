@@ -4,7 +4,7 @@ import {Posts, Users} from '../../shared/interfaces';
 import {PostService} from '../../services/post.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {PostSocketService} from '../../services/post-socket.service';
+import {PostSocketService} from '../../services/posts-socket.service';
 import {Subscription} from 'rxjs';
 
 @Component({

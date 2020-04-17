@@ -1,8 +1,8 @@
-import { SubscribeMessage, WebSocketGateway, OnGatewayInit, WsResponse, MessageBody,
+import { SubscribeMessage, WebSocketGateway, OnGatewayInit, MessageBody,
    ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-import { FollowersService } from './modules/followers/followers.service';
+import { FollowersService } from '../modules/followers/followers.service';
 
 @WebSocketGateway(3001, {namespace: '/posts'})
 export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
@@ -12,7 +12,7 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   constructor(private readonly followersService: FollowersService) {}
 
   async handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`cient connected: ${client.id}`);
+    this.logger.log(`PostsGateway cient connected: ${client.id}`);
     client.emit('joinRoom', {});
   }
 
@@ -21,7 +21,7 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     console.log(this.wss.adapter.nsp.adapter.rooms);
   }
 
-  private readonly logger: Logger =  new Logger('AppGateWay');
+  private readonly logger: Logger =  new Logger('PostsGateWay');
 
   afterInit(server: Server) {
     this.logger.log("initialized");
@@ -37,15 +37,4 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
       client.join(`${userId}posts`);
     });
   }
-
-  // @SubscribeMessage('joinInRoom')
-  // handleMessage(
-  //   @MessageBody() message: { token: string }, 
-  //   @ConnectedSocket() client: Socket
-  // ): WsResponse<unknown> {
-  //   this.wss.to(message.room).emit('msgToClient', message); // for room broadcast 
-  //   this.wss.emit('msgToCLient', 'hello'); // response to all clients who sent event
-  //   client.emit('msgToCLient', 'hello'); // response to only one client who sent event
-  //   return {event: 'msgToCLient', data: 'hello'} // response to only one client who sent event
-  // }
 }

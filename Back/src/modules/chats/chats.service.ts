@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
-import { Model , connection} from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { GetChatsFilterDto } from './dto/get-chats.filter.dto';
@@ -110,7 +110,7 @@ export class ChatsService {
         }
     }
 
-    public async getChatById(chatId: string): Promise<any> {
+    public async getChatById(chatId: string): Promise<IChat> {
         try {
             const chat = await this.Chat.findById(chatId);
             if(!chat) {

@@ -8,7 +8,7 @@ import { UsersModule } from '../users/users.module';
 import { FollowersModule } from '../followers/followers.module';
 import { PostsController } from './posts.controller';
 import { AuthModule } from '../auth/auth.module';
-import { PostsGateway } from 'src/posts.gateway';
+import { PostsGateway } from 'src/sockets/posts.gateway';
 import { RedisStoreClientService } from 'src/redis-store-client.service';
 
 @Module({

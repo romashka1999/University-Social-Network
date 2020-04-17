@@ -11,7 +11,7 @@ import { GetUserPostsFilterDto } from './dtos/get-user-posts-filter.dto';
 import { pagination, Ipagination } from 'src/shared/pagination';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from '../followers/followers.service';
-import { PostsGateway } from 'src/posts.gateway';
+import { PostsGateway } from 'src/sockets/posts.gateway';
 import { RedisStoreClientService } from 'src/redis-store-client.service';
 
 @Injectable()

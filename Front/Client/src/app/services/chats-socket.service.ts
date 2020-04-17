@@ -32,6 +32,16 @@ export class ChatsSocketService {
     });
   }
 
+  typingToServer(message: { chatId: string, userId: number }) {
+    this.socket.emit('typingToServer', message);
+  }
+
+  typingToClient() {
+    this.socket.on('typingToClient', (message: { chatId: string, userId: number }) => {
+      console.log(message);
+    });
+  }
+
   disconnect() {
     this.socket.disconnect();
   }

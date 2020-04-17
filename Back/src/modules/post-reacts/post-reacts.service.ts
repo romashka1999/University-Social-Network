@@ -6,7 +6,6 @@ import { PaginationGetFilterDto } from "src/shared/pagination-get-filter.dto";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
 import { FollowersService } from "../followers/followers.service";
-import { User } from "../users/user.entity";
 
 
 @Injectable()
@@ -77,6 +76,16 @@ export class PostReactsService {
             if(!await this.followersService.checkFollowing(loggedUserId, postUserId)) {
                 throw new BadGatewayException("USER_IS_NOT_PUBLIC");
             }
+        }
+    }
+
+
+    public async checkReact(loggedUserId: number, postId: number): Promise<boolean> {
+        try {
+            const postReact = await this.postReactRepository.find({postId: postId, userId: loggedUserId});
+            return postReact ? true : false;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
         }
     }
 

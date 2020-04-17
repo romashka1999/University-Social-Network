@@ -7,7 +7,7 @@ import { Ipagination, pagination } from 'src/shared/pagination';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsService } from '../chats/chats.service';
 import { IMessage } from './message.entity';
-import { ChatsGateway } from 'src/chat.gateway';
+import { ChatsGateway } from 'src/sockets/chat.gateway';
 
 
 @Injectable()
