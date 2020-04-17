@@ -14,9 +14,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly messagesService: MessagesService,
-    private readonly chatsWebSocket: ChatsSocketService) { }
-
-    private chatsWebSocketSub: Subscription;
+    private readonly chatsWebSocket: ChatsSocketService
+  ) {}
     private chatsWebSocketSub2: Subscription;
     private messageTyping: Subscription;
 
@@ -38,7 +37,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         console.log(res.data);
       });
 
-      this.chatsWebSocketSub = this.chatsWebSocket.connect().subscribe();
+      this.chatsWebSocket.connect();
       this.chatsWebSocketSub2 = this.chatsWebSocket.getRealTimeChat()
         .subscribe((data: any) => {
           this.messages.push(data);
@@ -47,7 +46,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.getChatSub.unsubscribe();
-    this.chatsWebSocketSub.unsubscribe();
     this.chatsWebSocketSub2.unsubscribe();
   }
 

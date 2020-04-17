@@ -14,13 +14,11 @@ export class ChatsSocketService {
   }
 
   connect() {
-    return new Observable(() => {
       this.socket.on('joinRoom', () => {
         console.log(this.socket.connected);
         const id = this.userProfile.id;
         this.socket.emit('joinRoom', {id});
       });
-    });
   }
 
   getRealTimeChat() {
