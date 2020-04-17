@@ -3,18 +3,18 @@
         <div class="logo-wrapper d-flex flex-row justify-content-center align-items-center">
           <img src="assets/images/logo.png" alt="logo">
         </div>
-        <div class="menu-wrapper">
-          <div routerLink="/home" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
-            <span class="material-icons active"> home </span>
+        <div routerLinkActive="active" class="menu-wrapper">
+          <div [routerLink]="['/home']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> home </span>
           </div>
-          <div routerLink="/messages" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
-            <span class="material-icons"> chat_bubble </span>
-          </div>
-          <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
-            <span class="material-icons"> call </span>
+          <div [routerLink]="['/messages']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> chat_bubble </span>
           </div>
           <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
-            <span class="material-icons"> power_settings_new </span>
+            <span routerLinkActive="active" class="material-icons"> call </span>
+          </div>
+          <div (click)="logOut()" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> power_settings_new </span>
           </div>
         </div>
     </div>

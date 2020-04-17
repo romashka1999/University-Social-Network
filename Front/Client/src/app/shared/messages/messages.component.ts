@@ -17,7 +17,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     private readonly chatsWebSocket: ChatsSocketService) { }
 
     private chatsWebSocketSub: Subscription;
-    private chatsWebSocketSub2: Subscription
+    private chatsWebSocketSub2: Subscription;
 
   public getChatSub: Subscription;
   chat: ChatDataModel[] = [];

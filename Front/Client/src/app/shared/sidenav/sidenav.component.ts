@@ -6,11 +6,15 @@ import {AuthService} from '../../services/auth.service';
     templateUrl: './sidenav.component.html',
     styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit{
+export class SidenavComponent implements OnInit {
 
     constructor(private auth: AuthService) {}
 
     ngOnInit() {
 
     }
+
+  logOut() {
+    this.auth.logout();
+  }
 }
