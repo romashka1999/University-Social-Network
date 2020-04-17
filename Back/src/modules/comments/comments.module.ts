@@ -8,6 +8,7 @@ import { CommentsController } from './comments.controller';
 import { PostsModule } from '../posts/posts.module';
 import { UsersModule } from '../users/users.module';
 import { FollowersModule } from '../followers/followers.module';
+import { PostsGateway } from 'src/sockets/posts.gateway';
 
 @Module({
     imports: [
@@ -17,7 +18,7 @@ import { FollowersModule } from '../followers/followers.module';
         UsersModule,
         FollowersModule
     ],
-    providers: [CommentsService],
+    providers: [CommentsService, PostsGateway],
     controllers: [CommentsController],
     exports: [
         CommentsService,

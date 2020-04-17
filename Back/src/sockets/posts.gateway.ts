@@ -37,4 +37,39 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
       client.join(`${userId}posts`);
     });
   }
+
+  // *************************** post ******************************
+  public async postCreated(loggedUserId: number, createdPostForSocket) {
+    this.wss.to(`${loggedUserId}posts`).emit('postCreated', createdPostForSocket);
+  }
+
+  public async postUpdated(loggedUserId: number, updatedPost) {
+    this.wss.to(`${loggedUserId}posts`).emit('postUpdated', updatedPost);
+  }
+
+  public async postDeleted(loggedUserId: number, deletedPost) {
+    this.wss.to(`${loggedUserId}posts`).emit('postDeleted', deletedPost);
+  }
+
+  // ************************** react ****************************
+  public async postReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('postReacetd', data);
+  }
+
+  public async postUnReacted(loggedUserId: number) {
+    this.wss.to(`${loggedUserId}posts`).emit('postUnReacetd', true);
+  }
+
+  // ************************** comment *******************************
+  public async commentCreated(loggedUserId: number, createdComment) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentCreated', createdComment);
+  }
+
+  public async commentDeleted(loggedUserId: number) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentDeleted', true);
+  }
+
+  public async commentUpdated(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentUpdated', data);
+  }
 }

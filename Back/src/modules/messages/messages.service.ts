@@ -7,7 +7,7 @@ import { Ipagination, pagination } from 'src/shared/pagination';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsService } from '../chats/chats.service';
 import { IMessage } from './message.entity';
-import { ChatsGateway } from 'src/sockets/chat.gateway';
+import { ChatsGateway } from 'src/sockets/chats.gateway';
 
 
 @Injectable()
@@ -49,7 +49,7 @@ export class MessagesService {
                 content: sendMessageDto.content
             });
             const createdMessage = await message.save();
-            this.chatsGateway.wss.to(`${chatId}chats`).emit('messageCreated', createdMessage);
+            this.chatsGateway.messageCreated(chatId, createdMessage);
             return createdMessage;
         } catch (error) {
             throw new InternalServerErrorException(error);

@@ -56,17 +56,21 @@ export class PostsService {
         createdPostForSocket.user_firstName = user.firstName;
         createdPostForSocket.user_lastName = user.lastName;
         createdPostForSocket.user_profileImgUrl = user.profileImgUrl;
-        this.postsGateway.wss.to(`${user.id}posts`).emit('postCreated', createdPostForSocket);
+        this.postsGateway.postCreated(user.id, createdPostForSocket);
 
         return createdPost;
     }
 
-    public updatePostByPostId(user: User, postId: number, postUpdateDto: PostUpdateDto): Promise<Post> {
-        return this.postRepository.updatePostByPostId(user, postId, postUpdateDto);
+    public async updatePostByPostId(user: User, postId: number, postUpdateDto: PostUpdateDto): Promise<Post> {
+        const updatedPost = await this.postRepository.updatePostByPostId(user, postId, postUpdateDto);
+        this.postsGateway.postUpdated(user.id, updatedPost);
+        return updatedPost;
     }
 
-    public deletePostByPostId(user: User, postId: number): Promise<Post> {
-        return this.postRepository.deletePostByPostId(user, postId);
+    public async deletePostByPostId(user: User, postId: number): Promise<Post> {
+        const deletedPost = await this.postRepository.deletePostByPostId(user, postId);
+        this.postsGateway.postDeleted(user.id, deletedPost);
+        return deletedPost;
     }
 
     public async hidePostByAdmin(postId: number, hidden: boolean): Promise<Post> {
@@ -129,6 +133,19 @@ export class PostsService {
                 await this.postRepository.increment({id: postId}, 'reactsCount', 1);
             } else if(action === "UNREACT") {
                 await this.postRepository.decrement({id: postId}, 'reactsCount', 1);
+            }
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    } 
+
+
+    public async updatePostCommentCounter(postId: number, action: string): Promise<void> {
+        try {
+            if(action === "WRITE") {
+                await this.postRepository.increment({id: postId}, 'commentsCount', 1);
+            } else if(action === "DELETE") {
+                await this.postRepository.decrement({id: postId}, 'commentsCount', 1);
             }
         } catch (error) {
             throw new InternalServerErrorException(error);

@@ -12,6 +12,7 @@ import { Comment } from './comment.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { User } from '../users/user.entity';
 import { CommentUpdateDto } from './dto/comment-update.dto';
+import { PostsGateway } from 'src/sockets/posts.gateway';
 
 @Injectable()
 export class CommentsService {
@@ -20,7 +21,8 @@ export class CommentsService {
         @InjectRepository(CommentRepository) private readonly commentRepository: CommentRepository,
         private readonly postsService: PostsService,
         private readonly usersService: UsersService,
-        private readonly followersService: FollowersService) {}
+        private readonly followersService: FollowersService,
+        private readonly postsGateway: PostsGateway) {}
 
 
 
@@ -64,7 +66,10 @@ export class CommentsService {
                 throw new BadRequestException("USER_IS_NOT_PUBLIC");
             }
         }
-        return await this.commentRepository.createComment(user, post, commentCreateDto);
+        const createdComment = await this.commentRepository.createComment(user, post, commentCreateDto);
+        await this.postsService.updatePostCommentCounter(postId, 'WRITE');
+        this.postsGateway.commentCreated(user.id, createdComment);
+        return createdComment;
     }
 
 
@@ -84,12 +89,14 @@ export class CommentsService {
         }
     }
 
-    public async deleteComment(loggedUserId: number, commentId: number): Promise<any> {
+    public async deleteComment(loggedUserId: number, postId: number, commentId: number): Promise<any> {
         try {
-            const deletedComment: DeleteResult = await this.commentRepository.delete({id: commentId, userId: loggedUserId});
+            const deletedComment: DeleteResult = await this.commentRepository.delete({id: commentId, userId: loggedUserId, postId: postId});
             if(!deletedComment.affected) {
                 throw {statusCode: HttpStatus.NOT_FOUND, message: "COMMENT_NOT_EXISTS"};
             }
+            await this.postsService.updatePostCommentCounter(postId, 'DELETE');
+            this.postsGateway.commentDeleted(loggedUserId);
             return deletedComment.raw;
         } catch (error) {
             if(error.statusCode) {
@@ -106,6 +113,7 @@ export class CommentsService {
             if(!updatedComment.affected) {
                 throw {statusCode: HttpStatus.NOT_FOUND, message: "COMMENT_NOT_EXISTS"};
             }
+            this.postsGateway.commentUpdated(loggedUserId, updatedComment.raw);
             return updatedComment.raw;
         } catch (error) {
             if(error.statusCode) {

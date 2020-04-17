@@ -50,11 +50,12 @@ export class CommentsController {
         return new ResponseCreator("COMMENT_UPDATED", updatedData);
     }
 
-    @Delete('/:commentId')
+    @Delete('post/:postId/comment/:commentId')
     public async deleteComment(
         @GetUser() user: User,
+        @Param('postId', ParseIntPipe) postId: number,
         @Param('commentId', ParseIntPipe) commentId: number): Promise<ResponseCreator> {
-        const deletedData = await this.commentsService.deleteComment(user.id, commentId);
+        const deletedData = await this.commentsService.deleteComment(user.id, postId, commentId);
         return new ResponseCreator("COMMENT_DELETED", deletedData);
     }
 
