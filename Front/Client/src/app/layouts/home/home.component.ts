@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(res);
       // @ts-ignore
       // esec gaaswore
-      this.posts.unshift(res.data);
+      // this.posts.unshift(res.data);
       this.tabStore.postPopupState$.next(false);
     });
   }
