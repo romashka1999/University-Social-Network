@@ -3,8 +3,8 @@ import { InternalServerErrorException } from "@nestjs/common";
 
 
 import { Follower } from "./follower.entity";
-import { PaginationGetFilterDto } from "src/shared/pagination-get-filter.dto";
-import { Ipagination, pagination } from "src/shared/pagination";
+import { PaginationGetFilterDto } from "src/shared/dtos/pagination-get-filter.dto";
+import { Ipagination, pagination } from "src/shared/utils/pagination";
 
 
 @EntityRepository(Follower)

@@ -4,9 +4,9 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { PostReactsService } from './post-reacts.service';
-import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
+import { StrictPaginationGetFilterDto } from 'src/shared/dtos/strict-pagination-get-filter.dto';
 
 @ApiHeader({
     name: 'token',

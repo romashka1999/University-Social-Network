@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { GetMessagesFilterDto } from './dto/get-messages.filter.dto';
-import { Ipagination, pagination } from 'src/shared/pagination';
+import { Ipagination, pagination } from 'src/shared/utils/pagination';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatsService } from '../chats/chats.service';
 import { IMessage } from './message.entity';

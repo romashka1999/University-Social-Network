@@ -5,7 +5,7 @@ import { PostReactRepository } from "./post-react.repository";
 import { UsersService } from "../users/users.service";
 import { PostsService } from "../posts/posts.service";
 import { FollowersService } from "../followers/followers.service";
-import { StrictPaginationGetFilterDto } from "src/shared/strict-pagination-get-filter.dto";
+import { StrictPaginationGetFilterDto } from "src/shared/dtos/strict-pagination-get-filter.dto";
 import { User } from "../users/user.entity";
 import { Post } from "../posts/post.entity";
 import { PostReact } from "./post-react.entity";

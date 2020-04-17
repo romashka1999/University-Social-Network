@@ -8,7 +8,7 @@ import { User } from '../users/user.entity';
 import { Post } from './post.entity';
 import { PostUpdateDto } from './dtos/post-update.dto';
 import { GetUserPostsFilterDto } from './dtos/get-user-posts-filter.dto';
-import { pagination, Ipagination } from 'src/shared/pagination';
+import { pagination, Ipagination } from 'src/shared/utils/pagination';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from '../followers/followers.service';
 import { PostsGateway } from 'src/sockets/posts.gateway';

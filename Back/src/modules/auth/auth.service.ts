@@ -7,6 +7,7 @@ import { UserSignUpDto } from './dtos/user-sign-up.dto';
 import { UserSignInDto } from './dtos/user-sign-in.dto';
 import { AdminSignInDto } from './dtos/admin-sign-in.dto';
 import { AdminRepository } from '../admins/admin.repository';
+import { uploadFile } from 'src/shared/utils/uploadfile';
 
 
 
@@ -19,7 +20,10 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    public userSignUp(userSignUpDto: UserSignUpDto): Promise<boolean> {
+    public userSignUp(userSignUpDto: UserSignUpDto, profileImgFile: any): Promise<boolean> {
+        if(profileImgFile) {
+            uploadFile(profileImgFile, 'profileImages')
+        }
         return this.userRepository.signUp(userSignUpDto);
     }
 

@@ -6,7 +6,7 @@ import { AdminSignInDto } from "../auth/dtos/admin-sign-in.dto";
 import { AdminCreateDto } from "./dtos/admin-create.dto";
 import { hashPassword } from "../auth/helpers/password";
 import { GetAdminsFilterDto } from "./dtos/get-admins-filter.dto";
-import { Ipagination, pagination } from "src/shared/pagination";
+import { Ipagination, pagination } from "src/shared/utils/pagination";
 
 @EntityRepository(Admin)
 export class AdminRepository extends Repository<Admin> {

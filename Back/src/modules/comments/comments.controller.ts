@@ -5,9 +5,9 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
 import { GetUser } from 'src/modules/auth/get-account-data.decorator';
 import { User } from 'src/modules/users/user.entity';
-import { ResponseCreator } from 'src/shared/response-creator';
+import { ResponseCreator } from 'src/shared/utils/response-creator';
 import { CommentsService } from './comments.service';
-import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
+import { StrictPaginationGetFilterDto } from 'src/shared/dtos/strict-pagination-get-filter.dto';
 import { CommentCreateDto } from './dto/comment-create.dto';
 import { CommentUpdateDto } from './dto/comment-update.dto';
 

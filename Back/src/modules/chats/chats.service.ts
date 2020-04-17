@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { GetChatsFilterDto } from './dto/get-chats.filter.dto';
-import { Ipagination, pagination } from 'src/shared/pagination';
+import { Ipagination, pagination } from 'src/shared/utils/pagination';
 import { UsersService } from '../users/users.service';
 import { IChat } from './chat.entity';
 
@@ -47,6 +47,9 @@ export class ChatsService {
                 if(uniqueChatUserIds.size !== beforeSetSise) {
                     uniqueChatUserIdsArray.push(userId);
                 }
+            }
+            if(uniqueChatUserIdsArray.length < 1) {
+                return [];
             }
             const users = await this.usersService.getUsersByIds(uniqueChatUserIdsArray);
             const memoUserDP = {};

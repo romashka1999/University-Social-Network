@@ -2,8 +2,8 @@ import { Injectable, BadRequestException, InternalServerErrorException, HttpStat
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentRepository } from './comments.repository';
 
-import { StrictPaginationGetFilterDto } from 'src/shared/strict-pagination-get-filter.dto';
-import { Ipagination, pagination } from 'src/shared/pagination';
+import { StrictPaginationGetFilterDto } from 'src/shared/dtos/strict-pagination-get-filter.dto';
+import { Ipagination, pagination } from 'src/shared/utils/pagination';
 import { PostsService } from '../posts/posts.service';
 import { UsersService } from '../users/users.service';
 import { FollowersService } from '../followers/followers.service';
