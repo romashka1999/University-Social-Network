@@ -1,19 +1,38 @@
 <div class="post-wrapper d-flex flex-column" *ngIf="PostData">
-    <div class="post-header d-flex flex-row">
-        <div class="user-photo"></div>
-        <div class="user-info d-flex flex-column justify-content-center" *ngIf="PostData.user_firstName && PostData.user_lastName">
-            <div class="user-name">{{PostData.user_firstName}} {{PostData.user_lastName}}</div>
-            <div class="user-postDate">{{PostData.createDate | date: 'short'}}</div>
+    <div class="post-content-container">
+        <div class="post-header d-flex flex-row">
+            <div class="user-photo" (click)="selectUser()"></div>
+            <div class="user-info d-flex flex-column justify-content-center" *ngIf="PostData.user_firstName && PostData.user_lastName" (click)="selectUser()">
+                <div class="user-name">{{PostData.user_firstName}} {{PostData.user_lastName}}</div>
+                <div class="user-postDate">{{PostData.createDate | date: 'short'}}</div>
+            </div>
         </div>
-    </div>
-    <div class="post-body d-flex flex-column">
-        <div class="post-content" *ngIf="PostData.content">
-            {{PostData.content}}
+        <div class="post-body d-flex flex-column">
+            <div class="post-content" *ngIf="PostData.content">
+                {{PostData.content}}
+            </div>
+            <div class="post-image"><img src="../../../assets/images/post_photo.jpg"></div>
+            <!-- <div class="post-reactions d-flex flex-row">
+                <span class="material-icons"> timer </span>
+                <span class="material-icons"> timer </span>
+            </div> -->
         </div>
-        <div class="post-image"><img src="../../../assets/images/post_photo.jpg"></div>
-        <!-- <div class="post-reactions d-flex flex-row">
-            <span class="material-icons"> timer </span>
-            <span class="material-icons"> timer </span>
-        </div> -->
+        <div class="reactions-wrapper d-flex flex-row">
+            <span *ngIf="reacted" class="material-icons icon-clicked" (click)="onReact()"> favorite </span>
+            <span *ngIf="!reacted" class="material-icons" (click)="onReact()"> favorite_border </span>
+            <span class="material-icons comments"> comment </span>
+        </div>
+        <div class="reactions-count d-flex flex-row">
+            321 მოწონება
+        </div>
+        <div class="comments-section-wrapper d-flex flex-column">
+            ...
+        </div>
+        <div class="write-comment-wrapper d-flex flex-row">
+            <div class="user-image"></div>
+            <div class="comment-input d-flex flex-column justify-content-center align-items-center">
+                <input placeholder="დაწერეთ კომენტარი...">
+            </div>
+        </div>
     </div>
 </div>

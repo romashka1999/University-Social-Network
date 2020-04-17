@@ -6,6 +6,8 @@ import { DataService } from '../../services/data.service';
 import { Subscription } from 'rxjs';
 import { GetUserData } from '../../models/user.model';
 import { FollowersService } from '../../services/followers.service';
+import { UserService } from 'src/app/services/user.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'shared-profile',
@@ -14,70 +16,100 @@ import { FollowersService } from '../../services/followers.service';
 })
 export class SharedProfileComponent implements OnInit, OnDestroy {
 
-  public tabState: boolean
-  public userProfile = [JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user];
-  public anotherUserProfile: GetUserData = this.userProfile[0];
-  public ifFollow = false;
-  posts: GetPostData[];
-  constructor(private tabStore: TabStore,
-    private postService: PostService,
-    private dataService: DataService,
+  public tabState: boolean;
+
+  public user: GetUserData;
+  public isCurrent: boolean;
+  public isFollowedUser: boolean
+
+  public posts: GetPostData[];
+
+  constructor(
+    private tabStore: TabStore,
     private followersService: FollowersService,
+    private userService: UserService,
+    private postService: PostService
   ) { }
-  private userSub: Subscription;
-  private postSub: Subscription;
+  
+
   ngOnInit() {
-    this.tabStore.profileSidenavState$.subscribe((res: boolean) => { this.tabState = res })
-    this.postService.getPosts(this.anotherUserProfile.id)
-      .subscribe((res) => {
-        this.posts = res.data;
-      });
-    this.userSub = this.dataService.searchResult
-      .subscribe((id: number) => {
-        this.dataService.getProfile(id)
-          .subscribe((res) => {
-            this.anotherUserProfile = res.data;
-            this.isFollowed(id);
-          });
-      });
-    this.postSub = this.dataService.searchResult
-      .subscribe((id: number) => {
-        this.postService.getPosts(id)
-          .subscribe((res) => {
-            this.posts = res.data;
-          });
-      });
+    //Tab state Active - Hidden
+    this.tabStore.profileSidenavState$.subscribe((res: boolean) => {
+      this.tabState = res;
+    })
+
+    // Check if user is selected
+    this.tabStore.profileSidenavContent$.subscribe(res => {
+      if(res) { 
+        this.userService.getUserProfile(res).subscribe(userProfile => {
+          this.user = userProfile.data;   // Another user
+          this.isCurrent = false;
+          this.isFollowed(userProfile.data.id)
+          this.getUserPosts(); 
+        })
+      } else {
+        this.user = this.userService.getCurrentUser();   // Current user
+        this.isCurrent = true;
+        this.getUserPosts(); 
+      }
+    })
+
   }
-  ngOnDestroy() {
-    this.userSub.unsubscribe();
-    this.postSub.unsubscribe();
-  }
+
+  ngOnDestroy() { }
 
   toggleTabState(status: boolean) {
     this.tabStore.profileSidenavState$.next(status);
   }
 
-  followUser(id: number) {
-    this.followersService.followUser(id)
+  followUser() {
+    this.followersService.followUser(this.user.id)
       .subscribe((res) => {
-        console.log(res);
-        this.ifFollow = true;
+        this.isFollowedUser = true;
+        this.updateFollowersCount();
       });
   }
 
-  unFollowUser(id: number) {
-    this.followersService.unFollowUser(id)
+  unFollowUser() {
+    this.followersService.unFollowUser(this.user.id)
       .subscribe((res) => {
-        console.log(res);
-        this.ifFollow = false;
+        this.isFollowedUser = false;
+        this.updateFollowersCount();
       });
   }
+
   isFollowed(id: number) {
     this.followersService.isFollowed(id)
       .subscribe((res) => {
-        this.ifFollow = res.data;
-        console.log(res);
+        this.isFollowedUser = res.data;
       });
+  }
 
+  updateFollowersCount() {
+    this.userService.getUserProfile(this.user.id).subscribe(res => {
+      this.user.followersCount = res.data.followersCount;
+      this.user.followingsCount = res.data.followingsCount
+    })
+  }
+
+  getUserPosts() {
+    this.postService.getPosts(this.user.id)
+      .pipe(
+        map(postData => {
+          postData.data.map(post => {
+            post['user_firstName'] = this.user.username;
+            post['user_lastName'] = this.user.lastName;
+            return post;
+          })
+          return postData
+        })
+      )
+      .subscribe(posts => {
+        this.posts = posts.data;
+      })
+  }
+
+  onUserClick() {
+    console.log('New page')
   }
 }

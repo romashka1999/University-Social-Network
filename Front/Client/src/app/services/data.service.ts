@@ -17,6 +17,7 @@ export class DataService {
   getProfile(id: number): Observable<GetUser_Response> {
     return  this.http.get<GetUser_Response>(`${environment.api}/public/users/profile/${id}`);
   }
+  
   changePhone(newPhone: string) {
    return  this.http.patch(`${environment.api}/public/users/phoneNumber`, {
      phoneNumber: newPhone
