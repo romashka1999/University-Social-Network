@@ -54,7 +54,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
       try {
         this.messageTyping.unsubscribe();
       } catch (e) {
-        console.log('ylexar');
+        console.log('unsubscribe undefined');
       }
       this.currentChatId = chatId;
       this.page = page;
@@ -80,7 +80,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         console.log('igive chatshi dgexar');
     }
   }
-  isTypingari() {
+  isTyping() {
     this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
   }
   sendMessage(chatId: string, content: string) {
@@ -103,6 +103,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   scrollToBottom(): void {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-      console.log('shevida')
+      console.log('shevida');
   }
 }
