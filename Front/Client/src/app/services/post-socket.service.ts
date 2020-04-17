@@ -6,8 +6,8 @@ import { environment } from '../../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
-export class ChatsWebSocket {
-  public socket = io(`${environment.socketApi}/chats`);
+export class PostSocketService {
+  public socket = io(`${environment.socketApi}/posts`);
   constructor() {}
 
   connect() {
@@ -21,9 +21,9 @@ export class ChatsWebSocket {
      });
    });
   }
-  getRealTimeChat() {
+  getRealTimePost() {
     return new Observable((subscriber) => {
-      this.socket.on('messageCreated', (data) => {
+      this.socket.on('postCreated', (data) => {
         subscriber.next(data);
       });
     });

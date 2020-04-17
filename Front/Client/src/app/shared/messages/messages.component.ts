@@ -3,7 +3,7 @@ import {MessagesService} from '../../services/messages.service';
 import {ChatDataModel} from '../../models/chat.model';
 import {MessageDataModel} from '../../models/message.model';
 import {Subscription} from 'rxjs';
-import { ChatsWebSocket } from 'src/app/services/chats-websocket.service';
+import { ChatsSocketService } from '../../services/chats-socket.service';
 
 @Component({
   selector: 'app-messages',
@@ -14,7 +14,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly messagesService: MessagesService,
-    private readonly chatsWebSocket: ChatsWebSocket) { }
+    private readonly chatsWebSocket: ChatsSocketService) { }
 
     private chatsWebSocketSub: Subscription;
     private chatsWebSocketSub2: Subscription
@@ -35,8 +35,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
         console.log(res.data);
       });
 
-     this.chatsWebSocketSub = this.chatsWebSocket.connect().subscribe();
-        this.chatsWebSocketSub2 = this.chatsWebSocket.getRealTimeChat().subscribe((data: any) => {
+      this.chatsWebSocketSub = this.chatsWebSocket.connect().subscribe();
+      this.chatsWebSocketSub2 = this.chatsWebSocket.getRealTimeChat()
+        .subscribe((data: any) => {
           this.messages.push(data);
         });
   }
@@ -60,12 +61,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
   sendMessage(chatId: string, content: string) {
     this.messagesService.sendMessage(chatId, content)
       .subscribe((res) => {
-        console.log(res.data);
-        // გაასწორე თუ მაგარი კაციხარ ცხვარმენ
-        // @ts-ignore
-        //this.messages.push(res.data);
-        console.log(this.messages);
         this.scrollToBottom();
+        // @ts-ignore
+        // this.messages.push(res.data);
       });
   }
   onScroll() {

@@ -4,7 +4,7 @@ import {Posts, Users} from '../../shared/interfaces';
 import {PostService} from '../../services/post.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {WebSocketService} from '../../services/web-socket.service';
+import {PostSocketService} from '../../services/post-socket.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     constructor(private _snackBar: MatSnackBar,
                 private post: PostService,
                 public dialog: MatDialog,
-                private webSocket: WebSocketService
+                private webSocket: PostSocketService
     ) {}
     public connectSocketSub: Subscription;
     public realTimePostSub: Subscription;
