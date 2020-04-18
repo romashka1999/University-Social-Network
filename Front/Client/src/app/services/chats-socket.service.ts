@@ -8,7 +8,8 @@ import { GetUserData } from '../models/user.model';
 })
 export class ChatsSocketService {
   public socket = io(`${environment.socketApi}/chats`);
-  public userProfile: GetUserData = JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user;
+  public userProfile: GetUserData = localStorage.getItem('st-token') ?
+         JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user : null;
   constructor() {
   }
 
