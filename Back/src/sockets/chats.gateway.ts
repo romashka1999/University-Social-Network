@@ -38,9 +38,16 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   @SubscribeMessage('typingToServer')
-  async handleMessage(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
+  async typingToServer(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
     if(client.in(`${message.chatId}chats`)) {
       this.wss.to(`${message.chatId}chats`).emit('typingToClient', message);
+    }
+  }
+
+  @SubscribeMessage('stopTypingToServer')
+  async stopTypingToServer(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
+    if(client.in(`${message.chatId}chats`)) {
+      this.wss.to(`${message.chatId}chats`).emit('stopTypingToClient', message);
     }
   }
 

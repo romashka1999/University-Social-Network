@@ -41,6 +41,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chatsWebSocket.connect();
 
     this.chatsWebSocket.messageCreated((data: any) => {
+      this.typing = false;
       this.messages.push(data);
       this.scrollToBottom();
     });
@@ -51,9 +52,14 @@ export class MessagesComponent implements OnInit, OnDestroy {
       }
       this.typing = true;
       this.scrollToBottom();
-      setTimeout(() => {
-        this.typing = false;
-      }, 2000);
+    });
+
+    this.chatsWebSocket.stopTypingToClient((message: { chatId: string, userId: number }) => {
+      if (this.myId === message.userId || this.chatId !== message.chatId) {
+        return
+      }
+      this.typing = false;
+      this.scrollToBottom();
     });
   }
 
@@ -61,6 +67,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     try {
       this.getUserChatsSub.unsubscribe();
       this.getChatMessagesSub.unsubscribe();
+      this.chatsWebSocket.disconnect();
     } catch (error) {
       console.log(error);
     }
@@ -84,12 +91,19 @@ export class MessagesComponent implements OnInit, OnDestroy {
     
   }
 
-  isTyping() {
-    this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
+  isTyping(newMassage) {
+    const isTyping = newMassage.value.length > 0? true : false;
+
+    if(isTyping) {
+      this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
+    } else {
+      this.chatsWebSocket.stopTypingToServer(this.currentChatId, this.myId);
+    }
   }
 
   sendMessage(chatId: string, content: string) {
     this.messagesService.sendMessage(chatId, content).subscribe((res) => {
+      this.typing = false;
       this.scrollToBottom();
       // @ts-ignore
       // this.messages.push(res.data);

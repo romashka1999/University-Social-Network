@@ -65,7 +65,7 @@
         </div>
         <div class="type_msg">
           <div class="input_msg_write">
-            <input (keyup)="isTyping()" (keyup.enter)="sendMessage(currentChatId, content.value); content.value=''"
+            <input #newMassage (keyup)="isTyping(newMassage)" (keyup.enter)="sendMessage(currentChatId, content.value); content.value=''"
               #content type="text" class="write_msg" placeholder="Type a message" />
             <button (click)="sendMessage(currentChatId, content.value); content.value=''" class="msg_send_btn"
               type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"> send</i></button>
