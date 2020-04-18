@@ -3,12 +3,13 @@ export interface ChatModel {
   data: ChatDataModel[];
 }
 export interface ChatDataModel {
-  users: ChatUsers[];
+  users: ChatUser[];
   _id: string;
   createdAt: Date;
   updatedAt: Date;
 }
-export interface ChatUsers {
+
+export interface ChatUser {
   firstName: string;
   lastname: string;
   prifileImgUrl: string | null;
