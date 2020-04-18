@@ -58,7 +58,7 @@ export class CommentsService {
 
 
     public async writeComment(user: User, postId: number, commentCreateDto: CommentCreateDto): Promise<Comment> {
-        const loggedUserId = user.id
+        const loggedUserId = user.id;
         const post = await this.postsService.getPostById(postId);
         const userOfPost = await this.usersService.getUserById(post.userId);
         if(!userOfPost.publicUser) {
@@ -91,8 +91,12 @@ export class CommentsService {
 
     public async deleteComment(loggedUserId: number, postId: number, commentId: number): Promise<any> {
         try {
-            const deletedComment: DeleteResult = await this.commentRepository.delete({id: commentId, userId: loggedUserId, postId: postId});
-            if(!deletedComment.affected) {
+            const deletedComment: DeleteResult = await this.commentRepository.createQueryBuilder()
+                                                        .delete()
+                                                        .from(Comment)
+                                                        .where("id = :id AND post = :postId AND user = :userId", { id: commentId, postId: postId, userId: loggedUserId })
+                                                        .execute();
+            if(!deletedComment.affected) {  
                 throw {statusCode: HttpStatus.NOT_FOUND, message: "COMMENT_NOT_EXISTS"};
             }
             await this.postsService.updatePostCommentCounter(postId, 'DELETE');
@@ -109,7 +113,7 @@ export class CommentsService {
 
     public async updateComment(loggedUserId: number, commentId: number, commentUpdateDto: CommentUpdateDto): Promise<Comment> {
         try {
-            const updatedComment: UpdateResult = await this.commentRepository.update({id: commentId, userId: loggedUserId}, commentUpdateDto)
+            const updatedComment: UpdateResult = await this.commentRepository.update({id: commentId, userId: loggedUserId}, commentUpdateDto);
             if(!updatedComment.affected) {
                 throw {statusCode: HttpStatus.NOT_FOUND, message: "COMMENT_NOT_EXISTS"};
             }

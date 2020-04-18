@@ -63,9 +63,13 @@ export class PostReactsService {
 
     public async unReactPost(loggedUserId: number, postId: number): Promise<boolean> {
         await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        console.log(loggedUserId, postId);
         try {
-            const deletedReact = await this.postReactRepository.delete({postId: postId, userId: loggedUserId});
-
+            const deletedReact = await this.postReactRepository.createQueryBuilder()
+                                        .delete()
+                                        .from(PostReact)
+                                        .where("post = :postId AND user = :userId", { postId: postId, userId: loggedUserId })
+                                        .execute();
             if(!deletedReact.affected) {
                 throw new NotFoundException("REACT_NOT_EXISTS");
             }
