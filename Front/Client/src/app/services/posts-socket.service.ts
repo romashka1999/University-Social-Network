@@ -33,7 +33,7 @@ export class PostSocketService {
   }
 
   postReacetd(cb) {
-    this.socket.on('postReacetd', cb);
+    this.socket.on('postReacted', cb);
   }
 
   postUnReacted(cb) {
