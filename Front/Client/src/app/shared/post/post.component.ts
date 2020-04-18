@@ -26,6 +26,7 @@ export class SharedPostComponent implements OnInit, OnDestroy {
         this.profileSidenavContentSub = this.profileSidenavContentSub = this.tabStore.profileSidenavContent$.subscribe(res => {
             this.currentUserId = res;
         })
+        this.checkPostReact();
     }
 
     selectUser() {
@@ -41,19 +42,27 @@ export class SharedPostComponent implements OnInit, OnDestroy {
         this.profileSidenavContentSub.unsubscribe();
     }
 
-    onReact(PostDataId: number) {
-        this.postService.reactPost(PostDataId)
+    onReact() {
+        console.log('react')
+        this.postService.reactPost(this.PostData.id)
           .subscribe((res) => {
           console.log(res);
-          this.reacted = false;
+          this.reacted = true;
           });
     }
 
-    unReact(PostDataId: number) {
-      this.postService.reactPost(PostDataId)
+    unReact() {
+      console.log('unreact')
+      this.postService.unReactPost(this.PostData.id)
         .subscribe((res) => {
           console.log(res);
-          this.reacted = true;
+          this.reacted = false;
         });
+    }
+
+    checkPostReact() {
+        this.postService.checkPostReact(this.PostData.id).subscribe(res => {
+            this.reacted = res.data;
+        })
     }
 }

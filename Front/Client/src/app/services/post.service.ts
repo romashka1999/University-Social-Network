@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { GetPost_Response } from '../models/post.model';
+import { GetPost_Response, CheckPost } from '../models/post.model';
 import { environment } from '../../environments/environment'
 
 @Injectable({
@@ -27,13 +27,21 @@ export class PostService {
 
     });
   }
+
   getFollowersPosts(page: number): Observable<GetPost_Response> {
     return this.http.get<GetPost_Response>(`${environment.api}/public/posts/followeesPosts?page=${page}&pageSize=10`);
   }
+
   reactPost(PostId: number): Observable<any> {
     return this.http.get(`${environment.api}/public/postReacts/react/${PostId}`);
   }
+
   unReactPost(PostId: number): Observable<any> {
     return this.http.get(`${environment.api}/public/postReacts/unreact/${PostId}`);
   }
+
+  checkPostReact(PostId: number): Observable<CheckPost>  {
+    return this.http.get<CheckPost>(`${environment.api}/public/postReacts/checkReact/${PostId}`);
+  }
+
 }

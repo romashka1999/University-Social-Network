@@ -18,12 +18,12 @@
             </div> -->
         </div>
         <div class="reactions-wrapper d-flex flex-row">
-            <span *ngIf="reacted" class="material-icons icon-clicked" (click)="unReact(PostData.id)"> favorite </span>
-            <span *ngIf="!reacted" class="material-icons" (click)="onReact(PostData.id)"> favorite_border </span>
+            <span *ngIf="reacted" class="material-icons icon-clicked" (click)="unReact()"> favorite </span>
+            <span *ngIf="!reacted" class="material-icons" (click)="onReact()"> favorite_border </span>
             <span class="material-icons comments"> comment </span>
         </div>
         <div class="reactions-count d-flex flex-row">
-            321 მოწონება
+            {{PostData.reactsCount}} მოწონება
         </div>
         <div class="comments-section-wrapper d-flex flex-column">
             ...

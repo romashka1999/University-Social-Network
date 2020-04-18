@@ -4,6 +4,11 @@ export interface GetPost_Response {
     data: GetPostData[];
 }
 
+export interface CheckPost {
+    message: string;
+    data: boolean;
+}
+
 export interface GetPostData {
     id: number;
     content: string;
