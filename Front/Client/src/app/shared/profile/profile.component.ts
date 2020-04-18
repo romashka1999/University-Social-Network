@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TabStore } from 'src/app/stores/tab.store';
 import { PostService } from '../../services/post.service';
 import { GetPostData } from '../../models/post.model';
-import { DataService } from '../../services/data.service';
-import { Subscription } from 'rxjs';
 import { GetUserData } from '../../models/user.model';
 import { FollowersService } from '../../services/followers.service';
 import { UserService } from 'src/app/services/user.service';

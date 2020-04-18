@@ -11,19 +11,20 @@ services:
         - /usr/src/app/node_modules
     networks:
        - webnet
-  cms:
-    build: ./Front/CMS
-    ports:
-      - "2000:2000"
-    volumes: 
-        - ./Front/CMS:/usr/src/app
-        - /usr/src/app/node_modules
-    networks:
-        - webnet
+#  cms:
+#    build: ./Front/CMS
+#    ports:
+#      - "2000:2000"
+#    volumes:
+#        - ./Front/CMS:/usr/src/app
+#        - /usr/src/app/node_modules
+#    networks:
+#        - webnet
   backend:
     build: ./Back
     ports:
       - "3000:3000"
+      - "3001:3001"
     volumes: 
         - ./Back:/usr/src/app
         - /usr/src/app/node_modules
