@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import {UserService} from './user.service';
 
@@ -9,6 +8,7 @@ import {UserService} from './user.service';
 })
 export class PostSocketService {
   public socket = io(`${environment.socketApi}/posts`);
+
   constructor(private userService: UserService) {}
 
   connect() {
@@ -19,13 +19,39 @@ export class PostSocketService {
        this.socket.emit('joinRoom', { id });
      });
   }
-  getRealTimePost() {
-    return new Observable((subscriber) => {
-      this.socket.on('postCreated', (data) => {
-        subscriber.next(data);
-      });
-    });
+
+  postCreated(cb) {
+      this.socket.on('postCreated', cb);
   }
+
+  postUpdated(cb) {
+    this.socket.on('postUpdated', cb);
+  }
+
+  postDeleted(cb) {
+    this.socket.on('postDeleted', cb);
+  }
+
+  postReacetd(cb) {
+    this.socket.on('postReacetd', cb);
+  }
+
+  postUnReacted(cb) {
+    this.socket.on('postUnReacted', cb);
+  }
+
+  commentCreated(cb) {
+    this.socket.on('commentCreated', cb);
+  }
+
+  commentUpdated(cb) {
+    this.socket.on('commentUpdated', cb);
+  }
+
+  commentDeleted(cb) {
+    this.socket.on('commentDeleted', cb);
+  }
+
   disconnect() {
     this.socket.disconnect();
   }
