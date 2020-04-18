@@ -22,7 +22,7 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
   public isCurrent: boolean;
   public isFollowedUser: boolean
 
-  public posts: GetPostData[];
+  public posts: GetPostData[] = [];
   private page = 0;
 
   constructor(
@@ -41,6 +41,7 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
 
     // Check if user is selected
     this.tabStore.profileSidenavContent$.subscribe(res => {
+      this.resetContent();
       if (res) {
         this.userService.getUserProfile(res).subscribe(userProfile => {
           this.user = userProfile.data;   // Another user
@@ -105,22 +106,22 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(posts => {
-        this.posts = posts.data;
+        this.posts.push(...posts.data);
       })
   }
 
   onUserClick() {
     console.log('New page');
-    this.page = 0;
   }
 
   onScroll() {
     this.page++;
-    this.postService.getPosts(this.user.id, this.page) //aq unda gadasce im profilis user id vistanac xar! da gaanule 'page' roca sxva user id shemova!!!
-      .subscribe((res) => {
-        console.log(res.data)
-        this.posts.push(...res.data);
-        console.log(this.posts)
-      });
+    this.getUserPosts();
   }
+
+  resetContent() {
+    this.page = 0;
+    this.posts = []
+  }
+
 }

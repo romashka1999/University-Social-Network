@@ -12,13 +12,13 @@
         <div class="home-story">
             <shared-story></shared-story>
         </div>
-        <div infiniteScroll
+        <div class="timeline-wrapper"
+             infiniteScroll
              [infiniteScrollDistance]="2"
              (scrolled)="onScroll()"
              [infiniteScrollContainer]="'.timeline-wrapper'"
              [infiniteScrollThrottle]="10"
-             [fromRoot]="true"
-             class="timeline-wrapper">
+             [fromRoot]="true">
             <shared-timeline *ngIf="posts" [posts]="posts"></shared-timeline>
         </div >
     </div>
