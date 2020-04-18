@@ -12,7 +12,6 @@ export class MessagesService {
   constructor(private http: HttpClient) {}
 
   getChatMessages(id: string, page?: number): Observable<MessageModel> {
-    console.log("esaa", page)
     return  this.http.get<MessageModel>(`${environment.api}/public/messages/chat/${id}?page=${page}&pageSize=10`);
   }
   getUserChats(): Observable<ChatModel> {

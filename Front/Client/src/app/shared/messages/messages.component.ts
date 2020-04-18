@@ -15,10 +15,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   constructor(
     private readonly messagesService: MessagesService,
     private readonly chatsWebSocket: ChatsSocketService) { }
+    private getUserChatsSub: Subscription;
 
-
-  private getUserChatsSub: Subscription;
-  private getChatMessagesSub: Subscription;
 
   chatId: string;
   chat: ChatDataModel[] = [];
@@ -34,7 +32,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.getUserChatsSub = this.messagesService.getUserChats().subscribe((res) => {
+    window.onbeforeunload = () => {
+      this.chatsWebSocket.stopTypingToServer(this.currentChatId, this.myId);
+    };
+
+    this.getUserChatsSub = this.messagesService.getUserChats()
+      .subscribe((res) => {
       this.chat = res.data;
     });
 
@@ -62,13 +65,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    try {
-      this.getUserChatsSub.unsubscribe();
-      this.getChatMessagesSub.unsubscribe();
-      this.chatsWebSocket.disconnect();
-    } catch (error) {
-      console.log(error);
-    }
+       this.getUserChatsSub.unsubscribe();
   }
 
   getChat(chatId: string, page?: number) {
@@ -77,10 +74,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
     if (chatId === this.currentChatId) {
       return
     }
+    this.chatsWebSocket.stopTypingToServer(this.currentChatId, this.myId);
     this.currentChatId = chatId;
     this.page = page;
 
-    this.getChatMessagesSub = this.messagesService.getChatMessages(this.currentChatId, page).subscribe((res) => {
+    this.messagesService.getChatMessages(this.currentChatId, page)
+      .subscribe((res) => {
       this.typing = false;
       this.messages = res.data;
       this.messages.reverse();
@@ -88,12 +87,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
         this.myScrollContainer.nativeElement.scrollTo(0, this.myScrollContainer.nativeElement.scrollHeight);
       }, 0);
     });
-
-
   }
 
   isTyping(newMassage) {
-    const isTyping = newMassage.value.length > 0? true : false;
+    const isTyping = newMassage.value.length > 0;
 
     if (isTyping) {
       this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
@@ -103,7 +100,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(chatId: string, content: string) {
-    this.messagesService.sendMessage(chatId, content).subscribe((res) => {
+    this.messagesService.sendMessage(chatId, content).subscribe(() => {
       this.typing = false;
       this.scrollToBottom();
       // @ts-ignore

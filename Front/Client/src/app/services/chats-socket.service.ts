@@ -8,13 +8,12 @@ import { GetUserData } from '../models/user.model';
 })
 export class ChatsSocketService {
   public socket = io(`${environment.socketApi}/chats`);
-  public userProfile: GetUserData = localStorage.getItem('st-token') ? JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user : null
+  public userProfile: GetUserData = JSON.parse(atob(localStorage.getItem('st-token').split('.')[1])).user;
   constructor() {
   }
 
   connect() {
     this.socket.on('joinRoom', () => {
-      console.log(this.socket.connected);
       const id = this.userProfile?.id;
       this.socket.emit('joinRoom', { id });
     });
@@ -29,7 +28,7 @@ export class ChatsSocketService {
   }
 
   typingToClient(cb) {
-    this.socket.on('typingToClient', cb)
+    this.socket.on('typingToClient', cb);
   }
 
   stopTypingToServer(chatId: string, userId: number) {
@@ -37,7 +36,7 @@ export class ChatsSocketService {
   }
 
   stopTypingToClient(cb) {
-    this.socket.on('stopTypingToClient', cb)
+    this.socket.on('stopTypingToClient', cb);
   }
 
   disconnect() {

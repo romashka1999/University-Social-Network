@@ -12,7 +12,6 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   getPosts(id: number, page: number): Observable<GetPost_Response> {
-    console.log('page size:', page)
   return  this.http.get<GetPost_Response>(`${environment.api}/public/posts/user/${id}?page=${page}&pageSize=10`);
   }
   createPost(data: string): Observable<GetPost_Response> {
