@@ -8,6 +8,8 @@ import { GetUserData } from '../../models/user.model';
 import { FollowersService } from '../../services/followers.service';
 import { UserService } from 'src/app/services/user.service';
 import { map } from 'rxjs/operators';
+import {MessagesService} from '../../services/messages.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'shared-profile',
@@ -29,7 +31,9 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
     private tabStore: TabStore,
     private followersService: FollowersService,
     private userService: UserService,
-    private postService: PostService
+    private postService: PostService,
+    private messagesService: MessagesService,
+    private route: Router
   ) { }
 
 
@@ -124,4 +128,10 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
     this.posts = []
   }
 
+  messageUser() {
+      this.messagesService.startChatting(this.user.id)
+        .subscribe(() => {
+          this.route.navigate(['/messages']);
+        });
+  }
 }

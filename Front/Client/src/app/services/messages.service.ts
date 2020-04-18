@@ -11,6 +11,10 @@ import { environment } from 'src/environments/environment';
 export class MessagesService {
   constructor(private http: HttpClient) {}
 
+  startChatting(userId: number) {
+    return this.http.get(`${environment.api}/public/chats/user/${userId}`);
+  }
+
   getChatMessages(id: string, page?: number): Observable<MessageModel> {
     return  this.http.get<MessageModel>(`${environment.api}/public/messages/chat/${id}?page=${page}&pageSize=10`);
   }

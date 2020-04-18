@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
       password: this.userInfo.value.password
     }).subscribe(() => {
       this.userInfo.reset();
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/home']);
     });
 
   }

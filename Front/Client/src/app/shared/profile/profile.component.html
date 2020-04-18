@@ -45,6 +45,7 @@
         <div *ngIf="!isCurrent" class="user-followers-container d-flex flex-row justify-content-center align-items-center">
             <button *ngIf="!isFollowedUser" class="follow" (click)="followUser()">გამოწერა</button>
             <button *ngIf="isFollowedUser" class="unfollow" (click)="unFollowUser()">გამოწერის გაუქმება</button>
+            <button class="follow" (click)="messageUser()">მიწერა</button>
         </div>
     </div>
     <div infiniteScroll
