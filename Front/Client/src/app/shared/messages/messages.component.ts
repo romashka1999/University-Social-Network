@@ -17,7 +17,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
     private readonly chatsWebSocket: ChatsSocketService) { }
 
 
-  public getChatSub: Subscription;
+  private getUserChatsSub: Subscription;
+  private getChatMessagesSub: Subscription;
+
+  chatId: string;
   chat: ChatDataModel[] = [];
   messages: MessageDataModel[] = [];
   user = localStorage.getItem('st-token');
@@ -25,76 +28,99 @@ export class MessagesComponent implements OnInit, OnDestroy {
   myId = this.token.user.id;
   currentChatId: string;
   page = 0;
-  typing = '';
-  timeout;
+  typing = false;
+
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
   ngOnInit() {
-    this.getChatSub = this.messagesService.getUserChats()
-      .subscribe((res) => {
-        this.chat = res.data;
-        console.log(res.data);
-      });
+
+    this.getUserChatsSub = this.messagesService.getUserChats().subscribe((res) => {
+      this.chat = res.data;
+    });
+
     this.chatsWebSocket.connect();
 
-    this.chatsWebSocket.getRealTimeChat((data: any) => {
+    this.chatsWebSocket.messageCreated((data: any) => {
+      this.typing = false;
       this.messages.push(data);
       this.scrollToBottom();
+    });
+
+    this.chatsWebSocket.typingToClient((message: { chatId: string, userId: number }) => {
+      if (this.myId === message.userId || this.chatId !== message.chatId) {
+        return
+      }
+      this.typing = true;
+    });
+
+    this.chatsWebSocket.stopTypingToClient((message: { chatId: string, userId: number }) => {
+      if (this.myId === message.userId || this.chatId !== message.chatId) {
+        return
+      }
+      this.typing = false;
     });
   }
 
   ngOnDestroy() {
-    this.getChatSub.unsubscribe();
+    try {
+      this.getUserChatsSub.unsubscribe();
+      this.getChatMessagesSub.unsubscribe();
+      this.chatsWebSocket.disconnect();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   getChat(chatId: string, page?: number) {
-    if (chatId !== this.currentChatId) {
-      this.currentChatId = chatId;
-      this.page = page;
+    this.chatId = chatId;
+    this.typing = false;
+    if (chatId === this.currentChatId) {
+      return
+    }
+    this.currentChatId = chatId;
+    this.page = page;
 
-      this.messagesService.getChatMessages(this.currentChatId, page).subscribe((res) => {
-        console.log(page);
-        console.log(res.data);
-        this.messages = res.data;
-        this.messages.reverse();
-      });
+    this.getChatMessagesSub = this.messagesService.getChatMessages(this.currentChatId, page).subscribe((res) => {
+      this.typing = false;
+      this.messages = res.data;
+      this.messages.reverse();
+      setTimeout(() => {
+        this.myScrollContainer.nativeElement.scrollTo(0, this.myScrollContainer.nativeElement.scrollHeight);
+      }, 0);
+    });
 
-      this.chatsWebSocket.typingToClient((message: { chatId: string, userId: number }) => {
-        if (this.myId !== message.userId) {
-          this.typing = 'typing...';
-          clearTimeout(this.timeout);
-          this.timeout = setTimeout(() => {
-            this.typing = '';
-          }, 2000);
-        }
-      });
 
+  }
+
+  isTyping(newMassage) {
+    const isTyping = newMassage.value.length > 0? true : false;
+
+    if (isTyping) {
+      this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
     } else {
-      console.log('igive chatshi dgexar');
+      this.chatsWebSocket.stopTypingToServer(this.currentChatId, this.myId);
     }
   }
-  isTyping() {
-    this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
-  }
+
   sendMessage(chatId: string, content: string) {
-    this.messagesService.sendMessage(chatId, content)
-      .subscribe((res) => {
-        this.scrollToBottom();
-        // @ts-ignore
-        // this.messages.push(res.data);
-      });
+    this.messagesService.sendMessage(chatId, content).subscribe((res) => {
+      this.typing = false;
+      this.scrollToBottom();
+      // @ts-ignore
+      // this.messages.push(res.data);
+    });
   }
+
   onScroll() {
-    console.log('scrolled!!');
-    this.page += 1;
-    this.messagesService.getChatMessages(this.currentChatId, this.page)
-      .subscribe((res) => {
-        console.log(res)
-        this.messages.unshift(...res.data.reverse());
-      });
+    this.page++;
+    this.messagesService.getChatMessages(this.currentChatId, this.page).subscribe((res) => {
+      this.messages.unshift(...res.data.reverse());
+    });
   }
 
   scrollToBottom(): void {
+    try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-      console.log('shevida');
+    } catch (e) { }
   }
 }

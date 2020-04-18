@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TabStore} from 'src/app/stores/tab.store';
 import {PostService} from 'src/app/services/post.service';
 import {GetPostData} from 'src/app/models/post.model';
@@ -15,10 +15,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public profileTabState: boolean;
   public postPopupState: boolean;
-  private connectSocketSub: Subscription;
   private realTimePostSub: Subscription;
   public posts: GetPostData[] = [];
-
+  private page = 0;
   constructor(private tabStore: TabStore,
               private postService: PostService,
               private postSocketService: PostSocketService
@@ -35,13 +34,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((res: boolean) => {
       this.postPopupState = res;
     });
-    this.postService.getFollowersPosts()
+    this.postService.getFollowersPosts(this.page)
       .subscribe(res => {
       this.posts.push(...res.data);
       console.log(this.posts);
     });
-    this.connectSocketSub = this.postSocketService.connect()
-      .subscribe();
+    this.postSocketService.connect();
     this.realTimePostSub = this.postSocketService.getRealTimePost()
       .subscribe((data: any) => {
       this.posts.unshift(data);
@@ -50,7 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.connectSocketSub.unsubscribe();
     this.realTimePostSub.unsubscribe();
   }
 
@@ -68,5 +65,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   openPostPopup(state: boolean) {
     console.log(state);
     this.tabStore.postPopupState$.next(state);
+  }
+  onScroll() {
+    this.page++;
+    this.postService.getFollowersPosts(this.page)
+      .subscribe((res) => {
+      this.posts.push(...res.data);
+    });
   }
 }

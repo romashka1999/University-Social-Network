@@ -16,3 +16,4 @@ export interface GetPostData {
     user_lastName?: string;
     user_profileImgUrl?: string | null;
 }
+

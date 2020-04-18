@@ -9,11 +9,11 @@
     </div>
     <div class="user-profile-wrapper d-flex flex-row">
         <div class="user-image-wrapper">
-            <div class="user-image"></div>
+            <div class="user-image" (click)="onUserClick()"></div>
         </div>
         <div class="user-name-wrapper d-flex flex-row justify-content-center align-items-center">
             <div class="user-name d-flex flex-column">
-                <div class="name">{{ anotherUserProfile.firstName }} {{ anotherUserProfile.lastName }}</div>
+                <div class="name">{{user.firstName}}, {{user.lastName}}</div>
                 <div class="location d-flex flex-row">
                     <span class="material-icons">location_on</span>
                     <div class="city d-flex flex-row justify-content-center align-items-center">თბილისი, საქართველო</div>
@@ -25,7 +25,7 @@
         <div class="user-followers-container">
             <div class="user-followers-count d-flex flex-column justify-content-center align-items-center">
                 <div class="count d-flex flex-row justify-content-center align-items-center">
-                    {{ anotherUserProfile.followersCount }}
+                    {{user.followersCount}}
                 </div>
                 <div class="count-txt flex-row justify-content-center align-items-center">
                     გამომწერი
@@ -35,23 +35,25 @@
         <div class="user-followers-container">
             <div class="user-followers-count d-flex flex-column justify-content-center align-items-center">
                 <div class="count d-flex flex-row">
-                  {{ anotherUserProfile.followingsCount }}
+                    {{user.followingsCount}}
                 </div>
                 <div class="count-txt flex-row justify-content-center align-items-center">
                     გამოწერილი
                 </div>
             </div>
         </div>
-        <div *ngIf="!ifFollow; else notFollow" class="user-followers-container d-flex flex-row justify-content-center align-items-center">
-            <button (click)="followUser(anotherUserProfile.id)" class="follow">გამოწერა</button>
+        <div *ngIf="!isCurrent" class="user-followers-container d-flex flex-row justify-content-center align-items-center">
+            <button *ngIf="!isFollowedUser" class="follow" (click)="followUser()">გამოწერა</button>
+            <button *ngIf="isFollowedUser" class="unfollow" (click)="unFollowUser()">გამოწერის გაუქმება</button>
         </div>
-        <ng-template #notFollow>
-          <div class="user-followers-container d-flex flex-row justify-content-center align-items-center">
-            <button (click)="unFollowUser(anotherUserProfile.id)" class="unfollow">გამოწერის გაუქმება</button>
-          </div>
-        </ng-template>
     </div>
-    <div class="user-timeline-wrapper">
+    <div infiniteScroll
+         [infiniteScrollDistance]="2"
+         (scrolled)="onScroll()"
+         [infiniteScrollContainer]="'.user-timeline-wrapper'"
+         [infiniteScrollThrottle]="10"
+         [fromRoot]="true"
+      class="user-timeline-wrapper">
         <shared-timeline [posts]="posts"></shared-timeline>
     </div>
 </div>

@@ -51,8 +51,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
         // })
     }
     ngOnDestroy() {
-      this.connectSocketSub.unsubscribe();
-      this.realTimePostSub.unsubscribe();
+      try {
+        this.connectSocketSub.unsubscribe();
+        this.realTimePostSub.unsubscribe();
+      } catch (error) {
+        console.log(error);
+      }
+      
     }
 
   cretePost() {

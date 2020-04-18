@@ -12,9 +12,15 @@
         <div class="home-story">
             <shared-story></shared-story>
         </div>
-        <div class="timeline-wrapper">
+        <div infiniteScroll
+             [infiniteScrollDistance]="2"
+             (scrolled)="onScroll()"
+             [infiniteScrollContainer]="'.timeline-wrapper'"
+             [infiniteScrollThrottle]="10"
+             [fromRoot]="true"
+             class="timeline-wrapper">
             <shared-timeline *ngIf="posts" [posts]="posts"></shared-timeline>
-        </div>
+        </div >
     </div>
     <div class="home-profile-content" [ngClass]="{'active-tab ': profileTabState}">
         <shared-profile></shared-profile>
