@@ -30,9 +30,8 @@ export class ChatsSocketService {
   }
 
   typingToClient(cb) {
-      this.socket.on('typingToClient', cb)
+      this.socket.on('typingToClient', cb);
   }
-  
 
   disconnect() {
     this.socket.disconnect();
