@@ -51,6 +51,20 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     }
   }
 
+  @SubscribeMessage('eraseMessageToserver')
+  async eraseMessageToserver(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
+    if(client.in(`${message.chatId}chats`)) {
+      this.wss.to(`${message.chatId}chats`).emit('eraseMessageToClient', message);
+    }
+  }
+
+  @SubscribeMessage('standOnChatToServer')
+  async standOnChatToServer(@MessageBody() message: { chatId: string, userId: number }, @ConnectedSocket() client: Socket): Promise<void> {
+    if(client.in(`${message.chatId}chats`)) {
+      this.wss.to(`${message.chatId}chats`).emit('standOnChatToClient', message);
+    }
+  }
+
   public async messageCreated(chatId: string, createdMessage) {
     this.wss.to(`${chatId}chats`).emit('messageCreated', createdMessage);
   }
