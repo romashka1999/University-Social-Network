@@ -53,11 +53,11 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   // ************************** react ****************************
   public async postReacted(loggedUserId: number, data) {
-    this.wss.to(`${loggedUserId}posts`).emit('postReacetd', data);
+    this.wss.to(`${loggedUserId}posts`).emit('postReacted', data);
   }
 
   public async postUnReacted(loggedUserId: number) {
-    this.wss.to(`${loggedUserId}posts`).emit('postUnReacetd', true);
+    this.wss.to(`${loggedUserId}posts`).emit('postUnReacted', true);
   }
 
   // ************************** comment *******************************

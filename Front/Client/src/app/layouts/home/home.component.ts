@@ -44,6 +44,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.posts.unshift(data);
       console.log(data);
     });
+    this.postSocketService.postReacted((data: any) => {
+      console.log(data);
+      console.log(this.posts)
+    });
+    this.postSocketService.postUnReacted((data: any) => {
+      console.log(data);
+    });
   }
 
   ngOnDestroy() {}

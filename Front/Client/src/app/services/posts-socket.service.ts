@@ -32,7 +32,7 @@ export class PostSocketService {
     this.socket.on('postDeleted', cb);
   }
 
-  postReacetd(cb) {
+  postReacted(cb) {
     this.socket.on('postReacted', cb);
   }
 

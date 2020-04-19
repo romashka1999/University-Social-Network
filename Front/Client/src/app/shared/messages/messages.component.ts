@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MessagesService } from '../../services/messages.service';
 import { ChatDataModel } from '../../models/chat.model';
 import { MessageDataModel } from '../../models/message.model';
@@ -29,7 +29,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   typing = false;
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
-
   ngOnInit() {
 
     window.onbeforeunload = () => {
@@ -90,7 +89,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   isTyping(newMassage) {
-    const isTyping = newMassage.value.length > 0;
+    const isTyping = newMassage.value.length > 0 ? true : false;
 
     if (isTyping) {
       this.chatsWebSocket.typingToServer(this.currentChatId, this.myId);
@@ -109,10 +108,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   onScroll() {
-    this.page++;
-    this.messagesService.getChatMessages(this.currentChatId, this.page).subscribe((res) => {
-      this.messages.unshift(...res.data.reverse());
-    });
+      this.page++;
+      this.messagesService.getChatMessages(this.currentChatId, this.page).subscribe((res) => {
+        this.messages.unshift(...res.data.reverse());
+      });
   }
 
   scrollToBottom(): void {
