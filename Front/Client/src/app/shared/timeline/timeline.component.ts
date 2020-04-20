@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { GetPostData } from 'src/app/models/post.model';
+import {GetCommentDataModel} from '../../models/comment.model';
 
 @Component({
     selector: 'shared-timeline',
@@ -9,7 +10,7 @@ import { GetPostData } from 'src/app/models/post.model';
 export class SharedTimelineComponent implements OnInit {
 
     @Input('posts') posts: GetPostData[]
-
+    @Input('comments') comments: GetCommentDataModel[];
     constructor() {}
 
     ngOnInit() {

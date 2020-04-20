@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { GetPost_Response, CheckPost } from '../models/post.model';
-import { environment } from '../../environments/environment'
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +42,4 @@ export class PostService {
   checkPostReact(PostId: number): Observable<CheckPost>  {
     return this.http.get<CheckPost>(`${environment.api}/public/postReacts/checkReact/${PostId}`);
   }
-
 }

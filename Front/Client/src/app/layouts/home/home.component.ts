@@ -4,6 +4,7 @@ import { PostService } from 'src/app/services/post.service';
 import { GetPostData } from 'src/app/models/post.model';
 import { Subscription } from 'rxjs';
 import { PostSocketService } from '../../services/posts-socket.service';
+import {GetCommentDataModel, PostCommentDataModel} from '../../models/comment.model';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public profileTabState: boolean;
   public postPopupState: boolean;
   public posts: GetPostData[] = [];
+  public comments: GetCommentDataModel[] = [];
   private page = 0;
 
   constructor(
@@ -35,7 +37,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.postService.getFollowersPosts(this.page).subscribe(res => {
       this.posts.push(...res.data);
-      console.log(this.posts);
     });
 
     this.postSocketService.connect();
@@ -51,6 +52,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.postSocketService.postUnReacted((data: any) => {
       console.log(data);
     });
+    // this.postSocketService.commentCreated((data: PostCommentDataModel) => {
+    //   console.log(this.posts)
+    //   for (let i = 0; i < this.posts.length; i++) {
+    //     if (data.postId === this.posts[i].id) {
+    //       console.log(this.posts[i])
+    //     }
+    //   }
+    // });
   }
 
   ngOnDestroy() {}

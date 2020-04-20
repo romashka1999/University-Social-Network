@@ -66,7 +66,7 @@
                 -webkit-user-select: none;  /* Chrome all / Safari all */
                 -moz-user-select: none;     /* Firefox all */
                 -ms-user-select: none;      /* IE 10+ */
-                user-select: none;  
+                user-select: none;
                 transition-duration: 0.2s;
                 opacity: 0.8;
             }
@@ -115,4 +115,36 @@
     .post-content-container:hover {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
+
+  .comments-section-wrapper {
+    margin-bottom: 4px;
+    .user-comment {
+      width: 100%;
+      a {
+        margin-left: 2%;
+        background-color: #b1d5ea;
+        border-radius: 30px;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      div {
+        width: 95%;
+        background-color: transparent;
+        border: 0;
+        outline: none;
+        margin-bottom: 5px;
+        margin-left: 5px;
+      }
+    }
+    .user-image {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-image: url('/assets/images/profile_photo.jpg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+  }
 }

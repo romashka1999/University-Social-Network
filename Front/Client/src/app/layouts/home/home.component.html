@@ -19,7 +19,7 @@
              [infiniteScrollContainer]="'.timeline-wrapper'"
              [infiniteScrollThrottle]="10"
              [fromRoot]="true">
-            <shared-timeline *ngIf="posts" [posts]="posts"></shared-timeline>
+            <shared-timeline [comments]="comments" *ngIf="posts" [posts]="posts"></shared-timeline>
         </div >
     </div>
     <div class="home-profile-content" [ngClass]="{'active-tab ': profileTabState}">
