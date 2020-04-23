@@ -72,4 +72,12 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   public async commentUpdated(loggedUserId: number, data) {
     this.wss.to(`${loggedUserId}posts`).emit('commentUpdated', data);
   }
+
+  public async commentReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentReacted', data);
+  }
+
+  public async commentUnReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentUnReacted', data);
+  }
 }

@@ -129,4 +129,17 @@ export class CommentsService {
     }
 
 
+    public async updateCommentReactCounter(postId: number, action: string): Promise<void> {
+        try {
+            if(action === "REACT") {
+                await this.commentRepository.increment({id: postId}, 'reactsCount', 1);
+            } else if(action === "UNREACT") {
+                await this.commentRepository.decrement({id: postId}, 'reactsCount', 1);
+            }
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    } 
+
+
 }

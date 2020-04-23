@@ -16,6 +16,9 @@ import { FollowersModule } from './modules/followers/followers.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { ChatsModule } from './modules/chats/chats.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { AdminRolesModule } from './modules/admin-roles/admin-roles.module';
+import { AdminPermissionsModule } from './modules/admin-permissions/admin-permissions.module';
+import { CommentReactsModule } from './modules/comment-reacts/comment-reacts.module';
 
 
 @Module({
@@ -30,11 +33,14 @@ import { CommentsModule } from './modules/comments/comments.module';
     PostsModule,
     PostReactsModule,
     CommentsModule,
+    CommentReactsModule,
     MessagesModule,
     ChatsModule,
     AdminsModule,
+    AdminRolesModule,
+    AdminPermissionsModule,
     TranslationsModule,
   ],
   providers: []
 })
-export class AppModule {}
+export class AppModule { }

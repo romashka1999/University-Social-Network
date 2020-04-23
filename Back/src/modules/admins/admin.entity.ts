@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn, RelationId } from "typeorm";
 
 import { validatePassword } from '../auth/helpers/password';
 import { AdminRole } from "../admin-roles/admin-role.entity";
@@ -52,8 +52,11 @@ export class Admin extends BaseEntity {
     @UpdateDateColumn()
     updateDate: string;
 
-    @ManyToOne(type => AdminRole, adminRole => adminRole.admins, {eager: false})
+    @ManyToOne(type => AdminRole, adminRole => adminRole.admins, {eager: true})
     adminRole: AdminRole;
+
+    @RelationId((admin: Admin) => admin.adminRole)
+    adminRoleId: number;
 
     public async validatePassword(password: string): Promise<boolean> {
         return await validatePassword(password, this);

@@ -1,6 +1,7 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn, RelationId } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDateColumn, UpdateDateColumn, RelationId, OneToMany } from "typeorm";
 import { Post } from "../posts/post.entity";
 import { User } from "../users/user.entity";
+import { CommentReact } from "../comment-reacts/comment-react.entity";
 
 
 @Entity()
@@ -21,6 +22,20 @@ export class Comment extends BaseEntity {
     })
     hidden: boolean;
 
+    @Column({
+        type: 'int',
+        nullable: false,
+        default: 0
+    })
+    reactsCount: number;
+
+    @Column({
+        type: 'int',
+        nullable: false,
+        default: 0
+    })
+    repliesCount: number;
+
     @CreateDateColumn()
     createDate: string;
 
@@ -38,4 +53,7 @@ export class Comment extends BaseEntity {
 
     @RelationId((comment: Comment) => comment.user)
     userId: number;
+
+    @OneToMany(type => CommentReact, commentReact => commentReact.comment)
+    commentReacts: CommentReact[];
 }

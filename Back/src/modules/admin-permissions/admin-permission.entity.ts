@@ -1,5 +1,13 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 
+export enum Method {
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    PATCH = "PATCH",
+    DELETE = "DELETE"
+}
+
 
 @Entity()
 export class AdminPermission extends BaseEntity {
@@ -9,8 +17,15 @@ export class AdminPermission extends BaseEntity {
     @Column({
         type: 'text',
         unique: true,
-        nullable: false,
-        default: 'users/create'
+        nullable: false
     })
     url: string;
+
+    @Column({
+        type: 'enum',
+        enum: Method,
+        default: Method.GET,
+        nullable: false
+    })
+    method: Method; 
 }
