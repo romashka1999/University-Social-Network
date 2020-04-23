@@ -11,7 +11,7 @@ export class CommentReact extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => User, user => user.postReacts)
+    @ManyToOne(type => User, user => user.commentReacts)
     user: User;
 
     @RelationId((commentReact: CommentReact) => commentReact.user)

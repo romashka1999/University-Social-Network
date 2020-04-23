@@ -4,6 +4,9 @@ import { validatePassword } from '../auth/helpers/password';
 import { Post } from "../posts/post.entity";
 import { Comment } from '../comments/comment.entity';
 import { PostReact } from "../post-reacts/post-react.entity";
+import { CommentReact } from "../comment-reacts/comment-react.entity";
+import { Reply } from "../replies/reply.entity";
+import { ReplyReact } from "../reply-reacts/reply-react.entity";
 
 
 export enum UserStatus {
@@ -135,8 +138,17 @@ export class User extends BaseEntity {
     @OneToMany(type => PostReact, postReact => postReact.user)
     postReacts: PostReact[];
 
+    @OneToMany(type => CommentReact, commentReact => commentReact.user)
+    commentReacts: CommentReact[];
+
+    @OneToMany(type => ReplyReact, replyReact => replyReact.user)
+    replyReacts: ReplyReact[];
+
     @OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
+
+    @OneToMany(type => Reply, reply => reply.user)
+    replies: Reply[];
 
     public getAge(): string {
         const today = new Date();

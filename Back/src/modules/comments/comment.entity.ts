@@ -2,6 +2,7 @@ import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne, CreateDa
 import { Post } from "../posts/post.entity";
 import { User } from "../users/user.entity";
 import { CommentReact } from "../comment-reacts/comment-react.entity";
+import { Reply } from "../replies/reply.entity";
 
 
 @Entity()
@@ -56,4 +57,7 @@ export class Comment extends BaseEntity {
 
     @OneToMany(type => CommentReact, commentReact => commentReact.comment)
     commentReacts: CommentReact[];
+
+    @OneToMany(type => Reply, reply => reply.comment)
+    replies: Reply[];
 }
