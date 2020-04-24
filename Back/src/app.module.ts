@@ -19,6 +19,8 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { AdminRolesModule } from './modules/admin-roles/admin-roles.module';
 import { AdminPermissionsModule } from './modules/admin-permissions/admin-permissions.module';
 import { CommentReactsModule } from './modules/comment-reacts/comment-reacts.module';
+import { RepliesModule } from './modules/replies/replies.module';
+import { ReplyReactsModule } from './modules/reply-reacts/reply-reacts.module';
 
 
 @Module({
@@ -34,6 +36,8 @@ import { CommentReactsModule } from './modules/comment-reacts/comment-reacts.mod
     PostReactsModule,
     CommentsModule,
     CommentReactsModule,
+    RepliesModule,
+    ReplyReactsModule,
     MessagesModule,
     ChatsModule,
     AdminsModule,

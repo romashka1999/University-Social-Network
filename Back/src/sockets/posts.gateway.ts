@@ -80,4 +80,25 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   public async commentUnReacted(loggedUserId: number, data) {
     this.wss.to(`${loggedUserId}posts`).emit('commentUnReacted', data);
   }
+
+  // ************************** reply *******************************
+  public async replyCreated(loggedUserId: number, createdReply) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyCreated', createdReply);
+  }
+
+  public async replyUpdated(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyUpdated', data);
+  }
+
+  public async replyDeleted(loggedUserId: number) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyDeleted', true);
+  }
+
+  public async replyReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyReacted', data);
+  }
+
+  public async replyUnReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyUnReacted', data);
+  }
 }

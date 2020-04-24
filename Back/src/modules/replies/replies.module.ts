@@ -9,6 +9,7 @@ import { PostsModule } from '../posts/posts.module';
 import { UsersModule } from '../users/users.module';
 import { FollowersModule } from '../followers/followers.module';
 import { PostsGateway } from 'src/sockets/posts.gateway';
+import { CommentsModule } from '../comments/comments.module';
 
 @Module({
     imports: [
@@ -16,7 +17,8 @@ import { PostsGateway } from 'src/sockets/posts.gateway';
         AuthModule,
         PostsModule,
         UsersModule,
-        FollowersModule
+        FollowersModule,
+        CommentsModule
     ],
     providers: [RepliesService, PostsGateway],
     controllers: [RepliesController],

@@ -5,7 +5,7 @@ export class ReplyUpdateDto {
     
     @ApiProperty({
         type: String,
-        description: 'content of comment',
+        description: 'content of reply',
         required: true
     })
     @IsString()

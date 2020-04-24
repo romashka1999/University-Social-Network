@@ -38,11 +38,12 @@ export class CommentReactsService {
 
     public async reactComment(user: User, postId: number, commentId: number): Promise<any> {
         const loggedUserId = user.id;
-        const post = await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        const comment = await this.commentsService.getCommentById(commentId);
         try {
             const commentReact = new CommentReact();
             commentReact.user = user;
-            // commentReact.comment = post;
+            commentReact.comment = comment;
             const reactedCommentReact = await commentReact.save();
             await this.commentsService.updateCommentReactCounter(postId, "REACT");
             const data = {

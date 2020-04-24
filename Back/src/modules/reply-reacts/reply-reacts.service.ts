@@ -11,6 +11,7 @@ import { Post } from "../posts/post.entity";
 import { PostsGateway } from "src/sockets/posts.gateway";
 import { ReplyReact } from "./reply-react.entity";
 import { CommentsService } from "../comments/comments.service";
+import { RepliesService } from "../replies/replies.service";
 
 
 @Injectable()
@@ -18,85 +19,87 @@ export class ReplyReactsService {
 
     constructor(
         @InjectRepository(ReplyReactRepository) private readonly replyReactRepository: ReplyReactRepository,
-        /*private readonly commentsService: CommentsService,
+        private readonly repliesService: RepliesService,
+        private readonly commentsService: CommentsService,
         private readonly usersService: UsersService,
         private readonly postsService: PostsService, 
         private readonly followersService: FollowersService,
-        private readonly postsGateway: PostsGateway*/) {}
+        private readonly postsGateway: PostsGateway) {}
 
         
-    // public async getUserReactsByCommentId(loggedUserId: number, postId: number, commentId: number, strictPaginationGetFilterDto: StrictPaginationGetFilterDto) {
-    //     await this.checkPostByUserIdAndPostId(loggedUserId, postId);
-    //     const commentReacts = await this.commentReactRepository.getUserReactsByCommentId(commentId, strictPaginationGetFilterDto);
-    //     const commentReactsUserIdsArray = commentReacts.map(postReact => postReact.userId);
-    //     if(commentReactsUserIdsArray.length < 1) {
-    //         return [];
-    //     }
-    //     return await this.usersService.getUsersByIds(commentReactsUserIdsArray);
-    // }
+    public async getUserReactsByReplyId(loggedUserId: number, postId: number, commentId: number, replyId: number, strictPaginationGetFilterDto: StrictPaginationGetFilterDto) {
+        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        const commentReacts = await this.replyReactRepository.getUserReactsByReplyId(replyId, strictPaginationGetFilterDto);
+        const commentReactsUserIdsArray = commentReacts.map(postReact => postReact.userId);
+        if(commentReactsUserIdsArray.length < 1) {
+            return [];
+        }
+        return await this.usersService.getUsersByIds(commentReactsUserIdsArray);
+    }
 
 
-    // public async reactComment(user: User, postId: number, commentId: number): Promise<any> {
-    //     const loggedUserId = user.id;
-    //     const post = await this.checkPostByUserIdAndPostId(loggedUserId, postId);
-    //     try {
-    //         const commentReact = new CommentReact();
-    //         commentReact.user = user;
-    //         // commentReact.comment = post;
-    //         const reactedCommentReact = await commentReact.save();
-    //         await this.commentsService.updateCommentReactCounter(postId, "REACT");
-    //         const data = {
-    //             commentReactId: reactedCommentReact.id,
-    //             userId: user.id,
-    //             firstName: user.firstName,
-    //             lastName: user.lastName,
-    //             profileImgUrl: user.profileImgUrl
-    //         }
-    //         this.postsGateway.commentReacted(user.id, data);
-    //         return data;
-    //     } catch (error) {
-    //         if(error.code === '23505') {
-    //             throw new ConflictException("REACT_ALREADY_EXISTS");
-    //         } else {
-    //             throw new InternalServerErrorException(error);
-    //         }
-    //     }
-    // }
+    public async reactReply(user: User, postId: number, commentId: number, replyId: number): Promise<any> {
+        const loggedUserId = user.id;
+        const post = await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        try {
+            const reply = await this.repliesService.getReplyById(replyId);
+            const relyReact = new ReplyReact();
+            relyReact.reply = reply
+            relyReact.user = user;
+            const createdReplyReact = await relyReact.save();
+            await this.repliesService.updateReplyReactCounter(replyId, "REACT");
+            const data = {
+                commentReactId: createdReplyReact.id,
+                userId: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                profileImgUrl: user.profileImgUrl
+            }
+            this.postsGateway.replyReacted(user.id, data);
+            return data;
+        } catch (error) {
+            if(error.code === '23505') {
+                throw new ConflictException("REACT_ALREADY_EXISTS");
+            } else {
+                throw new InternalServerErrorException(error);
+            }
+        }
+    }
 
-    // public async unReactComment(loggedUserId: number, postId: number, commentId: number): Promise<boolean> {
-    //     await this.checkPostByUserIdAndPostId(loggedUserId, postId);
-    //     try {
-    //         const deletedReact = await this.commentReactRepository.createQueryBuilder()
-    //                                     .delete()
-    //                                     .from(CommentReact)
-    //                                     .where("comment = :commentId AND user = :userId", { commentId: commentId, userId: loggedUserId })
-    //                                     .execute();
-    //         if(!deletedReact.affected) {
-    //             throw new NotFoundException("REACT_NOT_EXISTS");
-    //         }
-    //         await this.commentsService.updateCommentReactCounter(postId, "UNREACT");
-    //         this.postsGateway.commentUnReacted(loggedUserId, true);
-    //         return true;
-    //     } catch (error) {
-    //         if(!error.status) {
-    //             throw new InternalServerErrorException(error);
-    //         }
-    //         throw error;
-    //     }
-    // }
+    public async unReactReply(loggedUserId: number, postId: number, commentId: number, replyId: number): Promise<boolean> {
+        await this.checkPostByUserIdAndPostId(loggedUserId, postId);
+        try {
+            const deletedReact = await this.replyReactRepository.createQueryBuilder()
+                                        .delete()
+                                        .from(ReplyReact)
+                                        .where("reply = :replyId AND user = :userId", { replyId: replyId, userId: loggedUserId })
+                                        .execute();
+            if(!deletedReact.affected) {
+                throw new NotFoundException("REACT_NOT_EXISTS");
+            }
+            await this.repliesService.updateReplyReactCounter(replyId, "UNREACT");
+            this.postsGateway.replyUnReacted(loggedUserId, true);
+            return true;
+        } catch (error) {
+            if(!error.status) {
+                throw new InternalServerErrorException(error);
+            }
+            throw error;
+        }
+    }
 
-    // private async checkPostByUserIdAndPostId(loggedUserId: number, postId: number): Promise<Post> {
-    //     const post = await this.postsService.getPostById(postId);
-    //     const postUserId = post.userId;
+    private async checkPostByUserIdAndPostId(loggedUserId: number, postId: number): Promise<Post> {
+        const post = await this.postsService.getPostById(postId);
+        const postUserId = post.userId;
 
-    //     const user = await this.usersService.getUserById(postUserId);
-    //     if(!user.publicUser) {
-    //         if(!await this.followersService.checkFollowing(loggedUserId, postUserId)) {
-    //             throw new BadGatewayException("USER_IS_NOT_PUBLIC");
-    //         }
-    //     }
-    //     return post;
-    // }
+        const user = await this.usersService.getUserById(postUserId);
+        if(!user.publicUser) {
+            if(!await this.followersService.checkFollowing(loggedUserId, postUserId)) {
+                throw new BadGatewayException("USER_IS_NOT_PUBLIC");
+            }
+        }
+        return post;
+    }
 
 
     // public async checkReact(loggedUserId: number, postId: number): Promise<boolean> {

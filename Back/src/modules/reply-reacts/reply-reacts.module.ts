@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { ReplyReactRepository } from './reply-react.repository';
 import { ReplyReactsService } from './reply-reacts.service';
 import { UsersModule } from '../users/users.module';
@@ -9,6 +10,7 @@ import { ReplyReactsController } from './reply-reacts.controller';
 import { AuthModule } from '../auth/auth.module';
 import { PostsGateway } from 'src/sockets/posts.gateway';
 import { CommentsModule } from '../comments/comments.module';
+import { RepliesModule } from '../replies/replies.module';
 
 @Module({
     imports: [
@@ -17,7 +19,8 @@ import { CommentsModule } from '../comments/comments.module';
         UsersModule,
         FollowersModule,
         CommentsModule,
-        PostsModule
+        PostsModule,
+        RepliesModule
     ],
     providers: [ReplyReactsService, PostsGateway],
     controllers: [ReplyReactsController],
