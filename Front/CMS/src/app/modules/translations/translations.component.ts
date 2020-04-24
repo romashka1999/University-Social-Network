@@ -20,8 +20,8 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   private createTRanslationSub: Subscription;
   private updateTranslaionSub: Subscription;
   private deleteTranslationSub: Subscription;
-  private translationsAddForm: FormGroup;
 
+  public translationsAddForm: FormGroup;
   public transltaions: Translation[];
 
   constructor(
@@ -29,8 +29,8 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     private readonly snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.getTranslationsSub = this.translationsService.getTranslations().subscribe( (res) => {
-      if(res) {
+    this.getTranslationsSub = this.translationsService.getTranslations().subscribe((res) => {
+      if (res) {
         this.transltaions = res.data;
       }
     })
@@ -46,9 +46,9 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     const translationCreateDto = this.translationsAddForm.value;
     const durationTime = 4000;
 
-    this.createTRanslationSub = this.translationsService.createTranslation(translationCreateDto).subscribe( (res) => {
-      if(res) {
-        this.snackBar.open(res.message, 'dismiss', {duration: durationTime});
+    this.createTRanslationSub = this.translationsService.createTranslation(translationCreateDto).subscribe((res) => {
+      if (res) {
+        this.snackBar.open(res.message, 'dismiss', { duration: durationTime });
         this.transltaions.push(res.data);
         // this.snackBar.openFromComponent(ResponseSnackBarComponent, {duration: duurationTime})
       }
@@ -58,21 +58,21 @@ export class TranslationsComponent implements OnInit, OnDestroy {
 
   onUpdateTranslation(translation: Translation) {
     const id = translation.id;
-    const updatedTranslation = this.transltaions.find( translation => translation.id === id);
+    const updatedTranslation = this.transltaions.find(translation => translation.id === id);
     console.log(updatedTranslation);
     const durationTime = 4000;
     let snackBarRef: any;
-    this.updateTranslaionSub = this.translationsService.updateTranslationById(id, {} ).subscribe( (res: any) => {
-      if(res) {
-        snackBarRef =  this.snackBar.openFromComponent(ResponseSnackBarComponent, {duration: durationTime});
+    this.updateTranslaionSub = this.translationsService.updateTranslationById(id, {}).subscribe((res: any) => {
+      if (res) {
+        snackBarRef = this.snackBar.openFromComponent(ResponseSnackBarComponent, { duration: durationTime });
       }
     })
 
-    snackBarRef.afterDismissed().subscribe( ()=> {
+    snackBarRef.afterDismissed().subscribe(() => {
       console.log('snack bar dismissed');
     });
 
-    snackBarRef.onAction().subscribe( () => {
+    snackBarRef.onAction().subscribe(() => {
       console.log('action triggered');
     })
 
@@ -80,19 +80,24 @@ export class TranslationsComponent implements OnInit, OnDestroy {
 
   onDeleteTranslation(id: number) {
     const durationTime = 4000;
-    this.deleteTranslationSub = this.translationsService.deleteTranslationById(id).subscribe( (res: any) => {
-      if(res) {
-        this.snackBar.open(res.message, 'dismiss', {duration: durationTime});
-        this.transltaions = this.transltaions.filter( translation => translation.id !== id);
+    this.deleteTranslationSub = this.translationsService.deleteTranslationById(id).subscribe((res: any) => {
+      if (res) {
+        this.snackBar.open(res.message, 'dismiss', { duration: durationTime });
+        this.transltaions = this.transltaions.filter(translation => translation.id !== id);
       }
     })
   }
 
   ngOnDestroy() {
-    // this.getTranslationsSub.unsubscribe();
-    // this.createTRanslationSub.unsubscribe();
-    // this.updateTranslaionSub.unsubscribe();
-    // this.deleteTranslationSub.unsubscribe();
+    try {
+      this.getTranslationsSub.unsubscribe();
+      this.createTRanslationSub.unsubscribe();
+      this.updateTranslaionSub.unsubscribe();
+      this.deleteTranslationSub.unsubscribe();
+    } catch (error) {
+
+    }
+
     // this.subscriptions.forEach((subscription) => subscription.unsubscribe())
   }
 

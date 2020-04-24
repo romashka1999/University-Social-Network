@@ -10,7 +10,7 @@ import { TranslationCreateDto, TranslationUpdateDto } from './translations.inter
 })
 export class TranslationsService {
 
-  private readonly url = environment.url + '/translations';
+  private readonly url = environment.url + '/backOffice/translations';
 
   constructor(private readonly http: HttpClient) { }
 
@@ -23,7 +23,7 @@ export class TranslationsService {
   }
 
   public updateTranslationById(id: number, translationUpdateDto: TranslationUpdateDto) {
-    return this.http.put(this.url + `/:${id}`, translationUpdateDto);
+    return this.http.put(this.url + `/${id}`, translationUpdateDto);
   }
 
   public deleteTranslationById(id: number) {

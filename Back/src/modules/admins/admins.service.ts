@@ -17,6 +17,10 @@ export class AdminsService {
         return this.adminRepository.getAdmins(getAdminsFilterDto);
     }
 
+    public async getAdmin(id: number) {
+        return await this.adminRepository.findOne({id: id});
+    }
+
     public creatAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
         return this.adminRepository.createAdmin(adminCreateDto);
     }

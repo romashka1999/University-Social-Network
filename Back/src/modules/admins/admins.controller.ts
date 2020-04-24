@@ -30,6 +30,14 @@ export class AdminsController {
         return new ResponseCreator("ADMINS_GOT", gotData);
     }
 
+    @Get('/:id')
+    public async getAdmin(
+        @GetAdmin() admin: Admin,
+        @Param('id', ParseIntPipe) id:number): Promise<ResponseCreator> {
+        const gotData = await this.adminsService.getAdmin(id);
+        return new ResponseCreator("ADMIN_GOT", gotData);
+    }
+
     @Post()
     public async createAdmin(
         @GetAdmin() admin: Admin,

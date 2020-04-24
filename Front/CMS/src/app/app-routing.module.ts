@@ -6,8 +6,10 @@ import { AuthGuardService } from './modules/auth/auth-guard.service';
 const routes: Routes = [
   {path: '', redirectTo: 'auth/login', pathMatch: 'full'},
   {path: 'auth', loadChildren: ()=> import('./modules/auth/auth.module').then( m => m.AuthModule)},
-  {path: 'translations', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/translations/translations.module').then( m => m.TranslationsModule)},
-  {path: 'dashboard', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/dashboard/dashboard.module').then( m => m.DashboardModule)}
+  {path: 'dashboard', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/dashboard/dashboard.module').then( m => m.DashboardModule)},
+  {path: 'admins', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/admins/admins.module').then( m => m.AdminsModule)},
+  {path: 'adminRoles', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/admin-roles/admin-roles.module').then( m => m.AdminRolesModule)},
+  {path: 'translations', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/translations/translations.module').then( m => m.TranslationsModule)}
 ];
 
 @NgModule({

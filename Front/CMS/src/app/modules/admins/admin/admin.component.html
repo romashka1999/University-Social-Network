@@ -1,0 +1,13 @@
+<td>{{admin.id}}</td>
+<td>
+    {{admin.profileImgUrl || 'null'}}
+</td>
+<td>
+    {{admin.email}}
+</td>
+<td>
+    {{admin.status}}
+</td>
+<td>
+    <button color="primary" mat-raised-button [routerLink]="[admin.id]">profile</button>
+</td>

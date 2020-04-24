@@ -9,9 +9,10 @@ import { SharedModule } from './shared/shared.module';
 import { AuthInterceptorService } from './modules/auth/auth-interceptor.service';
 
 
+
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

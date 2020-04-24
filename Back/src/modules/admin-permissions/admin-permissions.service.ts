@@ -12,14 +12,8 @@ export class AdminPermissionsService {
     constructor(@InjectRepository(AdminPermissionRepository) private readonly adminPermissionRepository: AdminPermissionRepository) {}
 
     public async getAdminPermissions(admin: Admin, paginationGetFilterDto: PaginationGetFilterDto): Promise<any> {
-        
+        return this.adminPermissionRepository.getAdminPermissions(paginationGetFilterDto);
     }
 
-    public async createAdminPermission(admin: Admin, adminPermissionCreateDto: AdminPermissionCreateDto): Promise<any> {
-        
-    }
 
-    public async deleteAdminPermission(admin: Admin, adminPermissionId: number): Promise<any> {
-        
-    }
 }

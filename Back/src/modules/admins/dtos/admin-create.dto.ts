@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength, MaxLength, Matches } from "class-validator";
+import { IsNotEmpty, IsString, Matches } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class AdminCreateDto {
@@ -10,8 +10,6 @@ export class AdminCreateDto {
     })
     @IsString()
     @IsNotEmpty()
-    @MinLength(3)
-    @MaxLength(100)
     email: string;
 
     @ApiProperty({
@@ -21,8 +19,6 @@ export class AdminCreateDto {
         pattern: '/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/)'
     })
     @IsString()
-    @MinLength(3)
-    @MaxLength(100)
     @IsNotEmpty()
     @Matches(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/)
     password: string;

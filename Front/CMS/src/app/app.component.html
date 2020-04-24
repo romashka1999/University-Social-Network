@@ -2,8 +2,9 @@
     <mat-sidenav mode="over" #refSidenav>
         <mat-nav-list>
             <a mat-list-item [routerLink]="[ '/dashboard']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
-            <a mat-list-item [routerLink]="[ '/translations']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: false}">Translations</a>
-            <a mat-list-item>test</a>
+            <a mat-list-item [routerLink]="[ '/translations']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Translations</a>
+            <a mat-list-item [routerLink]="[ '/admins']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: false}">Admins</a>
+            <a mat-list-item [routerLink]="[ '/adminRoles']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Admin Roles</a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
