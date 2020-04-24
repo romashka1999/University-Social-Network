@@ -1,1 +1,29 @@
-<p>admin-roles works!</p>
+<div class="container">
+    <h1 class="heading">A D M I N   R O L E S</h1>
+    <hr>
+    <div [formGroup]="adminsRolereateForm" class="row">
+        <div class="col-md-12">
+            <input type="text" id="username" class="form-control adminRoleCreateFormInput" [formControlName]="'role'" placeholder="role">
+        </div>
+    </div>
+    <button color="primary" mat-raised-button type="submit"
+        [disabled]="(adminsRolereateForm.invalid && adminsRolereateForm.touched) || adminsRolereateForm.pending"
+        (click)="onCreateAdminRole()" style="margin-top:20px;">create new Admin Role</button>
+    <hr>
+
+    <table class="table shadow-lg">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">role</th>
+                <th scope="col">adminCount</th>
+                <th scope="col">ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let adminRole of adminRoles">
+                <app-admin-role [adminRole]=adminRole></app-admin-role>
+            </tr>
+        </tbody>
+    </table>
+</div>

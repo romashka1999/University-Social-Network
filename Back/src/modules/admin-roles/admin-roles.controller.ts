@@ -43,7 +43,7 @@ export class AdminRolesController {
         return new ResponseCreator("ADMINROLE_CREATED", createdData);
     }
 
-    @Put('/:id/status')
+    @Put('/:id')
     public async updateAdminRole(
         @GetAdmin() admin: Admin,
         @Body(ValidationPipe) adminRoleUpdateDto: AdminRoleUpdateDto,

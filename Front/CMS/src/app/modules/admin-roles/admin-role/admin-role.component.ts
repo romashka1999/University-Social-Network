@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { AdminRole } from '../admin-roles.interface';
 
 @Component({
   selector: 'app-admin-role',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminRoleComponent implements OnInit {
 
+  @Input() adminRole: AdminRole;
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.adminRole);
   }
 
 }

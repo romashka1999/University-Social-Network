@@ -1,1 +1,12 @@
-<p>admin-role works!</p>
+<td>
+    {{adminRole.id}}
+</td>
+<td>
+    {{adminRole.role}}
+</td>
+<td>
+    {{5}}
+</td>
+<td>
+    <button color="primary" mat-raised-button [routerLink]="['edit', adminRole.id]">edit</button>
+</td>

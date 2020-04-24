@@ -5,9 +5,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminRolesComponent } from './admin-roles.component';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { AdminRoleEditComponent } from './admin-role-edit/admin-role-edit.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  {path: '', component: AdminRolesComponent}
+  {path: '', component: AdminRolesComponent},
+  {path: 'edit/:id', component: AdminRoleEditComponent}
 ]
 
 @NgModule({
@@ -15,7 +17,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ReactiveFormsModule
   ]
 })
 export class AdminRolesModule { }
