@@ -25,7 +25,7 @@ export class AdminRolesService {
 
     public async getAdminRole(id:number): Promise<AdminRole> {
         try {
-            const adminRole =  this.adminRoleRepository.findOne({id: id});
+            const adminRole =  this.adminRoleRepository.findOne({id: id,}, {relations: ["permissions", "admins"]});
             if(!adminRole) {
                 throw { statusCode: HttpStatus.NOT_FOUND, message: "ADMINROLE_NOT_EXISTS" };
             }
@@ -39,13 +39,24 @@ export class AdminRolesService {
         }
     }
 
-    public async createAdminRole(admin: Admin, adminRoleCreateDto: AdminRoleCreateDto): Promise<any> {
-        const adminPermissions =  await this.adminPermissionsService.getAdminPermissions(admin, {page: null, pageSize: null});
-        return this.adminRoleRepository.createAdminRole(adminRoleCreateDto, adminPermissions);
+    public async createAdminRole(admin: Admin, adminRoleCreateDto: AdminRoleCreateDto): Promise<AdminRole> {
+        return this.adminRoleRepository.createAdminRole(adminRoleCreateDto);
     }
 
     public async updateAdminRole(admin: Admin, id:number, adminRoleUpdateDto: AdminRoleUpdateDto): Promise<any> {
-
+        const { permissionRoleIds } = adminRoleUpdateDto;
+        const adminAllPermissions =  await this.adminPermissionsService.getAdminPermissions(admin, {page: null, pageSize: null});
+        const currentAdminPermissions = adminAllPermissions.filter((adminPermission) => {
+            return permissionRoleIds.find((id) => id === adminPermission.id)
+        });
+        const adminRole = await this.getAdminRole(id);
+        adminRole.permissions = currentAdminPermissions;
+        try {
+            const updatedAdminRole = await adminRole.save();
+            return updatedAdminRole;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
     }
 
     public async deleteAdminRole(admin: Admin, id:number): Promise<any> {

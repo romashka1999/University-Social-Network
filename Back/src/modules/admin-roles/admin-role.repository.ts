@@ -8,12 +8,12 @@ import { ConflictException, InternalServerErrorException } from "@nestjs/common"
 @EntityRepository(AdminRole)
 export class AdminRoleRepository extends Repository<AdminRole> {
 
-    public async createAdminRole(adminRoleCreateDto: AdminRoleCreateDto, adminPermissions): Promise<AdminRole> {
+    public async createAdminRole(adminRoleCreateDto: AdminRoleCreateDto): Promise<AdminRole> {
         const { role } = adminRoleCreateDto;
 
         const adminRole = new AdminRole();
         adminRole.role = role;
-        adminRole.permissions = adminPermissions;
+        
         try {
             const createdAdminRole = await adminRole.save();
             return createdAdminRole;

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsArray } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class AdminRoleUpdateDto {
@@ -10,4 +10,12 @@ export class AdminRoleUpdateDto {
     })
     @IsString()
     role: string;
+
+    @ApiProperty({
+        type: String,
+        description: 'permissionRoleIds of admin role',
+        required: true
+    })
+    @IsArray()
+    permissionRoleIds: number[]
 }
