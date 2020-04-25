@@ -1,10 +1,46 @@
-
-{{adminRole | json}}
-<form [formGroup]="adminPermissionsForm" (ngSubmit)="saveAdminPermmisions()">
-    <label formArrayName="permissions" *ngFor="let permission of adminPermissionsForm.controls.permissions.controls; let i = index" style="display: block;">
-      <input type="checkbox" [formControlName]="i" />
-      <span>{{adminPermissions[i].url + ' --- ' + adminPermissions[i].requestMethod}}</span>
-    </label>
-    <button>submit</button>
-</form>
+<div class="container">
+  <ng-container *ngIf="loading; else elseTemplate">
+    <mat-spinner color="warn"></mat-spinner>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <mat-card>
+      <mat-card-title>card title</mat-card-title>
+      <mat-card-content>
+        <mat-nav-list>
+          <a mat-list-item>Admin Role Id: --- {{adminRole.id}}</a>
+          <a mat-list-item>Admin Role Name: --- {{adminRole.role}}</a>
+          <a mat-list-item>createDate: --- {{adminRole.createDate}}</a>
+          <a mat-list-item>updateDate: --- {{adminRole.updateDate}}</a>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Admins
+                </mat-panel-title>
+                <mat-panel-description>
+                  see admins
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p *ngFor="let admin of admins">{{admin.id + ' --- ' + admin.email}}</p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-nav-list>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="accent">login</button>
+      </mat-card-actions>
+    </mat-card>
+    <hr>
+    <form [formGroup]="adminPermissionsForm" (ngSubmit)="saveAdminPermmisions()">
+      <label formArrayName="permissions"
+        *ngFor="let permission of adminPermissionsForm.controls.permissions.controls; let i = index"
+        style="display: block;">
+        <mat-checkbox [formControlName]="i">
+          <span>{{adminPermissions[i].url + ' --- ' + adminPermissions[i].requestMethod}}</span>
+        </mat-checkbox>
+      </label>
+      <button color="primary" mat-raised-button>save permissions</button>
+    </form>
+  </ng-template>
+</div>
 

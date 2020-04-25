@@ -10,6 +10,7 @@ import { Admin } from '../admins.interface';
 })
 export class AdminProfileComponent implements OnInit {
 
+  loading: boolean;
   admin: Admin;
 
   constructor(
@@ -17,12 +18,15 @@ export class AdminProfileComponent implements OnInit {
     private readonly adminsService: AdminsService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.route.params.subscribe((params: Params) => {
       const adminId = +params.id;
       this.adminsService.getAdmin(adminId).subscribe( (res) => {
         this.admin = res.data;
-      })
-    })
+        console.log(this.admin);
+        this.loading = false;
+      });
+    });
   }
 
 }

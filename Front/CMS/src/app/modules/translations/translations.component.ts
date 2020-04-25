@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material';
 
 
 import { TranslationsService } from './translations.service';
-import { ResponseSnackBarComponent } from 'src/app/shared/response-snack-bar/response-snack-bar.component';
 import { Subscription } from 'rxjs';
 import { Translation } from './translations.interfaces';
 
@@ -47,13 +46,13 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     const durationTime = 4000;
 
     this.createTRanslationSub = this.translationsService.createTranslation(translationCreateDto).subscribe((res) => {
-      if (res) {
         this.snackBar.open(res.message, 'dismiss', { duration: durationTime });
         this.transltaions.push(res.data);
         // this.snackBar.openFromComponent(ResponseSnackBarComponent, {duration: duurationTime})
-      }
       console.log(res);
-    })
+    }, (err) => {
+
+    });
   }
 
   onUpdateTranslation(translation: Translation) {

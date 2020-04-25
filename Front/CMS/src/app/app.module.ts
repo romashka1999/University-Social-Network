@@ -22,7 +22,7 @@ import { AuthInterceptorService } from './modules/auth/auth-interceptor.service'
     SharedModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
   ],
   bootstrap: [AppComponent]
 })

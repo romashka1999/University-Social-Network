@@ -4,6 +4,8 @@ import { Admin } from './admins.interface';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { AdminRolesService } from '../admin-roles/admin-roles.service';
 import { AdminRole } from '../admin-roles/admin-roles.interface';
+import { MatSnackBar } from '@angular/material';
+import { ServerError } from 'src/app/shared/server-response.interface';
 
 @Component({
   selector: 'app-admins',
@@ -18,7 +20,8 @@ export class AdminsComponent implements OnInit {
 
   constructor(
     private readonly adminsService: AdminsService,
-    private readonly adminRolesService: AdminRolesService) { }
+    private readonly adminRolesService: AdminRolesService,
+    private readonly snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.adminsCreateForm = new FormGroup({
@@ -52,8 +55,10 @@ export class AdminsComponent implements OnInit {
 
     this.adminsService.createAdmin(adminCreateDto).subscribe( (res) => {
       this.admins.push(res.data);
-    }, (err) => {
+      this.snackBar.open(res.message, '', { panelClass: ['mat-toolbar', 'mat-primary'], duration: 4000 , verticalPosition: 'bottom', horizontalPosition: 'right'});
+    }, (err: ServerError) => {
       console.log(err);
+      this.snackBar.open(err.error.message, '', { panelClass: ['mat-toolbar','mat-accent'] ,duration: 4000 , verticalPosition: 'bottom', horizontalPosition: 'right',});
     })
   }
 
