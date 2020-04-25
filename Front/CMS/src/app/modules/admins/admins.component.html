@@ -9,9 +9,11 @@
         <div class="col-md-4">
             <input type="text" id="username" class="form-control adminsCreateFormInput" [formControlName]="'password'" placeholder="password">
         </div>
-        <div class="col-md-4">
-            <input type="text" id="username" class="form-control adminsCreateFormInput" [formControlName]="'adminRoleId'" placeholder="adminRoleId">
-        </div>
+        <select class="col-md-4" [formControlName]="'role'">
+            <option *ngFor="let adminRole of adminRoles" [value]="adminRole.id">
+                {{adminRole.role}}
+            </option>
+        </select>
     </div>
     <button color="primary" mat-raised-button type="submit"
         [disabled]="(adminsCreateForm.invalid && adminsCreateForm.touched) || adminsCreateForm.pending"
@@ -35,3 +37,5 @@
         </tbody>
     </table>
 </div>
+
+<!-- [value]="roles[i].id" -->

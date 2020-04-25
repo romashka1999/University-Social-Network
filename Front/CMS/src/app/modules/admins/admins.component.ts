@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminsService } from './admins.service';
 import { Admin } from './admins.interface';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { AdminRolesService } from '../admin-roles/admin-roles.service';
+import { AdminRole } from '../admin-roles/admin-roles.interface';
 
 @Component({
   selector: 'app-admins',
@@ -12,14 +14,17 @@ export class AdminsComponent implements OnInit {
 
   public admins: Admin[];
   public adminsCreateForm: FormGroup;
+  public adminRoles: AdminRole[];
 
-  constructor(private readonly adminsService: AdminsService) { }
+  constructor(
+    private readonly adminsService: AdminsService,
+    private readonly adminRolesService: AdminRolesService) { }
 
   ngOnInit() {
     this.adminsCreateForm = new FormGroup({
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, [Validators.required, Validators.pattern(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/)]),
-      adminRoleId: new FormControl(null, Validators.required)
+      role: new FormControl(null, Validators.required)
     });
 
     this.adminsService.getAdmins().subscribe( (res) => {
@@ -27,11 +32,23 @@ export class AdminsComponent implements OnInit {
       this.admins = res.data;
     }, (err) => {
       console.log(err);
-    })
+    });
+
+
+    this.adminRolesService.getAdminRoles().subscribe((res) => {
+      this.adminRoles = res.data;
+    }, (err) => {
+      console.log(err);
+    });
   }
 
   onCreateAdmin() {
-    const adminCreateDto = this.adminsCreateForm.value;
+    const adminCreateDto = {
+      email: this.adminsCreateForm.value.email,
+      password: this.adminsCreateForm.value.password,
+      adminRoleId: this.adminsCreateForm.value.role
+    };
+    console.log(adminCreateDto);
 
     this.adminsService.createAdmin(adminCreateDto).subscribe( (res) => {
       this.admins.push(res.data);
