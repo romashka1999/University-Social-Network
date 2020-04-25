@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.heading {
+    text-align: center;
+    background-color: lightcoral;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .heading {
+      font-size: 30px;
+    }
+
+    .form-control {
+      margin-bottom: 5px;
+    }
+}

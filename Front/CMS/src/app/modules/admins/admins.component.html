@@ -1,19 +1,22 @@
-
 <div class="container">
     <h1 class="heading">A D M I N S</h1>
     <hr>
     <div [formGroup]="adminsCreateForm" class="row">
         <div class="col-md-4">
-            <input type="text" id="username" class="form-control adminsCreateFormInput" [formControlName]="'email'" placeholder="email">
+            <input type="text" id="username" class="form-control" [formControlName]="'email'"
+                placeholder="email">
         </div>
         <div class="col-md-4">
-            <input type="text" id="username" class="form-control adminsCreateFormInput" [formControlName]="'password'" placeholder="password">
+            <input type="text" id="username" class="form-control" [formControlName]="'password'"
+                placeholder="password">
         </div>
-        <select class="col-md-4" [formControlName]="'role'">
-            <option *ngFor="let adminRole of adminRoles" [value]="adminRole.id">
-                {{adminRole.role}}
-            </option>
-        </select>
+        <div class="col-md-4">
+            <select class="form-control" [formControlName]="'role'">
+                <option *ngFor="let adminRole of adminRoles" [value]="adminRole.id">
+                    {{adminRole.role}}
+                </option>
+            </select>
+        </div>
     </div>
     <button color="primary" mat-raised-button type="submit"
         [disabled]="(adminsCreateForm.invalid && adminsCreateForm.touched) || adminsCreateForm.pending"
@@ -32,10 +35,21 @@
         </thead>
         <tbody>
             <tr *ngFor="let admin of admins">
-                <app-admin [admin]=admin></app-admin>
+                <td>
+                    {{admin.id}}</td>
+                <td>
+                    {{admin.role || 'null'}}
+                </td>
+                <td>
+                    {{admin.email}}
+                </td>
+                <td>
+                    {{admin.status}}
+                </td>
+                <td>
+                    <button color="primary" mat-raised-button [routerLink]="[admin.id]">profile</button>
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
-
-<!-- [value]="roles[i].id" -->

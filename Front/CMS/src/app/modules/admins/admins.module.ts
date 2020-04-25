@@ -4,7 +4,6 @@ import { AdminsComponent } from './admins.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AdminComponent } from './admin/admin.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 
 const routes: Routes = [
@@ -15,7 +14,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AdminsComponent, 
-    AdminComponent, 
     AdminProfileComponent
   ],
   imports: [
