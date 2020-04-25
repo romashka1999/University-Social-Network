@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AdminPermissionsService } from './admin-permissions.service';
@@ -7,7 +7,7 @@ import { AdminPermissionRepository } from './admin-permission.repository';
 import { AdminPermissionsController } from './admin-permissions.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AdminPermissionRepository]), AuthModule],
+  imports: [TypeOrmModule.forFeature([AdminPermissionRepository]), forwardRef( () => AuthModule)],
   controllers: [AdminPermissionsController],
   providers: [AdminPermissionsService],
   exports: [

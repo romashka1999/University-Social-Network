@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Body, Post, ValidationPipe, Query, Get } from '@nestjs/common';
+import { Controller, UseGuards, ValidationPipe, Query, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 
@@ -7,8 +7,8 @@ import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { AdminPermissionsService } from './admin-permissions.service';
 import { GetAdmin } from '../auth/get-account-data.decorator';
 import { ResponseCreator } from 'src/shared/utils/response-creator';
-import { Admin } from 'typeorm';
 import { PaginationGetFilterDto } from 'src/shared/dtos/pagination-get-filter.dto';
+import { Admin } from '../admins/admin.entity';
 
 @ApiHeader({
     name: 'token',

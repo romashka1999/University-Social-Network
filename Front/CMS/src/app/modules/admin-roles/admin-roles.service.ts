@@ -34,4 +34,8 @@ export class AdminRolesService {
   public deleteAdminRole(id: number): Observable<ServerReponse> {
     return this.http.delete<ServerReponse>(this.url + `/${id}`);
   }
+
+  public getAdminRolePermissions(): Observable<ServerReponse> {
+    return this.http.get<ServerReponse>(`${environment.url}/backOffice/adminPermissions`);
+  }
 }

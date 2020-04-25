@@ -1,1 +1,10 @@
-<p>admin-role-edit works!</p>
+
+{{adminRole | json}}
+<form [formGroup]="adminPermissionsForm" (ngSubmit)="saveAdminPermmisions()">
+    <label formArrayName="permissions" *ngFor="let permission of adminPermissionsForm.controls.permissions.controls; let i = index" style="display: block;">
+      <input type="checkbox" [formControlName]="i" />
+      <span>{{adminPermissions[i].url + ' --- ' + adminPermissions[i].requestMethod}}</span>
+    </label>
+    <button>submit</button>
+</form>
+

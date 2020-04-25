@@ -7,11 +7,14 @@ import { GetAdminsFilterDto } from './dtos/get-admins-filter.dto';
 import { Admin } from './admin.entity';
 import { AdminSetStatusDto } from './dtos/admin-set-status.dto';
 import { UpdateResult, DeleteResult } from 'typeorm';
+import { AdminRolesService } from '../admin-roles/admin-roles.service';
 
 @Injectable()
 export class AdminsService {
 
-    constructor(@InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository) {}
+    constructor(
+        @InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository,
+        private readonly adminRolesService: AdminRolesService) {}
 
     public getAdmins(getAdminsFilterDto: GetAdminsFilterDto): Promise<Array<Admin>> {
         return this.adminRepository.getAdmins(getAdminsFilterDto);
@@ -21,8 +24,10 @@ export class AdminsService {
         return await this.adminRepository.findOne({id: id});
     }
 
-    public creatAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
-        return this.adminRepository.createAdmin(adminCreateDto);
+    public async creatAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
+        const { adminRoleId } = adminCreateDto;
+        const adminrole = await this.adminRolesService.getAdminRole(adminRoleId);
+        return this.adminRepository.createAdmin(adminCreateDto, adminrole);
     }
 
     public async setAdminStatusById(id: number, adminSetStatusDto: AdminSetStatusDto): Promise<Admin> {

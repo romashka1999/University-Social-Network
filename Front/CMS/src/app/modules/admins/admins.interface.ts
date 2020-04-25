@@ -8,5 +8,4 @@ export interface Admin {
     salt: string;
     createDate: string;
     updateDate: string;
-
 }

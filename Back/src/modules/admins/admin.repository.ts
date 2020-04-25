@@ -7,6 +7,7 @@ import { AdminCreateDto } from "./dtos/admin-create.dto";
 import { hashPassword } from "../auth/helpers/password";
 import { GetAdminsFilterDto } from "./dtos/get-admins-filter.dto";
 import { Ipagination, pagination } from "src/shared/utils/pagination";
+import { AdminRole } from "../admin-roles/admin-role.entity";
 
 @EntityRepository(Admin)
 export class AdminRepository extends Repository<Admin> {
@@ -14,7 +15,8 @@ export class AdminRepository extends Repository<Admin> {
     public async getAdmins(getAdminsFilterDto: GetAdminsFilterDto) : Promise<Array<Admin>>{
         const { page, pageSize, email } = getAdminsFilterDto;
 
-        const query = this.createQueryBuilder('admin');
+        const query = this.createQueryBuilder('admin')
+                        .leftJoinAndSelect('admin.adminRole', 'adminRole')
 
         if(email) {
             query.andWhere(`admin.email LIKE :email`, {email: email});
@@ -52,7 +54,7 @@ export class AdminRepository extends Repository<Admin> {
         }
     }
 
-    public async createAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
+    public async createAdmin(adminCreateDto: AdminCreateDto, adminRole: AdminRole): Promise<Admin> {
         const { email, password } = adminCreateDto;
 
         const { salt, hashedPassword } = await hashPassword(password);// hash pass
@@ -60,6 +62,7 @@ export class AdminRepository extends Repository<Admin> {
         admin.email = email;
         admin.password = hashedPassword;
         admin.salt = salt;
+        admin.adminRole = adminRole;
 
         try {
             const createdAdmin = await admin.save();

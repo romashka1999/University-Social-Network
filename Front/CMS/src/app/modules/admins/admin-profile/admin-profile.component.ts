@@ -18,8 +18,8 @@ export class AdminProfileComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      const id = +params.id;
-      this.adminsService.getAdmin(id).subscribe( (res) => {
+      const adminId = +params.id;
+      this.adminsService.getAdmin(adminId).subscribe( (res) => {
         this.admin = res.data;
       })
     })

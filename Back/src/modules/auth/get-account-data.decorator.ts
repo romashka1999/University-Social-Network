@@ -1,5 +1,5 @@
 import { createParamDecorator, BadRequestException } from "@nestjs/common";
-import { Method, AdminPermission } from "../admin-permissions/admin-permission.entity";
+import { RequestMethod, AdminPermission } from "../admin-permissions/admin-permission.entity";
 import { AMINISTRATOR_PERMISSIONS } from "src/shared/utils/constants";
 
 export const GetUser = createParamDecorator((data, req) => {
@@ -29,10 +29,10 @@ export const GetAdmin = createParamDecorator((data, req) => {
 
 function checkAminPermission(currentUrl: string, currentMethod: string, permissionsList: Array<AdminPermission>) {
 
-    AMINISTRATOR_PERMISSIONS.forEach( (permission: {url: string, method: Method}) => {
-        if(currentUrl.startsWith(permission.url) && currentMethod === permission.method) {
+    AMINISTRATOR_PERMISSIONS.forEach( (permission: {url: string, requestMethod: RequestMethod}) => {
+        if(currentUrl.startsWith(permission.url) && currentMethod === permission.requestMethod) {
             const founded = permissionsList.find( (adminPerrmission) => {
-                adminPerrmission.url === permission.url && adminPerrmission.method === permission.method
+                adminPerrmission.url === permission.url && adminPerrmission.requestMethod === permission.requestMethod
             });
             if(!founded) {
                 throw new BadRequestException('PERMISSION_ERROR');

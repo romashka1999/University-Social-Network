@@ -1,6 +1,6 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Unique } from "typeorm";
 
-export enum Method {
+export enum RequestMethod {
     GET = "GET",
     POST = "POST",
     PUT = "PUT",
@@ -10,22 +10,21 @@ export enum Method {
 
 
 @Entity()
+@Unique(['url', 'requestMethod'])
 export class AdminPermission extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
         type: 'text',
-        unique: true,
         nullable: false
     })
     url: string;
 
     @Column({
         type: 'enum',
-        enum: Method,
-        default: Method.GET,
+        enum: RequestMethod,
         nullable: false
     })
-    method: Method; 
+    requestMethod: RequestMethod; 
 }

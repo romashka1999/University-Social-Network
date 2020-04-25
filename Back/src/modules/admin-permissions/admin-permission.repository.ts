@@ -4,6 +4,8 @@ import { InternalServerErrorException } from "@nestjs/common";
 import { AdminPermission } from "./admin-permission.entity";
 import { PaginationGetFilterDto } from "src/shared/dtos/pagination-get-filter.dto";
 import { Ipagination, pagination } from "src/shared/utils/pagination";
+import { AMINISTRATOR_PERMISSIONS } from 'src/shared/utils/constants';
+
 
 @EntityRepository(AdminPermission)
 export class AdminPermissionRepository extends Repository<AdminPermission> {
@@ -25,6 +27,27 @@ export class AdminPermissionRepository extends Repository<AdminPermission> {
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
+    }
+
+    public async bulkinsertOfAdminPermmissions() {
+        try {
+            await this.deleteAllRows();
+            const response = await this.createQueryBuilder()
+                                .insert()
+                                .into(AdminPermission)
+                                .values(AMINISTRATOR_PERMISSIONS)
+                                .execute();
+            console.log('ADMIN_PERMISSIONS_INSERTED', response);
+        } catch (error) {
+            console.log('SERVER_INTERNAL_ERROR', error);
+        }
+    }
+
+    private async deleteAllRows() {
+        await this.createQueryBuilder()
+                .delete()
+                .from(AdminPermission)
+                .execute();
     }
     
 }

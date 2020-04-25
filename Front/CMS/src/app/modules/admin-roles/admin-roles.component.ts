@@ -20,6 +20,7 @@ export class AdminRolesComponent implements OnInit {
       role: new FormControl(null, Validators.required)
     });
     this.adminRolesService.getAdminRoles().subscribe((res) => {
+      console.log(res);
       this.adminRoles = res.data;
     });
   }

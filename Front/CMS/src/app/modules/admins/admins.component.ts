@@ -18,10 +18,12 @@ export class AdminsComponent implements OnInit {
   ngOnInit() {
     this.adminsCreateForm = new FormGroup({
       email: new FormControl(null, Validators.required),
-      password: new FormControl(null, [Validators.required, Validators.pattern(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/)])
+      password: new FormControl(null, [Validators.required, Validators.pattern(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/)]),
+      adminRoleId: new FormControl(null, Validators.required)
     });
 
     this.adminsService.getAdmins().subscribe( (res) => {
+      console.log(res.data);
       this.admins = res.data;
     }, (err) => {
       console.log(err);
