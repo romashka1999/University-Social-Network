@@ -95,7 +95,7 @@ export class SharedPostComponent implements OnInit, OnDestroy {
 
   delPostComment(commentId) {
     this.commentService.delPostComment(this.PostData.id, commentId).subscribe(() => {
-      this.PostData['comments'] = this.comments.filter(t => t.id !== commentId);
+      this.PostData['comments'] = this.PostData['comments'].filter(t => t.id !== commentId);
     });
   }
 }
