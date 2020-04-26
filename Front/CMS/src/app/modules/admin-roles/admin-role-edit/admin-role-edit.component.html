@@ -4,7 +4,7 @@
   </ng-container>
   <ng-template #elseTemplate>
     <mat-card>
-      <mat-card-title>card title</mat-card-title>
+      <mat-card-title style="text-align: center;">Admin Role</mat-card-title>
       <mat-card-content>
         <mat-nav-list>
           <a mat-list-item>Admin Role Id: --- {{adminRole.id}}</a>
@@ -27,7 +27,7 @@
         </mat-nav-list>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-raised-button color="accent">login</button>
+        <button mat-raised-button color="accent" (click)="onDeletAdminRole()">DELETE</button>
       </mat-card-actions>
     </mat-card>
     <hr>

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { AdminRepository } from './admin.repository';
@@ -20,8 +20,20 @@ export class AdminsService {
         return this.adminRepository.getAdmins(getAdminsFilterDto);
     }
 
-    public async getAdmin(id: number) {
-        return await this.adminRepository.findOne({id: id});
+    public async getAdmin(id: number): Promise<Admin> {
+        try {
+            const admin =  await this.adminRepository.findOne({id: id});
+            if(!admin) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "ADMIN_NOT_EXISTS"};
+            }
+            return admin;
+        } catch (error) {
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
+        }
     }
 
     public async creatAdmin(adminCreateDto: AdminCreateDto): Promise<Admin> {
@@ -51,7 +63,10 @@ export class AdminsService {
         }
     }
 
-    public async deleteAdminById(id: number): Promise<Admin> {
+    public async deleteAdminById(loggedUserId: number, id: number): Promise<Admin> {
+        if(loggedUserId === id) {
+            throw new BadRequestException("YOU_CANT_DELETE_YOURSELF");
+        }
         try {
             const deletedAdmin: DeleteResult = await this.adminRepository.delete({id: id});
 

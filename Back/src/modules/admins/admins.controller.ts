@@ -59,7 +59,7 @@ export class AdminsController {
     public async deleteAdminById(
         @GetAdmin() admin: Admin,
         @Param('id', ParseIntPipe) id:number): Promise<ResponseCreator> {
-        const deletedData = await this.adminsService.deleteAdminById(id);
+        const deletedData = await this.adminsService.deleteAdminById(admin.id, id);
         return new ResponseCreator("ADMIN_DELETED", deletedData);
     }
 }

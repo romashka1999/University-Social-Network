@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 
 import { AdminRoleCreateDto } from './dtos/admin-role-create.dto';
 import { AdminRoleUpdateDto } from './dtos/admin-role-update.dto';
@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AdminRoleRepository } from './admin-role.repository';
 import { AdminRole } from './admin-role.entity';
 import { AdminPermissionsService } from '../admin-permissions/admin-permissions.service';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class AdminRolesService {
@@ -25,7 +26,7 @@ export class AdminRolesService {
 
     public async getAdminRole(id:number): Promise<AdminRole> {
         try {
-            const adminRole =  this.adminRoleRepository.findOne({id: id,}, {relations: ["permissions", "admins"]});
+            const adminRole = await this.adminRoleRepository.findOne({id: id,}, {relations: ["permissions", "admins"]});
             if(!adminRole) {
                 throw { statusCode: HttpStatus.NOT_FOUND, message: "ADMINROLE_NOT_EXISTS" };
             }
@@ -60,6 +61,23 @@ export class AdminRolesService {
     }
 
     public async deleteAdminRole(admin: Admin, id:number): Promise<any> {
+        if(admin.adminRoleId === id) {
+            throw new BadRequestException('YOU_HAVE_THIS_ADMINROLE');
+        }
+        try {
+            const deletedRole: DeleteResult = await this.adminRoleRepository.delete({id: id});
 
+            if(!deletedRole.affected) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, message: "ADMINROLE_NOT_EXISTS"};
+            }
+
+            return deletedRole.raw;
+        } catch (error) {
+            if(error.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            } else {
+                throw new InternalServerErrorException(error);
+            }
+        }
     }
 }

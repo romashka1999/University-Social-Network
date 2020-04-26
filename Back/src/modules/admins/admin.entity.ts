@@ -52,7 +52,7 @@ export class Admin extends BaseEntity {
     @UpdateDateColumn()
     updateDate: string;
 
-    @ManyToOne(type => AdminRole, adminRole => adminRole.admins, {eager: true})
+    @ManyToOne(type => AdminRole, adminRole => adminRole.admins, {eager: true, onDelete: 'CASCADE'})
     adminRole: AdminRole;
 
     @RelationId((admin: Admin) => admin.adminRole)

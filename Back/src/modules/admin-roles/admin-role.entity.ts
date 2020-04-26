@@ -22,10 +22,10 @@ export class AdminRole extends BaseEntity {
     @UpdateDateColumn()
     updateDate: string;
 
-    @ManyToMany(type => AdminPermission)
+    @ManyToMany(type => AdminPermission, {onDelete: 'CASCADE'})
     @JoinTable()
     permissions: AdminPermission[];
 
-    @OneToMany(type => Admin, admin => admin.adminRole)
+    @OneToMany(type => Admin, admin => admin.adminRole, {onDelete: 'CASCADE'})
     admins: Admin[];
 }

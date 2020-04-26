@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminRolesService } from '../admin-roles.service';
 import { AdminPermission, AdminRole } from '../admin-roles.interface';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { ServerError } from 'src/app/shared/server-response.interface';
 import { Admin } from '../../admins/admins.interface';
@@ -25,7 +25,8 @@ export class AdminRoleEditComponent implements OnInit {
     private readonly adminRolesService: AdminRolesService,
     private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
-    private readonly snackBar: MatSnackBar) { }
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router) { }
 
   ngOnInit() {
     this.loading = true;
@@ -47,7 +48,7 @@ export class AdminRoleEditComponent implements OnInit {
           console.log(err);
         });
       }, (err) => {
-        console.log(err);
+        this.router.navigate(['/adminRoles']);
       });
     });
   }
@@ -75,6 +76,16 @@ export class AdminRoleEditComponent implements OnInit {
       console.log(err);
       this.snackBar.open(err.error.message, '', { panelClass: ['mat-toolbar','mat-accent'] ,duration: 4000 , verticalPosition: 'bottom', horizontalPosition: 'right',});
       this.loading = false;
+    })
+  }
+
+  onDeletAdminRole() {
+    this.adminRolesService.deleteAdminRole(this.adminRole.id).subscribe((res) => {
+      this.snackBar.open(res.message, '', { panelClass: ['mat-toolbar', 'mat-primary'], duration: 4000 , verticalPosition: 'bottom', horizontalPosition: 'right'});
+      this.router.navigate(['/adminRoles']);
+    }, (err: ServerError) => {
+      console.log(err);
+      this.snackBar.open(err.error.message, '', { panelClass: ['mat-toolbar','mat-accent'] ,duration: 4000 , verticalPosition: 'bottom', horizontalPosition: 'right',});
     })
   }
 

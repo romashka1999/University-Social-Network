@@ -85,7 +85,8 @@
                 </mat-accordion>
             </mat-card-content>
             <mat-card-actions align="end">
-                <button mat-raised-button color="accent" [routerLink]="[ '/admins']">OK</button>
+                <button mat-raised-button color="accent" (click)="onDeleteAdmin()">DELETE</button>
+                <button mat-raised-button color="primary" [routerLink]="[ '/admins']">OK</button>
             </mat-card-actions>
         </mat-card>
     </ng-template>
