@@ -26,10 +26,13 @@
             {{PostData.reactsCount}} მოწონება
         </div>
         <div class="comments-section-wrapper d-flex flex-column">
-            <div *ngFor="let comment of comments" class="d-flex">
+            <div *ngFor="let comment of PostData.comments" class="d-flex">
               <div class="user-image"></div>
               <div class="user-comment">
-                <div><a>{{ comment.userFirstName }} {{ comment.userLastName }}: </a>{{ comment.content }}</div>
+                <div>
+                  <a>{{ comment.userFirstName }} {{ comment.userLastName }}: </a>{{ comment.content }}
+                  <button *ngIf="comment.userId === myUserId" class="btn btn-outline-danger btn-sm" (click)="delPostComment(comment.id)">del</button>
+                </div>
               </div>
             </div>
             <div style="cursor: pointer;" (click)="getPostComment()">Load More comments...</div>
@@ -37,7 +40,7 @@
         <div class="write-comment-wrapper d-flex flex-row">
             <div class="user-image"></div>
             <div class="comment-input d-flex flex-column justify-content-center align-items-center">
-                <input #content (keyup.enter)="addPostComment(content.value)" placeholder="დაწერეთ კომენტარი...">
+                <input #content (keyup.enter)="addPostComment(content.value); content.value = ''" placeholder="დაწერეთ კომენტარი...">
             </div>
         </div>
     </div>

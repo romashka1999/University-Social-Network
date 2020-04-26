@@ -1,10 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TabStore } from 'src/app/stores/tab.store';
 import { PostService } from 'src/app/services/post.service';
 import { GetPostData } from 'src/app/models/post.model';
-import { Subscription } from 'rxjs';
 import { PostSocketService } from '../../services/posts-socket.service';
-import {GetCommentDataModel, PostCommentDataModel} from '../../models/comment.model';
+import {GetCommentDataModel} from '../../models/comment.model';
 
 
 @Component({
@@ -43,34 +42,31 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.postSocketService.postCreated((data: any) => {
       this.posts.unshift(data);
-      console.log(data);
     });
     this.postSocketService.postReacted((data: any) => {
       console.log(data);
-      console.log(this.posts)
+      console.log(this.posts);
     });
     this.postSocketService.postUnReacted((data: any) => {
       console.log(data);
     });
-    // this.postSocketService.commentCreated((data: PostCommentDataModel) => {
-    //   console.log(this.posts)
-    //   for (let i = 0; i < this.posts.length; i++) {
-    //     if (data.postId === this.posts[i].id) {
-    //       console.log(this.posts[i])
-    //     }
-    //   }
-    // });
+    this.postSocketService.commentCreated((data) => {
+      for (let i = 0; i < this.posts.length; i++) {
+        if (data.postId === this.posts[i].id) {
+          this.posts[i].comments.push(data);
+        }
+      }
+    });
+    this.postSocketService.commentDeleted((data) => {
+      console.log(data);
+    });
   }
 
   ngOnDestroy() {}
 
   onCreatePost(data: string) {
     this.postService.createPost(data)
-      .subscribe(res => {
-        console.log(res);
-        // @ts-ignore
-        // esec gaaswore
-        // this.posts.unshift(res.data);
+      .subscribe(() => {
         this.tabStore.postPopupState$.next(false);
       });
   }
