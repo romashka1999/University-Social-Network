@@ -8,6 +8,7 @@ import { UserSignInDto } from './dtos/user-sign-in.dto';
 import { AdminSignInDto } from './dtos/admin-sign-in.dto';
 import { AdminRepository } from '../admins/admin.repository';
 import { uploadFile } from 'src/shared/utils/uploadfile';
+import { AdminRolesService } from '../admin-roles/admin-roles.service';
 
 
 
@@ -48,11 +49,9 @@ export class AuthService {
 
     public async adminSignIn(adminSignInDto: AdminSignInDto): Promise<{accessToken: string}> {
         const admin = await this.adminRepository.signIn(adminSignInDto);
-
         if(!admin) {
             throw new UnauthorizedException('INVALID_CREDENTIALS');
         }
-
         const payload = { admin };
         const accessToken: string = await this.jwtService.signAsync(payload);
 

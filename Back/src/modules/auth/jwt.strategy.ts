@@ -9,6 +9,7 @@ import { Admin } from '../admins/admin.entity';
 import { User } from '../users/user.entity';
 
 import * as config from 'config';
+import { AdminRolesService } from '../admin-roles/admin-roles.service';
 
 
 
@@ -18,7 +19,8 @@ const jwtCFG = config.get('jwt');
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         @InjectRepository(UserRepository) private readonly userRepository: UserRepository,
-        @InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository,) {
+        @InjectRepository(AdminRepository) private readonly adminRepository: AdminRepository,
+        private readonly adminRolesService: AdminRolesService,) {
         super({
             jwtFromRequest: ExtractJwt.fromHeader('token'),
             secretOrKey: jwtCFG.secret,
@@ -28,8 +30,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     async validate(payload: any): Promise<{admin: boolean, data: Admin | User}> {
         console.log('jwt payload:', payload);
         if(payload.admin) {
-            const admin = await this.adminRepository.findOne({where: payload.admin.id});
+            const admin = await this.adminRepository.findOne({where: {id: payload.admin.id}});
             if(!admin) throw new UnauthorizedException("INVALID_TOKEN");
+            const adminRole = await this.adminRolesService.getAdminRole(admin.adminRoleId);
+            delete adminRole.admins;
+            admin.adminRole = adminRole;
             return {admin: true, data: admin};
         } else if(payload.user) {
             const user = await this.userRepository.findOne({where: {id: payload.user.id}});

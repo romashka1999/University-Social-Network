@@ -1,4 +1,4 @@
-import { Controller, Get, Query, ValidationPipe, Post, Patch, Body, Param, ParseIntPipe, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, ValidationPipe, Post, Patch, Body, Param, ParseIntPipe, Delete, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 

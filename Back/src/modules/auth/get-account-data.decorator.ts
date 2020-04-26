@@ -1,6 +1,5 @@
 import { createParamDecorator, BadRequestException } from "@nestjs/common";
 import { RequestMethod, AdminPermission } from "../admin-permissions/admin-permission.entity";
-import { AMINISTRATOR_PERMISSIONS } from "src/shared/utils/constants";
 
 export const GetUser = createParamDecorator((data, req) => {
     if(req.args[0].user.admin) {
@@ -16,29 +15,37 @@ export const GetAdmin = createParamDecorator((data, req) => {
     }
     const currentUrl = req.args[0].originalUrl;
     const currentMethod = req.args[0].method;
-    console.log(currentUrl);
-    console.log(currentMethod);
-    // checkAminPermission(currentUrl, req.args[0].user.data?.perrmissions);
-
     const admin = req.args[0].user.data;
+    const adminPermissions: AdminPermission[] = admin.adminRole.permissions;
+    console.log(adminPermissions);
+    //checkAminPermission(currentUrl, currentMethod, adminPermissions);
     return admin;
 });
 
 
 
 
-function checkAminPermission(currentUrl: string, currentMethod: string, permissionsList: Array<AdminPermission>) {
-
-    AMINISTRATOR_PERMISSIONS.forEach( (permission: {url: string, requestMethod: RequestMethod}) => {
-        if(currentUrl.startsWith(permission.url) && currentMethod === permission.requestMethod) {
-            const founded = permissionsList.find( (adminPerrmission) => {
-                adminPerrmission.url === permission.url && adminPerrmission.requestMethod === permission.requestMethod
-            });
-            if(!founded) {
-                throw new BadRequestException('PERMISSION_ERROR');
-            }
+function checkAminPermission(currentUrl: string, currentMethod: RequestMethod, permissionsList: Array<AdminPermission>) {
+    if(permissionsList.length < 1) {
+        throw new BadRequestException('PERMISSION_ERROR');
+    } 
+    console.log('currentUrl', currentUrl);
+    console.log('currentMethod', currentMethod);
+    console.log('chacda');
+    let adminHasPemission: boolean = false;
+    for(let permission of permissionsList) {
+        console.log('iteracia---', permission);
+        console.log('url', permission.url.startsWith(currentUrl));
+        console.log('method', permission.requestMethod === currentMethod);
+        if(permission.url.startsWith(currentUrl) && permission.requestMethod === currentMethod) {
+            console.log('ifshia');
+            adminHasPemission = true;
+            break;
         }
-    });
+    }
+    if(!adminHasPemission) {
+        throw new BadRequestException('PERMISSION_ERROR');
+    }
 }
 
 

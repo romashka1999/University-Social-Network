@@ -12,6 +12,7 @@ import * as config from 'config';
 
 import { AdminsModule } from '../admins/admins.module';
 import { UsersModule } from '../users/users.module';
+import { AdminRolesModule } from '../admin-roles/admin-roles.module';
 
 const jwtConfig = config.get('jwt');
 
@@ -27,6 +28,7 @@ const jwtConfig = config.get('jwt');
       }
     }),
     AdminsModule,
+    AdminRolesModule,
     forwardRef(() => UsersModule)
   ],
   controllers: [AuthController],

@@ -59,12 +59,9 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     const id = translation.id;
     const updatedTranslation = this.transltaions.find(translation => translation.id === id);
     console.log(updatedTranslation);
-    const durationTime = 4000;
     let snackBarRef: any;
     this.updateTranslaionSub = this.translationsService.updateTranslationById(id, {}).subscribe((res: any) => {
-      if (res) {
-        snackBarRef = this.snackBar.openFromComponent(ResponseSnackBarComponent, { duration: durationTime });
-      }
+      
     })
 
     snackBarRef.afterDismissed().subscribe(() => {
