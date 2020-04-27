@@ -7,6 +7,7 @@ export interface GetCommentModel {
 
 export interface GetCommentDataModel {
   id: number;
+  post?: GetPostData[];
   content: string;
   hidden: boolean;
   createDate: string | Date;
@@ -17,19 +18,3 @@ export interface GetCommentDataModel {
   userLastName: string;
   userProfileImgUrl: string | null;
 }
-
-export interface PostCommentModel {
-  message: string;
-  data: PostCommentDataModel[];
-}
-export interface PostCommentDataModel {
-  post: GetPostData[];
-  id: number;
-  content: string;
-  hidden: boolean;
-  createDate: string | Date;
-  updateDate: string | Date;
-  postId: number;
-  userId: number;
-}
-

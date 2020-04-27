@@ -1,3 +1,5 @@
+import {GetCommentDataModel} from './comment.model';
+
 export interface GetPost_Response {
     message: string;
     data: GetPostData[];
@@ -9,6 +11,9 @@ export interface CheckPost {
 }
 
 export interface GetPostData {
+    comments?: GetCommentDataModel[];
+    commentsCount: number;
+    sharesCount: number;
     id: number;
     content: string;
     hidden: boolean;
