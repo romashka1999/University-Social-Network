@@ -22,6 +22,7 @@ import { CommentReactsModule } from './modules/comment-reacts/comment-reacts.mod
 import { RepliesModule } from './modules/replies/replies.module';
 import { ReplyReactsModule } from './modules/reply-reacts/reply-reacts.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AdminChatModule } from './modules/admin-chat/admin-chat.module';
 
 
 @Module({
@@ -45,7 +46,8 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     AdminRolesModule,
     AdminPermissionsModule,
     TranslationsModule,
-    NotificationsModule
+    NotificationsModule,
+    AdminChatModule
   ],
   providers: []
 })
