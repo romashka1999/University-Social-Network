@@ -10,6 +10,8 @@ import {
   MatIconModule,
   MatSnackBarModule,
  } from '@angular/material';
+
+ import { ScrollingModule } from '@angular/cdk/scrolling';
  
 
 const materials = [
@@ -34,7 +36,8 @@ const materials = [
   MatNativeDateModule,
   MatDialogModule,
   MatIconModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  ScrollingModule
 ];
 
 @NgModule({

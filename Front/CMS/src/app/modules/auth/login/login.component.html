@@ -16,9 +16,10 @@
             <!-- <p *ngIf="error" class="error">
                 {{ error }}
             </p> -->
+            <!-- [disabled]="(loginForm.invalid && loginForm.touched) || loginForm.pending" -->
 
             <mat-card-actions align="end">
-                <button type="submit" mat-raised-button color="accent" [disabled]="(loginForm.invalid && loginForm.touched) || loginForm.pending">login</button>
+                <button type="submit" mat-raised-button color="accent" >login</button>
             </mat-card-actions>
         </form>
     </mat-card-content>

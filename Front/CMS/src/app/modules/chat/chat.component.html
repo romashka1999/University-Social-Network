@@ -1,0 +1,42 @@
+
+
+<div class="conntainer">
+    <div
+        #scrollMe
+        class="chat"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScrollDown()"
+        (scrolledUp)="onScrollUp()"
+        [infiniteScrollContainer]="'.chat'"
+        [fromRoot]="true"
+    
+    >
+        <div class="row pb-5">
+            <div class="col-md-12 p-5">
+                <ngx-spinner
+                bdOpacity= 0.9
+                bdColor = ""
+                size = "default"
+                color = "#581f87"
+                type = "ball-pulse-sync"
+                [fullScreen] = "false"
+                >
+                </ngx-spinner>
+            </div>
+        </div>
+        <div *ngFor="let message of messages" style="height: 50px;;">
+            {{message.content}}
+        </div>
+
+    </div>
+
+
+    <input type="text" #newMessage>
+
+    <button mat-raised-button (click)="onSendMessageToTheChat()">
+        <mat-icon color="accent">message</mat-icon>
+    </button>
+    
+</div>

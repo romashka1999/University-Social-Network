@@ -9,6 +9,7 @@ const routes: Routes = [
   {path: 'dashboard', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/dashboard/dashboard.module').then( m => m.DashboardModule)},
   {path: 'admins', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/admins/admins.module').then( m => m.AdminsModule)},
   {path: 'adminRoles', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/admin-roles/admin-roles.module').then( m => m.AdminRolesModule)},
+  {path: 'chat', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/chat/chat.module').then( m => m.ChatModule)},
   {path: 'translations', canActivate: [AuthGuardService], loadChildren: ()=> import('./modules/translations/translations.module').then( m => m.TranslationsModule)}
 ];
 
