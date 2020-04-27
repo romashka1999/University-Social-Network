@@ -7,6 +7,7 @@ import { PostReact } from "../post-reacts/post-react.entity";
 import { CommentReact } from "../comment-reacts/comment-react.entity";
 import { Reply } from "../replies/reply.entity";
 import { ReplyReact } from "../reply-reacts/reply-react.entity";
+import { Notification } from "../notifications/notification.entity";
 
 
 export enum UserStatus {
@@ -134,6 +135,9 @@ export class User extends BaseEntity {
 
     @OneToMany(type => Post, post => post.user)
     posts: Post[];
+
+    @OneToMany(type => Notification, notification => notification.user)
+    notifications: Notification[];
 
     @OneToMany(type => PostReact, postReact => postReact.user)
     postReacts: PostReact[];

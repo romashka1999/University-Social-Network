@@ -2,20 +2,20 @@ import { SubscribeMessage, WebSocketGateway, OnGatewayInit, MessageBody,
    ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-import { ChatsService } from '../modules/chats/chats.service';
-import { FollowersService } from 'src/modules/followers/followers.service';
+import { FollowersService } from '../modules/followers/followers.service';
+import { ChatsService } from 'src/modules/chats/chats.service';
 
-@WebSocketGateway(3001, {namespace: '/notifications'})
+@WebSocketGateway(3001, {namespace: '/posts'})
 export class NotificationsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
   @WebSocketServer() wss: any;
 
   constructor(
-    private readonly chatsService: ChatsService,
-    private readonly followersService: FollowersService) {}
+    private readonly followersService: FollowersService,
+    private readonly chatsService: ChatsService) {}
 
   async handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`ChatsGateway cient connected: ${client.id}`);
+    this.logger.log(`PostsGateway cient connected: ${client.id}`);
     client.emit('joinRoom', {});
   }
 
@@ -34,18 +34,58 @@ export class NotificationsGateway implements OnGatewayInit, OnGatewayConnection,
   async handleJoinRoom(@MessageBody() message: { id: number }, @ConnectedSocket() client: Socket) {
     const userId = message.id;
 
+    const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
+
+    const followeesArray = followees.map(follow => follow.userId);
+
+    client.join(`${userId}`);
+
+    client.join(`${userId}posts`);
+    followeesArray.forEach( userId => {
+      client.join(`${userId}posts`);
+    });
+
     const chats = await this.chatsService.getUserChats(userId, {page: 0, pageSize: 100});
     const chatsArray = chats.map(chat => chat._id);
     chatsArray.forEach( chatId => {
       client.join(`${chatId}chats`);
     });
+  }
+  // *************************** CHAT ********************************
+  public async messageCreated(chatId: string, createdMessage) {
+    this.wss.to(`${chatId}chats`).emit('messageCreated', createdMessage);
+  }
+  
+  // *************************** FOLLOW ******************************
+  public async makeFollow(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}`).emit('makeFollow', data);
+  }
 
-    const followees = await this.followersService.getFolloweesByUserId(userId, {page: null, pageSize: null});
-    const followeesArray = followees.map(follow => follow.userId);
-    client.join(`${userId}posts`);
-    followeesArray.forEach( userId => {
-      client.join(`${userId}posts`);
-    });
+  // *************************** post ******************************
+  public async postCreated(loggedUserId: number, createdPostForSocket) {
+    this.wss.to(`${loggedUserId}posts`).emit('postCreated', createdPostForSocket);
+  }
+
+  public async postReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('postReacted', data);
+  }
+
+  // ************************** comment *******************************
+  public async commentCreated(loggedUserId: number, createdComment) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentCreated', createdComment);
+  }
+
+  public async commentReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentReacted', data);
+  }
+
+  // ************************** reply *******************************
+  public async replyCreated(loggedUserId: number, createdReply) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyCreated', createdReply);
+  }
+
+  public async replyReacted(loggedUserId: number, data) {
+    this.wss.to(`${loggedUserId}posts`).emit('replyReacted', data);
   }
 
 }
