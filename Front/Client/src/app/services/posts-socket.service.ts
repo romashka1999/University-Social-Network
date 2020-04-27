@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import {UserService} from './user.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,17 @@ export class PostSocketService {
   connect() {
      this.socket.on('joinRoom', () => {
        console.log(this.socket.connected);
-       const user = this.userService.getCurrentUser();
-       const id = user.id;
+       const id = this.userService.getCurrentUser().id;
        this.socket.emit('joinRoom', { id });
      });
   }
 
-  postCreated(cb) {
-      this.socket.on('postCreated', cb);
+  postCreated() {
+    return new Observable(subscriber => {
+      this.socket.on('postCreated', (data) => {
+        subscriber.next(data);
+      });
+    });
   }
 
   postUpdated(cb) {
@@ -32,16 +36,28 @@ export class PostSocketService {
     this.socket.on('postDeleted', cb);
   }
 
-  postReacted(cb) {
-    this.socket.on('postReacted', cb);
+  postReacted() {
+    return new Observable(subscriber => {
+      this.socket.on('postReacted', (cb) => {
+        subscriber.next(cb);
+      });
+    });
   }
 
-  postUnReacted(cb) {
-    this.socket.on('postUnReacted', cb);
+  postUnReacted() {
+    return new Observable(subscriber => {
+      this.socket.on('postUnReacted', (cb) => {
+        subscriber.next(cb);
+      });
+    });
   }
 
-  commentCreated(cb) {
-    this.socket.on('commentCreated', cb);
+  commentCreated() {
+    return new Observable(subscriber => {
+      this.socket.on('commentCreated', (cb) => {
+        subscriber.next(cb);
+      });
+    });
   }
 
   commentUpdated(cb) {

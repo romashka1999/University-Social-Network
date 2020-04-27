@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 @Injectable({ providedIn: "root" })
 export class TabStore {
 
-  profileSidenavState$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  profileSidenavState$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   profileSidenavContent$: BehaviorSubject<number> = new BehaviorSubject(null)
 

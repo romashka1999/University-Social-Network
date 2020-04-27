@@ -4,6 +4,7 @@ import { PostService } from 'src/app/services/post.service';
 import { GetPostData } from 'src/app/models/post.model';
 import { PostSocketService } from '../../services/posts-socket.service';
 import {GetCommentDataModel} from '../../models/comment.model';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -18,6 +19,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   public posts: GetPostData[] = [];
   public comments: GetCommentDataModel[] = [];
   private page = 0;
+
+  private postCreatedSub: Subscription;
+  private postReactedSub: Subscription;
+  private postUnReactedSub: Subscription;
+  private commentCreatedSub: Subscription;
+  private getFollowersPostsSub: Subscription;
 
   constructor(
     private tabStore: TabStore,
@@ -34,35 +41,40 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.postPopupState = res;
     });
 
-    this.postService.getFollowersPosts(this.page).subscribe(res => {
-      this.posts.push(...res.data);
+    this.getFollowersPostsSub = this.postService.getFollowersPosts(this.page).subscribe(posts => {
+      this.posts.push(...posts.data);
     });
 
     this.postSocketService.connect();
 
-    this.postSocketService.postCreated((data: any) => {
-      this.posts.unshift(data);
+    this.postCreatedSub = this.postSocketService.postCreated().subscribe((post: GetPostData) => {
+      this.posts.unshift(post);
     });
-    this.postSocketService.postReacted((data: any) => {
-      console.log(data);
-      console.log(this.posts);
-    });
-    this.postSocketService.postUnReacted((data: any) => {
+    this.postReactedSub = this.postSocketService.postReacted().subscribe((data) => {
       console.log(data);
     });
-    this.postSocketService.commentCreated((data) => {
+    this.postUnReactedSub = this.postSocketService.postUnReacted().subscribe((data) => {
+      console.log(data);
+    });
+    this.commentCreatedSub = this.postSocketService.commentCreated().subscribe((comment: GetCommentDataModel) => {
       for (let i = 0; i < this.posts.length; i++) {
-        if (data.postId === this.posts[i].id) {
-          this.posts[i].comments.push(data);
+        if (comment.postId === this.posts[i].id) {
+          this.posts[i].comments.push(comment);
         }
       }
     });
-    this.postSocketService.commentDeleted((data) => {
-      console.log(data);
-    });
+    // this.postSocketService.commentDeleted((data) => {
+    //   console.log(data);
+    // });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.postCreatedSub.unsubscribe();
+    this.postReactedSub.unsubscribe();
+    this.postUnReactedSub.unsubscribe();
+    this.commentCreatedSub.unsubscribe();
+    this.getFollowersPostsSub.unsubscribe();
+  }
 
   onCreatePost(data: string) {
     this.postService.createPost(data)
