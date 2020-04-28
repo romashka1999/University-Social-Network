@@ -9,7 +9,9 @@
     </div>
     <div class="user-profile-wrapper d-flex flex-row">
         <div class="user-image-wrapper">
-            <div class="user-image" (click)="onUserClick()"></div>
+            <div class="user-image" (click)="onUserClick()">
+              <img src="{{ user.profileImgUrl }}">
+            </div>
         </div>
         <div class="user-name-wrapper d-flex flex-row justify-content-center align-items-center">
             <div class="user-name d-flex flex-column">

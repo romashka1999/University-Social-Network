@@ -4,7 +4,7 @@ import { PostService } from 'src/app/services/post.service';
 import { GetPostData } from 'src/app/models/post.model';
 import { PostSocketService } from '../../services/posts-socket.service';
 import {GetCommentDataModel} from '../../models/comment.model';
-import {Subscription} from 'rxjs';
+import { Subscription} from 'rxjs';
 
 
 @Component({
@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.postCreatedSub = this.postSocketService.postCreated().subscribe((post: GetPostData) => {
       this.posts.unshift(post);
+      this.showNotification(post);
     });
     this.postReactedSub = this.postSocketService.postReacted().subscribe((data) => {
       console.log(data);
@@ -93,5 +94,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.posts.push(...res.data);
       });
+  }
+  showNotification(post: GetPostData) {
+    const n = new Notification(`New Post from ${post.user_firstName} ${post.user_lastName}`, {
+      body: post.content,
+      icon: post.user_profileImgUrl,
+    });
   }
 }

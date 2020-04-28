@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
       birthDate: this.userInfo.value.birthdate
     })
       .subscribe(user => {
-        console.log(user);
+        console.log('es dabrunda', user);
         this.userInfo.reset();
         this.router.navigate(['/login']);
       });

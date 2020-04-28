@@ -10,8 +10,8 @@
           <div [routerLink]="['/messages']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
             <span routerLinkActive="active" class="material-icons"> chat_bubble </span>
           </div>
-          <div class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
-            <span routerLinkActive="active" class="material-icons"> call </span>
+          <div [routerLink]="['/settings']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> settings </span>
           </div>
           <div (click)="logOut()" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
             <span routerLinkActive="active" class="material-icons"> power_settings_new </span>

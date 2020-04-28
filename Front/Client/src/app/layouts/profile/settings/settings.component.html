@@ -1,5 +1,12 @@
 <div class="main-content" *ngFor="let user of userProfile">
   <mat-card style="margin-bottom:10px">
+    <mat-card-title>Subscribe to notification</mat-card-title>
+    <button *ngIf="NotificationGranted; else subscribe" class="btn btn-danger" (click)="notifyMe()">Unsubscribe To Notification!</button>
+    <ng-template #subscribe>
+      <button class="btn btn-success" (click)="notifyMe()">Subscribe to Notification</button>
+    </ng-template>
+  </mat-card>
+  <mat-card style="margin-bottom:10px">
     <mat-card-title>Change password</mat-card-title>
     <form>
       <mat-form-field style="width: 100%;">

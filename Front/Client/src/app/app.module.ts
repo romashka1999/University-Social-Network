@@ -47,6 +47,7 @@ import { SharedStoryComponent } from './shared/story/story.component';
 import { SharedPostPopupComponent } from './shared/post-popup/popup.component';
 import { MessagesComponent } from './shared/messages/messages.component';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json?v=' + Date.now());
@@ -108,6 +109,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     //ProfileModule,
   ],
   providers: [MatDatepickerModule, AuthService, INTERCEPTOR_PROVIDER],
