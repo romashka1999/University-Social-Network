@@ -49,7 +49,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.postCreatedSub = this.postSocketService.postCreated().subscribe((post: GetPostData) => {
       this.posts.unshift(post);
-      this.showNotification(post);
+      if (Notification.permission === 'granted') {
+        this.showNotification(post);
+      }
     });
     this.postReactedSub = this.postSocketService.postReacted().subscribe((data) => {
       console.log(data);

@@ -39,6 +39,7 @@ export class AuthService {
   }
 
   addUser(user: Users): Observable<any> {
+    console.log('gavgzavne', user)
     return this.http.post<any>(
       `${environment.api}/auth/user/signUp`,
       user

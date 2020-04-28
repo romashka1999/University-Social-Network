@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
     phone: new FormControl('', [Validators.minLength(9), Validators.pattern('[0-9]{9}')]),
     email: new FormControl('', [Validators.email]),
     gender: new FormControl(''),
-    image: new FormControl('')
+    profileImg: new FormControl('')
   });
   matcher = new MyErrorStateMatcher();
 
@@ -79,7 +79,8 @@ export class RegisterComponent implements OnInit {
       email: this.userInfo.value.email,
       phoneNumber: this.userInfo.value.phone,
       password: this.userInfo.value.password,
-      birthDate: this.userInfo.value.birthdate
+      birthDate: this.userInfo.value.birthdate,
+      profileImg: this.userInfo.value.profileImg
     })
       .subscribe(user => {
         console.log('es dabrunda', user);
@@ -113,7 +114,7 @@ export class RegisterComponent implements OnInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.userInfo.patchValue({
-        image: file
+        profileImg: file
       });
     }
   }

@@ -10,6 +10,7 @@ export interface Users {
   birthDate: Date;
   publicUser?: boolean;
   status?: string;
+  profileImg?: string;
   profileImgUrl?: null;
   coverImageUrl?: null;
   followersCount?: number;

@@ -50,6 +50,7 @@ export class SharedProfileComponent implements OnInit, OnDestroy {
           this.isCurrent = false;
           this.isFollowed(userProfile.data.id)
           this.getUserPosts();
+          console.log(userProfile)
         })
       } else {
         this.user = this.userService.getCurrentUser();   // Current user
