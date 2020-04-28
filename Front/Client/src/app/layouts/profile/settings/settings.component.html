@@ -1,7 +1,7 @@
 <div class="main-content" *ngFor="let user of userProfile">
   <mat-card style="margin-bottom:10px">
     <mat-card-title>Subscribe to notification</mat-card-title>
-    <button *ngIf="NotificationGranted; else subscribe" class="btn btn-danger" (click)="notifyMe()">Unsubscribe To Notification!</button>
+    <button disabled *ngIf="NotificationGranted; else subscribe" class="btn btn-info" (click)="notifyMe()">You Already Subscribed!</button>
     <ng-template #subscribe>
       <button class="btn btn-success" (click)="notifyMe()">Subscribe to Notification</button>
     </ng-template>

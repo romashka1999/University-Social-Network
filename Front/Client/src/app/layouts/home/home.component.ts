@@ -5,6 +5,7 @@ import { GetPostData } from 'src/app/models/post.model';
 import { PostSocketService } from '../../services/posts-socket.service';
 import {GetCommentDataModel} from '../../models/comment.model';
 import { Subscription} from 'rxjs';
+import {UserService} from '../../services/user.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private tabStore: TabStore,
     private postService: PostService,
-    private postSocketService: PostSocketService) { }
+    private postSocketService: PostSocketService,
+    private userService: UserService) { }
 
   ngOnInit() {
 
@@ -49,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.postCreatedSub = this.postSocketService.postCreated().subscribe((post: GetPostData) => {
       this.posts.unshift(post);
-      if (Notification.permission === 'granted') {
+      if (Notification.permission === 'granted' && post.userId !== this.userService.getCurrentUser().id) {
         this.showNotification(post);
       }
     });
