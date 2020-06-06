@@ -56,6 +56,7 @@ export class PostSocketService {
     return new Observable(subscriber => {
       this.socket.on('commentCreated', (cb) => {
         subscriber.next(cb);
+        console.log(cb)
       });
     });
   }
@@ -64,8 +65,13 @@ export class PostSocketService {
     this.socket.on('commentUpdated', cb);
   }
 
-  commentDeleted(cb) {
-    this.socket.on('commentDeleted', cb);
+  commentDeleted() {
+    return new Observable(subscriber => {
+      this.socket.on('commentDeleted', (cb) => {
+        subscriber.next(cb);
+        console.log(cb)
+      })
+    })
   }
 
   disconnect() {

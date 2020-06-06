@@ -61,6 +61,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.postUnReactedSub = this.postSocketService.postUnReacted().subscribe((data) => {
       console.log(data);
     });
+    this.postSocketService.commentDeleted().subscribe((data) => {
+      console.log(data);
+    })
     this.commentCreatedSub = this.postSocketService.commentCreated().subscribe((comment: GetCommentDataModel) => {
       for (let i = 0; i < this.posts.length; i++) {
         if (comment.postId === this.posts[i].id) {

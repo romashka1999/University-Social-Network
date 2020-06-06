@@ -89,7 +89,8 @@ export class SharedPostComponent implements OnInit, OnDestroy {
           return arr;
         })
       )
-      .subscribe(() => {
+      .subscribe((arr) => {
+        console.log(arr)
       });
   }
 
