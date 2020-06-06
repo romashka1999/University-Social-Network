@@ -67,8 +67,9 @@ export class CommentsService {
             }
         }
         const createdComment = await this.commentRepository.createComment(user, post, commentCreateDto);
+        const commentAuthor = await this.usersService.getUserById(createdComment.userId);
         await this.postsService.updatePostCommentCounter(postId, 'WRITE');
-        this.postsGateway.commentCreated(user.id, createdComment);
+        this.postsGateway.commentCreated(user.id, {...createdComment, firstName: commentAuthor.firstName, lastName: commentAuthor.lastName});
         return createdComment;
     }
 
@@ -100,7 +101,8 @@ export class CommentsService {
                 throw {statusCode: HttpStatus.NOT_FOUND, message: "COMMENT_NOT_EXISTS"};
             }
             await this.postsService.updatePostCommentCounter(postId, 'DELETE');
-            this.postsGateway.commentDeleted(loggedUserId);
+            const deletedCommentAuthor = await this.usersService.getUserById(loggedUserId);
+            this.postsGateway.commentDeleted(loggedUserId, deletedCommentAuthor);
             return deletedComment.raw;
         } catch (error) {
             if(error.statusCode) {

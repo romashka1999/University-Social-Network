@@ -56,8 +56,8 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     this.wss.to(`${loggedUserId}posts`).emit('postReacted', data);
   }
 
-  public async postUnReacted(loggedUserId: number) {
-    this.wss.to(`${loggedUserId}posts`).emit('postUnReacted', true);
+  public async postUnReacted(loggedUserId: number, data: any) {
+    this.wss.to(`${loggedUserId}posts`).emit('postUnReacted', data);
   }
 
   // ************************** comment *******************************
@@ -65,8 +65,8 @@ export class PostsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     this.wss.to(`${loggedUserId}posts`).emit('commentCreated', createdComment);
   }
 
-  public async commentDeleted(loggedUserId: number) {
-    this.wss.to(`${loggedUserId}posts`).emit('commentDeleted', true);
+  public async commentDeleted(loggedUserId: number, data: any) {
+    this.wss.to(`${loggedUserId}posts`).emit('commentDeleted', data);
   }
 
   public async commentUpdated(loggedUserId: number, data) {
