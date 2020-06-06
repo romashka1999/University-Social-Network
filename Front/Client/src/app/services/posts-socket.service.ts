@@ -69,7 +69,6 @@ export class PostSocketService {
     return new Observable(subscriber => {
       this.socket.on('commentDeleted', (cb) => {
         subscriber.next(cb);
-        console.log(cb)
       })
     })
   }
