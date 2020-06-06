@@ -102,7 +102,13 @@ export class CommentsService {
             }
             await this.postsService.updatePostCommentCounter(postId, 'DELETE');
             const deletedCommentAuthor = await this.usersService.getUserById(loggedUserId);
-            this.postsGateway.commentDeleted(loggedUserId, deletedCommentAuthor);
+            this.postsGateway.commentDeleted(loggedUserId, {
+                userFirstName: deletedCommentAuthor.firstName, 
+                userLastName: deletedCommentAuthor.lastName, 
+                userId: deletedCommentAuthor.id, 
+                postId: postId, 
+                commentId: commentId
+            });
             return deletedComment.raw;
         } catch (error) {
             if(error.statusCode) {
