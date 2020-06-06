@@ -44,7 +44,8 @@ export class PostReactsService {
             const createdPostReact = await postReact.save();
             await this.postsService.updatePostReactCounter(postId, "REACT");
             const data = {
-                postReactId: createdPostReact.id,
+                id: createdPostReact.id,
+                postId: postId,
                 userId: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -76,8 +77,9 @@ export class PostReactsService {
             const userUnreactor = await this.usersService.getUserById(loggedUserId);
             this.postsGateway.postUnReacted(loggedUserId, {
                 userId: userUnreactor.id, 
-                userFirstName: userUnreactor.firstName, 
-                userLastName: userUnreactor.lastName, 
+                firstName: userUnreactor.firstName, 
+                lastName: userUnreactor.lastName, 
+                profileImgUrl: userUnreactor.profileImgUrl,
                 postId: postId
             });
             return true;

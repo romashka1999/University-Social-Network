@@ -69,7 +69,7 @@ export class CommentsService {
         const createdComment = await this.commentRepository.createComment(user, post, commentCreateDto);
         const commentAuthor = await this.usersService.getUserById(createdComment.userId);
         await this.postsService.updatePostCommentCounter(postId, 'WRITE');
-        this.postsGateway.commentCreated(user.id, {...createdComment, firstName: commentAuthor.firstName, lastName: commentAuthor.lastName});
+        this.postsGateway.commentCreated(user.id, {...createdComment, userFirstName: commentAuthor.firstName, userLastName: commentAuthor.lastName});
         return createdComment;
     }
 
