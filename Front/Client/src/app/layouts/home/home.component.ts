@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private postUnReactedSub: Subscription;
   private commentCreatedSub: Subscription;
   private getFollowersPostsSub: Subscription;
+  private postDeletedCommentSub: Subscription;
 
   constructor(
     private tabStore: TabStore,
@@ -61,8 +62,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.postUnReactedSub = this.postSocketService.postUnReacted().subscribe((data) => {
       console.log(data);
     });
-    this.postSocketService.commentDeleted().subscribe((data) => {
+   this.postDeletedCommentSub =  this.postSocketService.commentDeleted().subscribe((data) => {
       console.log(data);
+      console.log(this.posts)
     })
     this.commentCreatedSub = this.postSocketService.commentCreated().subscribe((comment: GetCommentDataModel) => {
       for (let i = 0; i < this.posts.length; i++) {
@@ -82,6 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.postUnReactedSub.unsubscribe();
     this.commentCreatedSub.unsubscribe();
     this.getFollowersPostsSub.unsubscribe();
+    this.postDeletedCommentSub.unsubscribe();
   }
 
   onCreatePost(data: string) {

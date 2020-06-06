@@ -74,7 +74,12 @@ export class PostReactsService {
             }
             await this.postsService.updatePostReactCounter(postId, "UNREACT");
             const userUnreactor = await this.usersService.getUserById(loggedUserId);
-            this.postsGateway.postUnReacted(loggedUserId, userUnreactor);
+            this.postsGateway.postUnReacted(loggedUserId, {
+                userId: userUnreactor.id, 
+                userFirstName: userUnreactor.firstName, 
+                userLastName: userUnreactor.lastName, 
+                postId: postId
+            });
             return true;
         } catch (error) {
             if(!error.status) {
