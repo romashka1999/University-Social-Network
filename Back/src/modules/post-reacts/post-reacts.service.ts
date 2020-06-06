@@ -44,6 +44,7 @@ export class PostReactsService {
             const createdPostReact = await postReact.save();
             await this.postsService.updatePostReactCounter(postId, "REACT");
             const data = {
+                id: createdPostReact.id,
                 postId: postId,
                 userId: user.id,
                 firstName: user.firstName,
