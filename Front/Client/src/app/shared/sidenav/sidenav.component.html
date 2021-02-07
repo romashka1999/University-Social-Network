@@ -1,0 +1,21 @@
+<div class="sidenav-container">
+    <div class="wrapper d-flex flex-column">
+        <div class="logo-wrapper d-flex flex-row justify-content-center align-items-center">
+          <img src="assets/images/logo.png" alt="logo">
+        </div>
+        <div routerLinkActive="active" class="menu-wrapper">
+          <div [routerLink]="['/home']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> home </span>
+          </div>
+          <div [routerLink]="['/messages']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> chat_bubble </span>
+          </div>
+          <div [routerLink]="['/settings']" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> settings </span>
+          </div>
+          <div (click)="logOut()" class="sidenav-icon d-flex flex-row justify-content-center align-items-center">
+            <span routerLinkActive="active" class="material-icons"> power_settings_new </span>
+          </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="main-content" *ngFor="let user of userProfile">
+  <mat-card style="margin-bottom:10px">
+    <mat-card-title>Subscribe to notification</mat-card-title>
+    <button disabled *ngIf="NotificationGranted; else subscribe" class="btn btn-info" (click)="notifyMe()">You Already Subscribed!</button>
+    <ng-template #subscribe>
+      <button class="btn btn-success" (click)="notifyMe()">Subscribe to Notification</button>
+    </ng-template>
+  </mat-card>
+  <mat-card style="margin-bottom:10px">
+    <mat-card-title>Change password</mat-card-title>
+    <form>
+      <mat-form-field style="width: 100%;">
+        <mat-label>old password</mat-label>
+        <input matInput #oldPass>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>new password</mat-label>
+        <input matInput #newPass>
+      </mat-form-field>
+      <button (click)="changePass(oldPass.value, newPass.value)" class="btn btn-danger">change password</button>
+    </form>
+  </mat-card>
+  <mat-card style="margin-bottom:10px">
+    <mat-card-title>Change phone number</mat-card-title>
+    <form>
+      <mat-form-field style="width: 100%;">
+        <mat-label>current phone number is: {{ user.phoneNumber }}</mat-label>
+        <input matInput #phone>
+      </mat-form-field>
+      <button (click)="changePhone(phone.value)" class="btn btn-danger">change phone</button>
+    </form>
+  </mat-card>
+  <mat-card style="margin-bottom:10px">
+    <mat-card-title>Change username</mat-card-title>
+    <form>
+      <mat-form-field style="width: 100%;">
+        <mat-label>current username is: {{ user.username }}</mat-label>
+        <input matInput #newUsername>
+      </mat-form-field>
+      <button (click)="changeUsername(newUsername.value)" class="btn btn-danger">change username</button>
+    </form>
+  </mat-card>
+  <mat-card style="margin-bottom:10px">
+    <mat-card-title>Change email</mat-card-title>
+    <form>
+      <mat-form-field style="width: 100%;">
+        <mat-label>current email is: {{ user.email }}</mat-label>
+        <input matInput #newEmail>
+      </mat-form-field>
+      <button (click)="changeEmail(newEmail.value)" class="btn btn-danger">change email</button>
+    </form>
+  </mat-card>
+
+</div>

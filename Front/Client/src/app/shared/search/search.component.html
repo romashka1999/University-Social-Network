@@ -1,0 +1,28 @@
+<div class="search-wrapper d-flex flex-column justify-content-center">
+    <div class="search-content d-flex flex-row">
+        <div class="search-icon">
+            <span class="material-icons">  search  </span>
+        </div>
+        <div class="search-input">
+            <input #search (change)="searchUser(search.value)" placeholder="ძებნა" />
+        </div>
+        <div class="mic-icon">
+            <span class="material-icons">  mic </span>
+        </div>
+    </div>
+  <div class="search-dropdown" *ngIf="searchMatch.length">
+    <div  *ngFor="let searchDto of searchMatch">
+      <div>
+        <p style="margin-bottom: 2px; cursor: pointer" (click)="goToProfile(searchDto.user_id)">
+          {{ searchDto.user_firstName }} {{ searchDto.user_lastName }}
+        </p>
+        <div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

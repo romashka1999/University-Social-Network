@@ -1,0 +1,235 @@
+@import "../../assets/styles/variables";
+
+
+.wave {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    z-index: -1;
+}
+
+.auth-main-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 7rem;
+    padding: 0 2rem;
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.login-contnet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 400px;
+}
+
+.login-contnet {
+    input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+.login-content {
+    button {
+        width: 50%;
+    }
+}
+
+.login-contnet {
+
+    h2 {
+        // font-size: 3vw;
+        font-size: 35px;
+        margin: 30px 0;
+    }
+
+    .avatar {
+        width: 100px
+    }
+
+    .submit-btn {
+        width: 70%;
+        border: 0;
+        border-radius: 100px;
+        background-color: $primary-color;
+        color: white;
+        padding: 20px 1px;
+        font-size: 22px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition-duration: 0.3s;
+    }
+
+    .btn-disabled {
+        cursor: default!important;
+        opacity: 0.5!important;
+    }
+
+    .btn-disabled:hover {
+        background-color: $primary-color!important;
+    }
+
+    .submit-btn:hover {
+        background-color: $primary-dark;
+    }
+}
+
+
+
+.phone-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 20px;
+
+    .phone {
+        width: 400px;
+    }
+
+}
+
+.left-arrow {
+    position: fixed;
+    transform: translate(10px, 10px);
+    transition-duration: 0.3s;
+    cursor: pointer;
+
+    i {
+        font-size: 80px;
+        .main-text {
+            font-size: 20px;
+            transform: translate(-19px, 29px);
+            position: fixed;
+        }
+    }
+
+    i:hover {
+        color: $primary-color;
+    }
+}
+
+::ng-deep.mat-progress-bar-buffer {
+    background-color: transparent;
+}
+
+::ng-deep.mat-progress-bar-fill::after {
+    background-color: $primary-color;
+}
+
+::ng-deep.mat-progress-bar-background {
+    fill: transparent!important;
+}
+
+::ng-deep.mat-form-field-label {
+    margin-left: 10px;
+}
+
+::ng-deep.mat-progress-bar {
+    height: 6px!important;
+}
+
+::ng-deep.mat-form-field-suffix > button {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+::ng-deep.mat-input-element {
+    margin-left: 10px!important;
+    //font-size: 24px;
+    margin-bottom: 8px!important;
+    // font-size: 20px!important;
+}
+
+::ng-deep.ng-star-inserted {
+    font-size: 20px!important;
+}
+
+::ng-deep.mat-form-field-flex {
+    background-color: transparent!important;
+}
+
+::ng-deep.mat-form-field {
+    margin-bottom: 10px;
+}
+
+::ng-deep.mat-input-underline, ::ng-deep.mat-form-field-underline {
+    background: transparent;
+}
+
+.first-last-name-wrapper {
+    width: 100%;
+    justify-content: space-between;
+    .wrapper-input {
+        width: 45%;
+    }
+}
+
+
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+    .login-contnet {
+        width: 90%!important;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {  }
+
+@media (max-width: 864px) {
+    .wave {
+        display: none;
+    }
+    .phone-container {
+        display: none;
+    }
+
+    .login-contnet {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media (max-width: 992px) {
+    .phone-container {
+        padding-right: 0px;
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+    .phone {
+        width: 37vw!important;
+    }
+    .avatar {
+        width: 120px!important;
+    }
+
+}
+
+@media (min-width: 1950px) {
+    .phone {
+        width: 760px!important;
+    }
+}

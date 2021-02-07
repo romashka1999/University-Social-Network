@@ -1,0 +1,33 @@
+<div class="home-wrapper d-flex flex-row">
+    <div class="home-main-content" [ngClass]="{'active-home ': !profileTabState}">
+        <div class="home-header d-flex flex-row">
+            <shared-header></shared-header>
+            <div class="btn-primary add-post d-flex flex-column justify-content-center">
+                <div (click)="openPostPopup(true)" class="btn-primary-content d-flex flex-row justify-content-center align-items-center">პოსტის დამატება</div>
+            </div>
+        </div>
+        <div class="home-story-header">
+            სთორი
+        </div>
+        <div class="home-story">
+            <shared-story></shared-story>
+        </div>
+        <div class="timeline-wrapper"
+             infiniteScroll
+             [infiniteScrollDistance]="2"
+             (scrolled)="onScroll()"
+             [infiniteScrollContainer]="'.timeline-wrapper'"
+             [infiniteScrollThrottle]="10"
+             [fromRoot]="true">
+            <shared-timeline *ngIf="posts" [posts]="posts"></shared-timeline>
+        </div >
+    </div>
+    <div class="home-profile-content" [ngClass]="{'active-tab ': profileTabState}">
+        <shared-profile></shared-profile>
+    </div>
+</div>
+
+<div (click)="openPostPopup(false)" *ngIf="postPopupState" class="blur"></div>
+<shared-post-popup *ngIf="postPopupState" (postData)="onCreatePost($event)"></shared-post-popup>
+
+

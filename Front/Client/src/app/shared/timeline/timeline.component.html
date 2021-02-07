@@ -1,0 +1,8 @@
+<div class="timeline-wrapper d-flex flex-column justify-content-center align-items-center">
+    <h1 class="timeline-header"> თაიმლაინი </h1>
+    <div class="timeline-body" *ngIf="posts">
+        <ng-container *ngFor="let post of posts">
+            <shared-post [post]="post"></shared-post>
+        </ng-container>
+    </div>
+</div>

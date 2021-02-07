@@ -1,0 +1,55 @@
+<div class="container">
+    <h1 class="heading">A D M I N S</h1>
+    <hr>
+    <div [formGroup]="adminsCreateForm" class="row">
+        <div class="col-md-4">
+            <input type="text" id="username" class="form-control" [formControlName]="'email'"
+                placeholder="email">
+        </div>
+        <div class="col-md-4">
+            <input type="text" id="username" class="form-control" [formControlName]="'password'"
+                placeholder="password">
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" [formControlName]="'role'">
+                <option *ngFor="let adminRole of adminRoles" [value]="adminRole.id">
+                    {{adminRole.role}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <button color="primary" mat-raised-button type="submit"
+        [disabled]="(adminsCreateForm.invalid && adminsCreateForm.touched) || adminsCreateForm.pending"
+        (click)="onCreateAdmin()" style="margin-top:20px;">create new Admin</button>
+    <hr>
+
+    <table class="table shadow-lg">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">img</th>
+                <th scope="col">email</th>
+                <th scope="col">status</th>
+                <th scope="col">ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let admin of admins">
+                <td>
+                    {{admin.id}}</td>
+                <td>
+                    {{admin.role || 'null'}}
+                </td>
+                <td>
+                    {{admin.email}}
+                </td>
+                <td>
+                    {{admin.status}}
+                </td>
+                <td>
+                    <button color="primary" mat-raised-button [routerLink]="[admin.id]">profile</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

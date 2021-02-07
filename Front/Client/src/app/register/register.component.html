@@ -1,0 +1,157 @@
+<div class="auth-main-container {{lang}}">
+  <mat-progress-bar mode="indeterminate" *ngIf="loading" style="position: fixed;"></mat-progress-bar>
+  <div class="left-arrow">
+    <i class="material-icons">
+      keyboard_arrow_left <span class="main-text"> {{'MAIN' | translate}} </span>
+    </i>
+  </div>
+  <img class="wave" src="../../assets/images/Login-wave.png">
+  <div class="container">
+    <div class="phone-container">
+      <img class="phone" src="../../assets/images/registerForm.svg">
+    </div>
+    <div class="login-container">
+      <form class="login-contnet" [formGroup]="userInfo">
+        <img class="avatar" src="../../assets/images/Login-Avatar.svg">
+        <h2>{{'REGISTRATION' | translate}}</h2>
+
+        <mat-horizontal-stepper linear #stepper>
+          <mat-step [stepControl]="userInfo">
+            <ng-template matStepLabel>{{'FIRST_STEP' | translate}}</ng-template>
+
+            <mat-form-field style="width: 100%">
+                    <span matPrefix>
+                        <i class="material-icons"> account_circle </i>
+                    </span>
+              <mat-label>{{'NICKNAME' | translate}}</mat-label>
+              <input [errorStateMatcher]="matcher" matInput formControlName="username">
+              <mat-error
+                *ngIf="userInfo.controls.username.hasError('minlength') && !userInfo.controls.username.hasError('required')">
+                {{'FIELD_MIN_LENGTH' | translate}} {{ userInfo.get('username').errors.minlength.requiredLength }}
+              </mat-error>
+              <mat-error *ngIf="userInfo.controls.username.hasError('required')">
+                {{'FIELD_REQUIRED' | translate}}
+              </mat-error>
+            </mat-form-field>
+
+            <div class="first-last-name-wrapper d-flex d-row">
+
+              <mat-form-field class="wrapper-input">
+                        <span matPrefix>
+                            <i class="material-icons"> person </i>
+                        </span>
+                <mat-label>{{'NAME' | translate}}</mat-label>
+                <input matInput formControlName="name">
+                <mat-error
+                  *ngIf="userInfo.controls.name.hasError('minlength') && !userInfo.controls.name.hasError('required')">
+                  {{'FIELD_MIN_LENGTH' | translate}} {{ userInfo.get('name').errors.minlength.requiredLength }}
+                </mat-error>
+                <mat-error *ngIf="userInfo.controls.name.hasError('required')">
+                  {{'FIELD_REQUIRED' | translate}}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="wrapper-input">
+                        <span matPrefix>
+                            <i class="material-icons"> person </i>
+                        </span>
+                <mat-label>{{'LASTNAME' | translate}}</mat-label>
+                <input matInput formControlName="lastname">
+                <mat-error
+                  *ngIf="userInfo.controls.lastname.hasError('minlength') && !userInfo.controls.name.hasError('required')">
+                  {{'FIELD_MIN_LENGTH' | translate}} {{ userInfo.get('lastname').errors.minlength.requiredLength }}
+                </mat-error>
+                <mat-error *ngIf="userInfo.controls.lastname.hasError('required')">
+                  {{'FIELD_REQUIRED' | translate}}
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+            <mat-form-field style="width: 100%">
+
+              <mat-label>{{'BIRTH_DATE' | translate}}</mat-label>
+              <input (click)="myDatepicker.open()" readonly formControlName="birthdate" [min]="minDate" [max]="maxDate"  matInput [matDatepicker]="myDatepicker">
+              <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker disabled="false"></mat-datepicker>
+              <mat-error *ngIf="userInfo.controls.birthdate.hasError('required')">
+                {{'FIELD_REQUIRED' | translate}}
+              </mat-error>
+
+            </mat-form-field>
+            <mat-form-field style="width: 100%">
+                    <span matPrefix>
+                        <i class="material-icons"> no_encryption </i>
+                    </span>
+              <mat-label>{{'PASSWORD' | translate}}</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error
+                *ngIf="userInfo.controls.password.hasError('minlength') && !userInfo.controls.password.hasError('required')">
+                {{'FIELD_MIN_LENGTH' | translate}} {{ userInfo.get('password').errors.minlength.requiredLength }}
+              </mat-error>
+              <mat-error *ngIf="userInfo.controls.password.hasError('required')">
+                {{'FIELD_REQUIRED' | translate}}
+              </mat-error>
+              <mat-error
+                *ngIf="userInfo.controls.password.hasError('pattern') && !userInfo.controls.password.hasError('required')">
+                {{'STRONG_PASS' | translate}}
+              </mat-error>
+            </mat-form-field>
+            <!--                  <button mat-button matStepperNext>Next</button>-->
+          </mat-step>
+          <mat-step [stepControl]="userInfo">
+            <ng-template matStepLabel>{{'FIRST_STEP' | translate}}</ng-template>
+            <mat-form-field style="width: 100%">
+                        <span matPrefix>
+                            <i class="material-icons"> email </i>
+                        </span>
+              <mat-label>{{'EMAIL' | translate}}</mat-label>
+              <input matInput formControlName="email">
+              <mat-error *ngIf="userInfo.controls.email.hasError('email')">
+                {{'EMAIL_MUST' | translate}}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%">
+                    <span matPrefix>
+                        <i class="material-icons"> phone </i>
+                    </span>
+              <mat-label>{{'PHONE_NUMBER' | translate}}</mat-label>
+              <input matInput formControlName="phone">
+              <mat-error *ngIf="userInfo.controls.phone.hasError('minlength')">
+                {{'FIELD_MIN_LENGTH' | translate}} {{ userInfo.get('phone').errors.minlength.requiredLength }}
+              </mat-error>
+              <mat-error *ngIf="userInfo.controls.phone.hasError('pattern')">
+                {{'PHONE_VALID' | translate}}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%">
+              <mat-label>Gender</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                  {{gender.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="wrapper-input">
+                      <span matPrefix>
+                            <i class="material-icons"> image </i>
+                        </span>
+              <label class="img-label" for="file">{{'IMAGE' | translate}}</label>
+              <input id="file" class="img-input" type="file" accept="image/*" (change)="onFileChanged($event)">
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+
+        <button [ngClass]="userInfo.valid? 'submit-btn' : 'submit-btn btn-disabled'"
+                (click)="userInfo.valid? onSubmit() : ''"> {{'REGISTRATION' | translate}} </button>
+        <h2>already registered ? go to login <a routerLink="/login">page!</a></h2>
+      </form>
+    </div>
+  </div>
+</div>

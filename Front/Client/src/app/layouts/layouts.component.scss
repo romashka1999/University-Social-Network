@@ -1,0 +1,19 @@
+@import "../../assets/styles/variables";
+
+* {
+    background-color: $background-color;
+}
+
+.main-content {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    //width: calc(100% - 7%);
+    height: calc(100% - 20px);
+    //overflow: scroll;
+
+    //padding-left: 240px;
+    //padding-right: 40px;
+    margin-left: 7%;
+    border-radius: 20px 20px 20px 20px;
+}

@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "./assets/styles/variables";
+
+@font-face {
+    font-family: ka;
+    src: url('/assets/fonts/bpg-nino-mtavruli-bold-bl-edition.otf');
+}
+
+@font-face {
+    font-family: en;
+    src: url('/assets/fonts/english.woff2');
+}
+
+@font-face {
+    font-family: ru;
+    src: url('/assets/fonts/ru.otf');
+}
+
+.ka *{
+    font-family: ka;
+}
+
+.en * {
+    font-family: en;
+}
+
+.ru  *{
+    font-family: 'Roboto', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    //font-family: NinoMtavruli;
+}
+html, body { height: 100%; font-family: ka;}
+body { margin: 0; background-color: #080321; overflow: hidden;}
+
+.material-icons {
+    font-family: 'Material Icons'!important;
+}
+
+.d-flex {
+    display: flex!important
+}
+
+.align-center {
+    align-items: center;
+}
+
+.d-row {
+    flex-direction: row;
+}
+
+.d-col {
+    flex-direction: column;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+::ng-deep {
+    .mat-simple-snackbar-action {
+        color: $primary-color!important;
+    }
+    .mat-button-wrapper {
+        color: $primary-color!important;
+    }
+}
+
+
